@@ -16,7 +16,7 @@ class CreateTechnologiesTable extends Migration
         Schema::create('technologies', function (Blueprint $table) {
             $table->id();
             $table->string('active')->unique();
-            $table->integer('serie')->unique();
+            $table->string('serie')->unique();
             $table->string('name');
             $table->string('mark');
             $table->string('model');
