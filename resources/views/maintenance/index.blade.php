@@ -61,7 +61,7 @@
                             <th>Ubicacion</th>
                             <th>Sede</th>
                             <th>Riesgo</th>
-                            <th>Acciones</th>
+                            <th>Accion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,20 +70,11 @@
                             <td>{{ $technology->active}}</td>
                             <td>{{ $technology->serie}}</td>
                             <td>{{ $technology->name}}</td>
-                            <td>{{ $technology->mark}}</td>
-                            <td>{{ $technology->model}}</td>
                             <td>{{ $technology->location}}</td>
                             <td>{{ $technology->campus}}</td>
                             <td>{{ $technology->category}}</td>
-                            <td>
-                                <a class="btn btn-link" href="{{ route('technology.show', ['technology'=>$technology->id]) }}">Documentación</a>
-                                <a class="btn btn-link" href="{{ route('technology.edit', ['technology'=>$technology->id]) }}">Editar</a>
-                                <form method="POST" class="d-inline" action="{{ route('technology.destroy', ['technology'=>$technology->id]) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submint" class="btn btn-link">Eliminar</button>
-                                </form>
-                            </td>
+                            <td>{{ $technology->mant}}</td>
+                            <td>{{ $technology->cal}}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -25,6 +25,8 @@ Route::delete('technology/{technology}', 'TechnologyController@destroy')->name('
 Route::match(['put', 'patch'], 'technology/{technology}','TechnologyController@adjuntar')->name('technology.adjuntar');
 
 
+//Route::get('maintenance/{technology}/mant', 'MaintenanceController@edit')->name('maintenance.create');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

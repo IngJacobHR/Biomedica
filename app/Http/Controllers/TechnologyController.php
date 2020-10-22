@@ -36,7 +36,7 @@ class TechnologyController extends Controller
     public function store(TechnologyRequest $request)
     {
         $technology = Technology::create($request->all());
-        return redirect()->route('technology.index')->withSuccess("The new equipo with active {$technology->active} was created");
+        return redirect()->route('technology.index')->withSuccess("Se creó el nuevo equipo con activo {$technology->active}");
     }
 
     public function show(Technology $technology)
@@ -57,7 +57,7 @@ class TechnologyController extends Controller
     {
         $technology->update($request->all());
 
-        return redirect()->route('technology.index')->withSuccess("The new equipo with active {$technology->active} was edit");
+        return redirect()->route('technology.index')->withSuccess("El equipo con activo {$technology->active} fue editado");
     }
 
     public function destroy(Technology $technology)
@@ -85,4 +85,5 @@ class TechnologyController extends Controller
         $pdf->merge(public_path().'/documentos/'.$nombre_pdf);
         return $nombre_pdf;
     }
+
 }

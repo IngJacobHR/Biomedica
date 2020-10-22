@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Metrology;
 use Illuminate\Http\Request;
+use App\Technology;
 
-class MetrologyController extends Controller
+class MaintenanceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class MetrologyController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -41,10 +41,10 @@ class MetrologyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Metrology  $metrology
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Metrology $metrology)
+    public function show($id)
     {
         //
     }
@@ -52,22 +52,22 @@ class MetrologyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Metrology  $metrology
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Metrology $metrology)
+    public function edit(Technology $technology)
     {
-        //
+
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Metrology  $metrology
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Metrology $metrology)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +75,10 @@ class MetrologyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Metrology  $metrology
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Metrology $metrology)
+    public function destroy($id)
     {
         //
     }
