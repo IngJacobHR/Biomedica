@@ -86,14 +86,4 @@ class TechnologyController extends Controller
         return $nombre_pdf;
     }
 
-    public function mant(Technology $technology)
-    {
-        return view('maintenance.create')->with([
-            'technology'=>$technology
-            ]);
-    }
-
-   
-
-
 }
