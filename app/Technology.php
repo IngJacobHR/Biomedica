@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Technology extends Model
 {
     protected $fillable = [
-        'active', 'serie', 'name','mark','model','location','campus','category','url_document'
+        'id','active', 'serie', 'name','mark','model','location','campus','category','url_document'
     ];
 
     public function scopeActive($query,$active)

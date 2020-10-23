@@ -27,6 +27,10 @@ Route::match(['put', 'patch'], 'technology/{technology}','TechnologyController@a
 
 //Route::get('maintenance/{technology}/mant', 'MaintenanceController@edit')->name('maintenance.create');
 
+Route::get('documnets/{technology}', 'DocumentsController@show')->name('documents.show');
+Route::post('cargar/{technology}', 'DocumentsController@store')->name('documents.store');
+Route::get('documnetos/{technology}', 'DocumentsController@index')->name('documents.index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

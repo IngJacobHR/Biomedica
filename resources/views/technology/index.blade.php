@@ -76,8 +76,9 @@
                             <td>{{ $technology->campus}}</td>
                             <td>{{ $technology->category}}</td>
                             <td>
-                                <a class="btn btn-link" href="{{ route('technology.show', ['technology'=>$technology->id]) }}">Documentación</a>
+                                <a class="btn btn-link" href="{{ route('documents.index', ['technology'=>$technology->id]) }}">Ver</a>
                                 <a class="btn btn-link" href="{{ route('technology.edit', ['technology'=>$technology->id]) }}">Editar</a>
+                                <a class="btn btn-link" href="{{ route('documents.show', ['technology'=>$technology->id]) }}">Documentacion</a>
                                 <form method="POST" class="d-inline" action="{{ route('technology.destroy', ['technology'=>$technology->id]) }}">
                                     @csrf
                                     @method('DELETE')
