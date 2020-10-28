@@ -30,6 +30,11 @@ Route::match(['put', 'patch'], 'technology/{technology}','TechnologyController@a
 Route::get('documnets/{technology}', 'DocumentsController@show')->name('documents.show');
 Route::post('cargar/{technology}', 'DocumentsController@store')->name('documents.store');
 Route::get('documnetos/{technology}', 'DocumentsController@index')->name('documents.index');
+Route::delete('/delete-documnetos/{file}', 'DocumentsController@destroy')->name('documents.destroy');
+
+
+Route::get('workorders', 'WorkordersController@index')->name('workorders.index');
+Route::get('workorders/create', 'WorkordersController@create')->name('workorders.create');
 
 Auth::routes();
 

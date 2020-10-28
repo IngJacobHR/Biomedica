@@ -39,7 +39,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('technology.index') }}">
+                            <a class="nav-link active" href="{{ route('workorders.index') }}">
                                 Reportes O.T.
                             </a>
                         </li>
@@ -119,9 +119,16 @@
                 </div>
             @endif
                 @yield('content')
-                @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
+
             </div>
         </main>
     </div>
+    <script>
+        Swal.fire(
+'The Internet?',
+'That thing is still around?',
+'question'
+)
+</script>
 </body>
 </html>

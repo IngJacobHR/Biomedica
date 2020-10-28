@@ -6,6 +6,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use App\Documents;
 use App\Technology;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\CommonMark\Block\Element\Document;
@@ -107,8 +108,16 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+
+        $file= Documents::whereId($id)->firstOrFail();
+
+        //unlink(public_path('storage',$file->id));
+
+        $file->delete();
+        return back();
+
+
     }
 }
