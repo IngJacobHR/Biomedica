@@ -2,11 +2,9 @@
 
 namespace App;
 
-use App\WorkOrders;
-
 use Illuminate\Database\Eloquent\Model;
 
-class Failure extends Model
+class Equipment extends Model
 {
     protected $fillable = [
 
@@ -15,5 +13,10 @@ class Failure extends Model
     public function workorders()
     {
        return $this->hasMany(WorkOrders::class);
+    }
+
+    public function technology()
+    {
+       return $this->hasMany(Technology::class);
     }
 }

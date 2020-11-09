@@ -17,11 +17,9 @@ class CreateTechnologiesTable extends Migration
             $table->id();
             $table->string('active')->unique();
             $table->string('serie')->unique();
-            $table->string('name');
             $table->string('mark');
             $table->string('model');
             $table->string('location');
-            $table->string('campus');
             $table->string('category');
             $table->string('url_document')->nullable();
             $table->timestamps();

@@ -32,9 +32,12 @@ Route::post('cargar/{technology}', 'DocumentsController@store')->name('documents
 Route::get('documnetos/{technology}', 'DocumentsController@index')->name('documents.index');
 Route::delete('/delete-documnetos/{file}', 'DocumentsController@destroy')->name('documents.destroy');
 
-
+Route::get('sedes/{campus}', 'CampusController@show')->name('campus.show');
 Route::get('workorders', 'WorkordersController@index')->name('workorders.index');
 Route::get('workorders/create', 'WorkordersController@create')->name('workorders.create');
+Route::post('workorders/create/send', 'WorkordersController@store')->name('workorders.store');
+
+
 
 Auth::routes();
 

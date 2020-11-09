@@ -49,7 +49,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('technology.index') }}">
+                            <a class= "nav-link active" href="{{ route('technology.index') }}">
                               Calibración
                             </a>
                         </li>

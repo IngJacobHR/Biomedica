@@ -7,9 +7,9 @@
       class="form-control border-0 bg-light shadow-sm"
     >
        <option value="">Seleccione</option>
-       @foreach($campus as $id => $name)
+       @foreach($campus_id as $id => $name)
           <option value="{{ $id }}"
-          @if($id== old('campus_id',$workorders->campus_id)) selected @endif
+          @if($id== old('campus',$workorders->campus_id)) selected @endif
           >{{ $name }}</option>
        @endforeach
     </select>
@@ -25,13 +25,21 @@
     >
 </div>
 
+
 <div class="form-group">
-    <label for="name">Equipo</label>
-    <input class="form-control border-0 bg-light shadow-sm"
-        type="text"
-        name="name"
-        value="{{ old('name',$workorders->name)}}"
+    <label for="equipment_id">Equipo</label>
+    <select
+      name="equipment_id"
+      id="equipment_id"
+      class="form-control border-0 bg-light shadow-sm"
     >
+       <option value="">Seleccione</option>
+       @foreach($equipment_id as $id => $name)
+          <option value="{{ $id }}"
+          @if($id== old('equipment_id',$workorders->equipmet_id)) selected @endif
+          >{{ $name }}</option>
+       @endforeach
+    </select>
 
 </div>
 
@@ -63,7 +71,7 @@
       class="form-control border-0 bg-light shadow-sm"
     >
        <option value="">Seleccione</option>
-       @foreach($failures as $id => $name)
+       @foreach($failures_id as $id => $name)
           <option value="{{ $id }}"
           @if($id== old('failures_id',$workorders->failures_id)) selected @endif
           >{{ $name }}</option>
@@ -83,9 +91,18 @@
 
 </div>
 
+<div class="form-group">
+    <label>Tipo de Servicio</label>
+    <select class="form-control border-0 bg-light shadow-sm" name="order">
+        <option value="" selected>Seleccione</option>
+        <option {{ old('order') == 'Urgente' ? 'selected' : '' }} value="Urgente">Urgente</option>
+        <option {{ old('order') == 'Programada' ? 'selected' : '' }} value="Programada">Programada</option>
+    </select>
+</div>
+
 <button
-    class="btn btn-primary btn-lg btn-block">{{ $btnText }}
+   type="submit" class="btn btn-primary btn-lg btn-block" >{{ $btnText }}
 </button>
 <a class="btn btn-link btn-block"
-href="{{ route('workorders.index') }}">Cancelar
+href="{{route('workorders.index')}}">Cancelar
 </a>

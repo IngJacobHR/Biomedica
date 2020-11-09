@@ -1,91 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="display-8 text-primary">Seguimiento de ordenes de trabajos</h1>
 
-    <nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
-        <div class="collapse navbar-collapse">
-            <ul class="nav nav-pills">
-                <li  class="nav-item ">
-                    <a class="btn btn-success btn-sm" href="{{ route('workorders.create')}}">Crear Reporte</a>
-                </li>
-                <li  class="nav-item ">
-                    <a class="btn btn-warning btn-sm " >Programaciones</a>
-                </li>
-                 <li class="nav-item">
-                    <form method="GET" action= class="form-inline ml-2 pull-right">
-                        <div class="input-group input-group-sm mt">
-                            <input class="form-control form-control-navbar form-control-borderless ml-2"
-                                 name="active"
-                                type="search"
-                                placeholder="activo"
-                            >
-                            <input class="form-control form-control-navbar form-control-borderless ml-2"
-                                name="serie"
-                                type="search"
-                                placeholder="serie"
-
-                             >
-                            <input class="form-control form-control-navbar form-control-borderless ml-2"
-                                name="campus"
-                                type="search"
-                                placeholder="campus"
-                            >
-                            <div class="input-group-append">
-                                <button
-                                    class="btn btn-navbar btn btn-primary"
-                                     type="submit">Buscar
-                                </button>
-                             </div>
-                        </div>
-                    </form>
-                </li>
-            </ul>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h2 class="display-4">Programación de O.T. Correctivo</h2>
+          <p class="lead">Las ordenes de trabajo se atenderan dependiendo la prioridad del servicio con tiempos de respuesta de 24hr para O.T -urgentes y 48 O.T -programadas</p>
         </div>
-    </nav>
-    <hr>
-                <div class="table-responsive">
-                    <table class= "table table-striped">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Fecha de creación</th>
-                                <th>Sede</th>
-                                <th>Ubicación</th>
-                                <th>Equipo</th>
-                                <th>Activo</th>
-                                <th>Serie</th>
-                                <th>Daño o falla</th>
-                                <th>Descripción del problema</th>
-                                <th>Tipo de OT</th>
-                                <th>Fecha de servicio</th>
-                                <th>Aciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2020-06-05</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                     <select class="custom-select" name="category">
-                                        <option value="" selected>Seleccione</option>
-                                        <option {{ old('category') == 'R.Bajo' ? 'selected' : '' }} value="R.Bajo">R.Bajo</option>
-                                        <option {{ old('category') == 'R.Moderado' ? 'selected' : '' }} value="R.Moderado">R.Moderado</option>
-                                        <option {{ old('category') == 'R.Alto' ? 'selected' : '' }} value="R.Alto">R.Alto</option>
-                                        <option {{ old('category') == 'R.Muy alto' ? 'selected' : '' }} value="R.Muy alto">R.Muy alto</option>
-                                     </select</td>
-                                <td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link " href="{{ route('workorders.create') }}">Generar</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Seguimiento</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Asignadas</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">Indicadores</a>
+                </li>
+              </ul>
+        </div>
+        <hr>
+        @foreach($workorders as $work)
+            <div class="accordion" id="accordion{{ $work->id}}">
 
-    @endsection
+                    <div class="card">
+
+                        <div class="card-header" id="">
+
+                            <h2 class="mb-0">
+                                @if ( $work->order=='Urgente')
+                                 <button class="btn btn-danger text-left" type="button" data-toggle="collapse" data-target="#collapse{{ $work->id}}" aria-expanded="false" aria-controls="collapse{{ $work->id}}">
+                                    {{ $work->created_at->diffForHumans()}} O.T. Urgente en sede {{ $work->campus->name}}
+                                 </button>
+                                 @else
+                                 <button class="btn btn-warning  text-left" type="button" data-toggle="collapse" data-target="#collapse{{ $work->id}}" aria-expanded="false" aria-controls="collapse{{ $work->id}}">
+                                    {{ $work->created_at->diffForHumans()}} O.T. Programada en sede {{ $work->campus->name}}
+                                </button>
+                            @endif
+                            </h2>
+                        </div>
+
+                        <div id="collapse{{ $work->id}}" class="collapse show" aria-labelledby="" data-parent="#accordion{{ $work->id}}">
+                            <div class="card-body">
+                                <p>{{ $work->equipment->name}} ubicado en {{ $work->location}} presenta {{ $work->failures->name}}. Observaciones: {{ $work->description}}</p>
+                                <a class="btn btn-success" href=>Programar</a>
+                                <a class="btn btn-link" href=>Cerrar</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+            </div>
+        @endforeach
+
+    </div>
+    {{ $workorders->links()}}
+
+ @endsection
+
+
 

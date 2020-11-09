@@ -13,7 +13,7 @@ class WorkordersRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,10 +26,12 @@ class WorkordersRequest extends FormRequest
         return [
             'campus_id'=>['required'],
             'location'=>['required'],
-            'name'=>['required'],
+            'equipment_id'=>['required'],
+            'active'=>['required'],
+            'serie'=>['required'],
             'failures_id'=>['required'],
             'order'=>['required'],
 
-    ];
+         ];
     }
 }

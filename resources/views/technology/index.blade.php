@@ -3,7 +3,7 @@
 @section('content')
     <h1 class="display-8 text-primary">Inventario Coopsana ips</h1>
 
-    <nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
+    <nav class="navbar  navbar-light navbar-expand-lg bg-white shadow-sm">
         <div class="collapse navbar-collapse">
             <ul class="nav nav-pills">
                 <li  class="nav-item ">
@@ -26,11 +26,7 @@
                                 placeholder="serie"
 
                             >
-                            <input class="form-control form-control-navbar form-control-borderless ml-2"
-                            name="campus"
-                            type="search"
-                            placeholder="campus"
-                        >
+
                                     <div class="input-group-append">
                                         <button
                                                 class="btn btn-navbar btn btn-primary"
@@ -69,11 +65,11 @@
                         <tr>
                             <td>{{ $technology->active}}</td>
                             <td>{{ $technology->serie}}</td>
-                            <td>{{ $technology->name}}</td>
+                            <td>{{ $technology->equipment->name}}</td>
                             <td>{{ $technology->mark}}</td>
                             <td>{{ $technology->model}}</td>
                             <td>{{ $technology->location}}</td>
-                            <td>{{ $technology->campus}}</td>
+                            <td><a href="{{route('campus.show',$technology->campus)}}">{{ $technology->campus->name}}</a></td>
                             <td>{{ $technology->category}}</td>
                             <td>
                                 <a class="btn btn-link" href="{{ route('documents.index', ['technology'=>$technology->id]) }}">Ver</a>

@@ -26,11 +26,11 @@ class TechnologyRequest extends FormRequest
         return [
                 'active'=>['required'],
                 'serie'=>['required'],
-                'name'=>['required'],
+                'equipment_id'=>['required'],
                 'mark'=>['required'],
                 'model'=>['required'],
                 'location'=>['required'],
-                'campus'=>['required'],
+                'campus_id'=>['required'],
                 'category'=>['required'],
         ];
     }
