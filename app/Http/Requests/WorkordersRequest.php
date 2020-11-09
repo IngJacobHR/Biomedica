@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TechnologyRequest extends FormRequest
+class WorkordersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,14 @@ class TechnologyRequest extends FormRequest
     public function rules()
     {
         return [
-                'active'=>['required'],
-                'serie'=>['required'],
-                'equipment_id'=>['required'],
-                'mark'=>['required'],
-                'model'=>['required'],
-                'location'=>['required'],
-                'campus_id'=>['required'],
-                'category'=>['required'],
-        ];
+            'campus_id'=>['required'],
+            'location'=>['required'],
+            'equipment_id'=>['required'],
+            'active'=>['required'],
+            'serie'=>['required'],
+            'failures_id'=>['required'],
+            'order'=>['required'],
+
+         ];
     }
 }

@@ -17,8 +17,19 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Equipo</label>
-            <input class="form-control" type="text" name="name" value="{{ old('name') }}">
+            <label for="equipment_id">Equipo</label>
+            <select
+              name="equipment_id"
+              id="equipment_id"
+              class="custom-select"
+            >
+               <option value="">Seleccione</option>
+               @foreach($equipment_id as $id => $name)
+                  <option value="{{ $id}}"
+                  @if($id== old('equipment_id',$technology->equipmet_id)) selected @endif
+                  >{{ $name }}</option>
+               @endforeach
+            </select>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -35,10 +46,23 @@
               <label>Ubicación</label>
               <input class="form-control" type="text" name="location" value="{{ old('location') }}">
             </div>
+
             <div class="form-group col-md-5">
-                <label>Sede</label>
-                <input class="form-control" type="text" name="campus" value="{{ old('campus') }}">
+                <label for="campus_id">Sede</label>
+            <select
+              name="campus_id"
+              id="campus_id"
+              class="custom-select"
+            >
+               <option value="">Seleccione</option>
+               @foreach($campus_id as $id => $name)
+                  <option value="{{ $id }}"
+                  @if($id== old('campus_id',$technology->campus_id)) selected @endif
+                  >{{ $name }}</option>
+               @endforeach
+            </select>
             </div>
+
             <div class="form-group col-md-2">
                 <label>Riesgo</label>
                 <select class="custom-select" name="category">

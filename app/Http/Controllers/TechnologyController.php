@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Technology;
+use App\Campus;
+use App\Equipment;
 use App\Http\Requests\TechnologyRequest;
 use Illuminate\Http\Request;
 use Karriere\PdfMerge\PdfMerge;
@@ -14,23 +16,27 @@ class TechnologyController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index(Request $request)
+    public function index(Request $request, Technology $technology)
     {
+
         $active=$request->get('active');
         $serie=$request->get('serie');
-        $campus=$request->get('campus');
         return view('technology.index',['technologies'=>Technology::active($active)
         ->serie($serie)
-        ->campus($campus)
+        ->with('campus')
         ->latest()->paginate(15)]);
-
-            //with('technologies'=>Technology::all()]);
-
     }
 
     public function create()
     {
-        return view('technology.create');
+
+        $technology = new Technology;
+        return view('technology.create', [
+            'technology'=> $technology,
+            'campus_id'=>Campus::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),
+        ]);
+
     }
 
     public function store(TechnologyRequest $request)
@@ -49,12 +55,15 @@ class TechnologyController extends Controller
     public function edit(Technology $technology)
     {
         return view('technology.edit')->with([
-            'technology'=>$technology
+            'technology'=>$technology,
+            'campus_id'=>Campus::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),
             ]);
     }
 
     public function update(TechnologyRequest $request, Technology $technology)
     {
+
         $technology->update($request->all());
 
         return redirect()->route('technology.index')->withSuccess("El equipo con activo {$technology->active} fue editado");
