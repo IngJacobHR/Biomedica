@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Campus;
+use App\Equipment;
+use App\Failure;
+use App\WorkOrders;
+use App\Http\Requests\WorkordersRequest;
 use Illuminate\Http\Request;
-use App\Technology;
 
-class MaintenanceController extends Controller
+class WorkordersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Technology $technology)
-    {
 
-        $active=$request->get('active');
-        $serie=$request->get('serie');
-        return view('maintenance.index', ['technologies'=>Technology::active($active)
-        ->serie($serie)->latest()->latest()->paginate(15)]);
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        return view('workorders.index',['workorders'=>WorkOrders::latest()->paginate(10)]);
     }
 
     /**
@@ -29,6 +35,14 @@ class MaintenanceController extends Controller
     public function create()
     {
 
+        $workorders = new WorkOrders;
+        return view('workorders.create', [
+            'workorders'=> $workorders,
+            'failures_id'=>Failure::pluck('name', 'id'),
+            'campus_id'=>Campus::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),
+        ]);
+
     }
 
     /**
@@ -37,9 +51,10 @@ class MaintenanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(WorkordersRequest $request)
     {
-        //
+       $workorders= WorkOrders::create($request->all());
+       return back()->withSuccess("Su orden de trabajo #{$workorders->id} se genero con exito ");;
     }
 
     /**
@@ -48,9 +63,10 @@ class MaintenanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        return view('workorders.show',['workorders'=>WorkOrders::latest()->paginate(2)]);
+
     }
 
     /**
@@ -59,9 +75,9 @@ class MaintenanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Technology $technology)
+    public function edit(WorkOrders $work)
     {
-
+        dd($work);
     }
 
     /**
@@ -71,10 +87,11 @@ class MaintenanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update()
     {
-        //
+
     }
+
 
     /**
      * Remove the specified resource from storage.

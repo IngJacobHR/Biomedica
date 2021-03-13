@@ -2,7 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
+use App\Documents;
+use App\Technology;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use League\CommonMark\Block\Element\Document;
+
+//use Illuminate\Support\Facades\Auth;
+//use League\CommonMark\Block\Element\Document;
 
 class DocumentsController extends Controller
 {
@@ -11,9 +21,11 @@ class DocumentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request,Technology $technology)
     {
-        //
+        $files=Documents::where('technology_id', $technology->id)->latest()->get();
+        return view('documents.index', compact('files'));
+
     }
 
     /**
@@ -23,7 +35,6 @@ class DocumentsController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -32,9 +43,25 @@ class DocumentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,Technology $technology)
     {
-        //
+
+        $max_size = (int)ini_get('upload_max_filesiza')*10240;
+        $files=$request->file('files');
+        $technology_id =$technology->id;
+
+        foreach ($files as $file){
+            $fileName=Str::slug($file->getClientOriginalName());
+            if(Storage::putFileAs('/public/'.$technology_id.'/',$file, $fileName)){
+            Documents::create([
+                'name'=>$fileName,
+                'technology_id'=> $technology_id
+            ]);
+            }
+        }
+
+        Alert::success('Success Title', 'Success Message');
+        return back();
     }
 
     /**
@@ -43,9 +70,12 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Technology $technology)
     {
-        //
+        return view('documents.show')->with([
+            'technology'=>$technology
+            ]);
+
     }
 
     /**
@@ -77,8 +107,16 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+
+        $file= Documents::whereId($id)->firstOrFail();
+
+        //unlink(public_path('storage',$file->id));
+
+        $file->delete();
+        return back();
+
+
     }
 }

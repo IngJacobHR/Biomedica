@@ -7,8 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Technology extends Model
 {
     protected $fillable = [
-        'active', 'serie', 'name','mark','model','location','campus','category','url_document'
+        'id','active', 'serie', 'equipment_id','mark','model','location','campus_id','category','url_document', 'date_mant','date_cal'
     ];
+
+
+    public function equipment()
+    {
+       return $this->belongsTo(Equipment::class);
+    }
+
+    public function campus()
+    {
+       return $this->belongsTo(Campus::class);
+    }
 
     public function scopeActive($query,$active)
     {
@@ -20,11 +31,5 @@ class Technology extends Model
     {
         if($serie)
             return $query->where('serie', 'LIKE', "%$serie%");
-    }
-
-    public function scopeCampus($query,$campus)
-    {
-        if($campus)
-            return $query->where('campus', 'LIKE', "%$campus%");
     }
 }

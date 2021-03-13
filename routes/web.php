@@ -24,9 +24,26 @@ Route::match(['put', 'patch'], 'technology_edit/{technology}','TechnologyControl
 Route::delete('technology/{technology}', 'TechnologyController@destroy')->name('technology.destroy');
 Route::match(['put', 'patch'], 'technology/{technology}','TechnologyController@adjuntar')->name('technology.adjuntar');
 
+Route::get('maintenance', 'MaintenanceController@index')->name('maintenance.index');
+
 
 //Route::get('maintenance/{technology}/mant', 'MaintenanceController@edit')->name('maintenance.create');
 
+Route::get('documnets/{technology}', 'DocumentsController@show')->name('documents.show');
+Route::post('cargar/{technology}', 'DocumentsController@store')->name('documents.store');
+Route::get('documnetos/{technology}', 'DocumentsController@index')->name('documents.index');
+Route::delete('/delete-documnetos/{file}', 'DocumentsController@destroy')->name('documents.destroy');
+
+Route::get('sedes/{campus}', 'CampusController@show')->name('campus.show');
+
+Route::get('workorders', 'WorkordersController@index')->name('workorders.index');
+Route::get('workorders/create', 'WorkordersController@create')->name('workorders.create');
+Route::post('workorders/create/send', 'WorkordersController@store')->name('workorders.store');
+Route::get('workorders/tracing', 'WorkordersController@show')->name('workorders.show');
+Route::get('workorders/{workorders}/edit', 'WorkordersController@edit')->name('workorders.edit');
+
+
+
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');

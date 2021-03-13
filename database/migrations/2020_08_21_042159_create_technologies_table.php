@@ -15,15 +15,15 @@ class CreateTechnologiesTable extends Migration
     {
         Schema::create('technologies', function (Blueprint $table) {
             $table->id();
-            $table->string('active')->unique();
-            $table->string('serie')->unique();
-            $table->string('name');
+            $table->string('active');
+            $table->string('serie');
             $table->string('mark');
             $table->string('model');
             $table->string('location');
-            $table->string('campus');
             $table->string('category');
             $table->string('url_document')->nullable();
+            $table->date('date_mant')->nullable();
+            $table->date('date_cal')->nullable();
             $table->timestamps();
         });
     }

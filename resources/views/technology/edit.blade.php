@@ -18,8 +18,19 @@
             </div>
           </div>
         <div class="form-group">
-            <label>Equipo</label>
-            <input class="form-control" type="text" name="name" value="{{ old('name')??$technology->name}}">
+            <label for="equipment_id">Equipo</label>
+            <select
+              name="equipment_id"
+              id="cequipment_id"
+              class="custom-select"
+            >
+               <option value="">Seleccione</option>
+               @foreach($equipment_id as $id => $name)
+                  <option value="{{ $id }}"
+                  @if($id== old('equipment_id',$technology->equipment_id)) selected @endif
+                  >{{ $name }}</option>
+               @endforeach
+            </select>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -37,8 +48,19 @@
               <input class="form-control" type="text" name="location" value="{{ old('location')?? $technology->location}}">
             </div>
             <div class="form-group col-md-5">
-                <label>Sede</label>
-                <input class="form-control" type="text" name="campus" value="{{ old('campus')?? $technology->campus}}">
+                <label for="campus_id">Sede</label>
+                <select
+                  name="campus_id"
+                  id="campus_id"
+                  class="custom-select"
+                >
+                   <option value="">Seleccione</option>
+                   @foreach($campus_id as $id => $name)
+                      <option value="{{ $id }}"
+                      @if($id== old('campus_id',$technology->campus_id)) selected @endif
+                      >{{ $name }}</option>
+                   @endforeach
+                </select>
             </div>
             <div class="form-group col-md-2">
                 <label>Riesgo</label>
@@ -48,6 +70,16 @@
                     <option {{old('category') == 'R.Alto' ? 'selected' : ($technology->category == 'R.Alto' ? 'selected': '')}} value="R.Alto">R.Alto</option>
                     <option {{old('category') == 'R.Muy alto' ? 'selected' : ($technology->category == 'R.Muy alto'? 'selected': '')}} value="R.Muy alto">R.Muy alto</option>
                 </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label>Fecha de mantenimiento</label>
+                <input class="form-control" type="date" name="date_mant" value="{{ old('date_mant')?? $technology->date_mant}}">
+            </div>
+            <div class="form-group col-md-5">
+                <label>Fecha de Calibración</label>
+                <input class="form-control" type="date"  name="date_cal" value="{{ old('date_cal')?? $technology->date_cal}}">
             </div>
         </div>
         <div class="form-row mt-3">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="display-8 text-primary">Inventario Coopsana ips</h1>
+    <h1 class="display-8 text-primary">Cronograma de servicios</h1>
 
     <nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
         <div class="collapse navbar-collapse">
@@ -13,7 +13,7 @@
                     <a class="btn btn-warning btn-sm " >Programaciones</a>
                 </li>
                     <li class="nav-item">
-                        <form method="GET" action="{{ route('technology.index')}}" class="form-inline ml-2 pull-right">
+                        <form method="GET" action="{{route('maintenance.index')}}" class="form-inline ml-2 pull-right">
                             <div class="input-group input-group-sm mt">
                                 <input class="form-control form-control-navbar form-control-borderless ml-2"
                                     name="active"
@@ -24,13 +24,8 @@
                                 name="serie"
                                 type="search"
                                 placeholder="serie"
+                                >
 
-                            >
-                            <input class="form-control form-control-navbar form-control-borderless ml-2"
-                            name="campus"
-                            type="search"
-                            placeholder="campus"
-                        >
                                     <div class="input-group-append">
                                         <button
                                                 class="btn btn-navbar btn btn-primary"
@@ -54,27 +49,37 @@
                     <thead class="thead-light">
                         <tr>
                             <th>Activo</th>
-                            <th>Serie</th>
                             <th>Equipo</th>
-                            <th>Marca</th>
-                            <th>Modelo</th>
                             <th>Ubicacion</th>
                             <th>Sede</th>
-                            <th>Riesgo</th>
-                            <th>Accion</th>
+                            <th>Frecuencia Mant</th>
+                            <th>Mantenimiento</th>
+                            <th>Calibracion</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($technologies as $technology)
                         <tr>
                             <td>{{ $technology->active}}</td>
-                            <td>{{ $technology->serie}}</td>
-                            <td>{{ $technology->name}}</td>
+                            <td>{{ $technology->equipment->name}}</td>
                             <td>{{ $technology->location}}</td>
-                            <td>{{ $technology->campus}}</td>
-                            <td>{{ $technology->category}}</td>
-                            <td>{{ $technology->mant}}</td>
-                            <td>{{ $technology->cal}}</td>
+                            <td>{{ $technology->campus->name}}</td>
+                            <td>
+                                @if($technology->category=='R.Bajo')
+                                    Correctivos
+                                @elseif($technology->category=='R.Moderado')
+                                    Anual
+                                @elseif($technology->category=='Alto')
+                                    Semestral
+                                @else
+                                    Cuatrimestral
+                                @endif
+                            </td>
+                            <td>
+                                {{ $technology->date_mant}}
+
+                            </td>
+                            <td>{{ $technology->date_cal}}</td>
                         </tr>
                         @endforeach
                     </tbody>
