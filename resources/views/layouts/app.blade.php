@@ -11,13 +11,21 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script>"/sweetalert/sweetalert.min.js"</script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/sweetalert/sweetalert.css">
 </head>
 <body>
     <div id="app">
@@ -45,22 +53,17 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active">
-                               Mantenimiento
+                               Tecnologías
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class= "nav-link active" href="{{ route('technology.index') }}">
-                              Calibración
+                              Contactos
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('technology.index') }}">
-                              Compras
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('technology.index') }}">
-                              Indicadores de gestión
+                            <a class="nav-link active" href="{{ route('users.index') }}">
+                              Usuarios
                             </a>
                         </li>
                     </ul>
@@ -119,16 +122,9 @@
                 </div>
             @endif
                 @yield('content')
-
+                @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
             </div>
         </main>
     </div>
-    <script>
-        Swal.fire(
-'The Internet?',
-'That thing is still around?',
-'question'
-)
-</script>
 </body>
 </html>

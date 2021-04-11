@@ -2,31 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Technology;
 
-class MaintenanceController extends Controller
+use Illuminate\Http\Request;
+use App\User;
+use App\Http\Requests\UpdateUsersRequest;
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Technology $technology)
+    public function index()
     {
-
-        $dia=$request->date_mant;
-        $dia1=strtotime($dia."+ 45 day");
-        $dia1=date("d-m-y",$dia1);
-
-        $technology->update([
-            'next_mant'=>$dia1
-        ]);
-
-        $active=$request->get('active');
-        $serie=$request->get('serie');
-        return view('maintenance.index', ['technologies'=>Technology::active($active)
-        ->serie($serie)->latest()->paginate(15)]);
+        $users=User::all()->where('admin_since','!=','S.Admin');
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -36,7 +27,7 @@ class MaintenanceController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -67,9 +58,10 @@ class MaintenanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Technology $technology)
+    public function edit($idUser)
     {
-
+        $usuario=User::find ($idUser);
+        return view('users.edit',compact('usuario'));
     }
 
     /**
@@ -79,9 +71,21 @@ class MaintenanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUsersRequest $request, $idUser)
     {
-        //
+        $usuario = User::find($idUser);
+        $check = false;
+        if ($request->enabled_user)
+        {
+             $check = true;
+        }
+        $usuario->update([
+            'name' =>$request->name,
+            'admin_since'=>$request->admin_since,
+            'enabled_user' => $check,
+        ]);
+
+        return redirect()->route('users.index');
     }
 
     /**

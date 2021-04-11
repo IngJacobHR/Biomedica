@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\woc;
-
 use Illuminate\Database\Eloquent\Model;
 
 class WorkOrders extends Model

@@ -8,6 +8,7 @@ use App\Equipment;
 use App\Http\Requests\TechnologyRequest;
 use Illuminate\Http\Request;
 use Karriere\PdfMerge\PdfMerge;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class TechnologyController extends Controller
@@ -42,6 +43,10 @@ class TechnologyController extends Controller
     public function store(TechnologyRequest $request)
     {
         $technology = Technology::create($request->all());
+        $dia=$request->date_mant;
+        $dia1=strtotime($dia."+ 45 day");
+        $dia1=date("d-m-y",$dia1);
+        $request->date_cal=$dia1;
         return redirect()->route('technology.index')->withSuccess("Se creó el nuevo equipo con activo {$technology->active}");
     }
 
@@ -64,7 +69,7 @@ class TechnologyController extends Controller
     public function update(TechnologyRequest $request, Technology $technology)
     {
 
-        $technology->update($request->except('serie'));
+        $technology->update($request->all());
         return redirect()->route('technology.index')->withSuccess("El equipo con activo {$technology->active} fue editado");
     }
 

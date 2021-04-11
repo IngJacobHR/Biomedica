@@ -60,8 +60,7 @@ class DocumentsController extends Controller
             }
         }
 
-        Alert::success('Success Title', 'Success Message');
-        return back();
+        return back()->withSuccess("Se cargó el archivo correctamente");
     }
 
     /**

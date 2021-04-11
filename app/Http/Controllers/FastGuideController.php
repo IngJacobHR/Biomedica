@@ -3,30 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Technology;
 
-class MaintenanceController extends Controller
+class FastGuideController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Technology $technology)
+    public function index()
     {
 
-        $dia=$request->date_mant;
-        $dia1=strtotime($dia."+ 45 day");
-        $dia1=date("d-m-y",$dia1);
-
-        $technology->update([
-            'next_mant'=>$dia1
-        ]);
-
-        $active=$request->get('active');
-        $serie=$request->get('serie');
-        return view('maintenance.index', ['technologies'=>Technology::active($active)
-        ->serie($serie)->latest()->paginate(15)]);
     }
 
     /**
@@ -36,7 +23,7 @@ class MaintenanceController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -67,9 +54,9 @@ class MaintenanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Technology $technology)
+    public function edit($id)
     {
-
+        //
     }
 
     /**

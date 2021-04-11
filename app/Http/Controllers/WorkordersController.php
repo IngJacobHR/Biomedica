@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\WorkOrders;
 use App\Campus;
 use App\Equipment;
 use App\Failure;
-use App\WorkOrders;
-use App\Http\Requests\WorkordersRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\WorkordersRequest;
+
+use function GuzzleHttp\Promise\all;
 
 class WorkordersController extends Controller
 {
@@ -73,11 +75,15 @@ class WorkordersController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsef
      */
-    public function edit(WorkOrders $work)
+
+    public function edit(WorkOrders $workorders)
     {
-        dd($work);
+        //dd($workorders);
+        return view('workorders.edit')->with([
+            'workorders'=>$workorders]);
+
     }
 
     /**
@@ -87,9 +93,10 @@ class WorkordersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update(WorkOrders $workorders)
     {
 
+       dd($workorders);
     }
 
 

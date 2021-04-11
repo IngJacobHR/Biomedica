@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,15 +37,20 @@ Route::get('documnetos/{technology}', 'DocumentsController@index')->name('docume
 Route::delete('/delete-documnetos/{file}', 'DocumentsController@destroy')->name('documents.destroy');
 
 Route::get('sedes/{campus}', 'CampusController@show')->name('campus.show');
+Route::get('servicios/{campus}', 'CampusController@store')->name('campus.store');
 
 Route::get('workorders', 'WorkordersController@index')->name('workorders.index');
 Route::get('workorders/create', 'WorkordersController@create')->name('workorders.create');
 Route::post('workorders/create/send', 'WorkordersController@store')->name('workorders.store');
 Route::get('workorders/tracing', 'WorkordersController@show')->name('workorders.show');
 Route::get('workorders/{workorders}/edit', 'WorkordersController@edit')->name('workorders.edit');
+Route::match(['put', 'patch'], 'workorders_edit/{workorders}','WorkordersController@update')->name('workorders.update');
 
 
+Route::get('/admin', 'UserController@index')->name('users.index');
+Route::get('/edit/{usuario}', 'UserController@edit')->name('users.edit');
+Route::patch('/edit/{usuario}', 'UserController@update')->name('users.update');
 
-Auth::routes();
+Auth::routes(['verify'=>true]);
 
 //Route::get('/home', 'HomeController@index')->name('home');

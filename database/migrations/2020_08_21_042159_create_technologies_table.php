@@ -23,6 +23,7 @@ class CreateTechnologiesTable extends Migration
             $table->string('category');
             $table->string('url_document')->nullable();
             $table->date('date_mant')->nullable();
+            $table->date('next_mant')->nullable();
             $table->date('date_cal')->nullable();
             $table->timestamps();
         });

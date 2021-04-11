@@ -65,10 +65,10 @@
             <div class="form-group col-md-2">
                 <label>Riesgo</label>
                 <select class="custom-select" name="category" >
-                    <option {{old('category') == 'R.Bajo' ? 'selected' : ($technology->category == 'R.Bajo' ? 'selected': '')}} value="R.Bajo">R.Bajo</option>
-                    <option {{old('category') == 'R.Moderado' ? 'selected' : ($technology->category == 'R.Moderado' ? 'selected': '')}} value="R.Moderado">R.Moderado</option>
-                    <option {{old('category') == 'R.Alto' ? 'selected' : ($technology->category == 'R.Alto' ? 'selected': '')}} value="R.Alto">R.Alto</option>
-                    <option {{old('category') == 'R.Muy alto' ? 'selected' : ($technology->category == 'R.Muy alto'? 'selected': '')}} value="R.Muy alto">R.Muy alto</option>
+                    <option {{old('category') == 'R.Muy Bajo' ? 'selected' : ($technology->category == 'R.Muy Bajo' ? 'selected': '')}} value="R.Bajo">R.Muy Bajo</option>
+                    <option {{old('category') == 'R.Bajo' ? 'selected' : ($technology->category == 'R.Bajo' ? 'selected': '')}} value="R.Moderado">R.Bajo</option>
+                    <option {{old('category') == 'R.Moderado' ? 'selected' : ($technology->category == 'R.Moderado' ? 'selected': '')}} value="R.Alto">R.Moderado</option>
+                    <option {{old('category') == 'R.Alto' ? 'selected' : ($technology->category == 'R.Alto'? 'selected': '')}} value="R.Muy alto">R.Alto</option>
                 </select>
             </div>
         </div>

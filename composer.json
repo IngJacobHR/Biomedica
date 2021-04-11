@@ -16,7 +16,9 @@
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
-        "realrashid/sweet-alert": "^3.1"
+        "nesbot/carbon": "^2.46",
+        "realrashid/sweet-alert": "^3.2",
+        "uxweb/sweet-alert": "^2.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

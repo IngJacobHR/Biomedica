@@ -67,10 +67,10 @@
                 <label>Riesgo</label>
                 <select class="custom-select" name="category">
                     <option value="" selected>Seleccione</option>
+                    <option {{ old('category') == 'R.Muy Bajo' ? 'selected' : '' }} value="R.Muy Bajo">R.Muy Bajo</option>
                     <option {{ old('category') == 'R.Bajo' ? 'selected' : '' }} value="R.Bajo">R.Bajo</option>
                     <option {{ old('category') == 'R.Moderado' ? 'selected' : '' }} value="R.Moderado">R.Moderado</option>
                     <option {{ old('category') == 'R.Alto' ? 'selected' : '' }} value="R.Alto">R.Alto</option>
-                    <option {{ old('category') == 'R.Muy alto' ? 'selected' : '' }} value="R.Muy alto">R.Muy alto</option>
                 </select>
             </div>
         </div>
