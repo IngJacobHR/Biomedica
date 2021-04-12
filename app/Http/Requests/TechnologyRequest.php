@@ -31,7 +31,7 @@ class TechnologyRequest extends FormRequest
                 'model'=>['required'],
                 'location'=>['required'],
                 'campus_id'=>['required'],
-                'category'=>['required'],
+                'risk'=>['required'],
 
         ];
     }

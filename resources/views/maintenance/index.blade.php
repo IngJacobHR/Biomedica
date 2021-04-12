@@ -58,11 +58,11 @@
                                     <td>{{ $technology->location}}</td>
                                     <td><a href="{{route('campus.store',$technology->campus)}}">{{ $technology->campus->name}}</td>
                                     <td>
-                                        @if($technology->category=='R.Bajo')
+                                        @if($technology->risk=='Bajo')
                                             Correctivos
-                                        @elseif($technology->category=='R.Moderado')
+                                        @elseif($technology->risk=='Moderado')
                                             Anual
-                                        @elseif($technology->category=='Alto')
+                                        @elseif($technology->risk=='Alto')
                                             Semestral
                                         @else
                                             Cuatrimestral

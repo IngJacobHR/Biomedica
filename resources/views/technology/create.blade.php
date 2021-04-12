@@ -65,12 +65,17 @@
 
             <div class="form-group col-md-2">
                 <label>Riesgo</label>
-                <select class="custom-select" name="category">
-                    <option value="" selected>Seleccione</option>
-                    <option {{ old('category') == 'R.Muy Bajo' ? 'selected' : '' }} value="R.Muy Bajo">R.Muy Bajo</option>
-                    <option {{ old('category') == 'R.Bajo' ? 'selected' : '' }} value="R.Bajo">R.Bajo</option>
-                    <option {{ old('category') == 'R.Moderado' ? 'selected' : '' }} value="R.Moderado">R.Moderado</option>
-                    <option {{ old('category') == 'R.Alto' ? 'selected' : '' }} value="R.Alto">R.Alto</option>
+                <select
+                name="risk"
+                id="risk"
+                class="custom-select mr-sm-2"
+                >
+                    <option value="">Selecionar</option>
+                    @foreach(\App\Constants\TechnologyRisks::toArray() as $risk)
+                        <option value="{{ $risk }}"
+                        @if($risk==old("risk",$technology->risk)) selected @endif
+                        >{{ $risk }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>

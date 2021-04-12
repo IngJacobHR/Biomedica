@@ -67,7 +67,7 @@
                                     <td>{{ $technology->model}}</td>
                                     <td>{{ $technology->location}}</td>
                                     <td><a href="{{route('campus.show',$technology->campus)}}">{{ $technology->campus->name}}</a></td>
-                                    <td>{{ $technology->category}}</td>
+                                    <td>{{ $technology->risk}}</td>
 
                                     <td>
                                         <a class="btn btn-sm btn-outline-primary" href="{{ route('documents.index', ['technology'=>$technology->id]) }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
