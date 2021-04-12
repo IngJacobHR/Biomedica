@@ -1,86 +1,97 @@
 @extends('layouts.app')
-
 @section('content')
-    <h1 class="display-8 text-primary">Inventario Coopsana ips</h1>
-
-    <nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
-        <div class="collapse navbar-collapse">
-            <ul class="nav nav-pills">
-                <li  class="nav-item ">
-                    <a class="btn btn-success btn-sm" href="{{ route('technology.create') }}">Crear Equipo</a>
-                </li>
-                <li  class="nav-item ">
-                    <a class="btn btn-warning btn-sm " >Programaciones</a>
-                </li>
-                    <li class="nav-item">
-                        <form method="GET" action="{{ route('technology.index')}}" class="form-inline ml-2 pull-right">
-                            <div class="input-group input-group-sm mt">
-                                <input class="form-control form-control-navbar form-control-borderless ml-2"
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-30">
+            <div class="card">
+                <div class="card-header">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <a class="navbar-brand" href="{{route('maintenance.index')}}">Cronograma de servicios</a>
+                        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                <li class="nav-item active">
+                                    <a class="btn btn-primary btn-sm mr-sm-2" href="{{route('technology.index')}}">Inventario</a>
+                                </li>
+                            </ul>
+                            <form method="GET" action="{{ route('maintenance.index')}}" class="form-inline my-2 my-lg-0">
+                                <input class="form-control mr-sm-2"
                                     name="active"
                                     type="search"
-                                    placeholder="activo"
+                                    placeholder="Activo"
+                                    aria-label="Search"
                                 >
-                                <input class="form-control form-control-navbar form-control-borderless ml-2"
-                                name="serie"
-                                type="search"
-                                placeholder="serie"
+                                <input class="form-control mr-sm-2"
+                                    name="serie"
+                                    type="search"
+                                    placeholder="Serie"
+                                    aria-label="Search"
+                                >
+                                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
+                            </form>
+                        </div>
+                    </nav>
+                </div>
 
-                            >
-                            <input class="form-control form-control-navbar form-control-borderless ml-2"
-                            name="campus"
-                            type="search"
-                            placeholder="campus"
-                        >
-                                    <div class="input-group-append">
-                                        <button
-                                                class="btn btn-navbar btn btn-primary"
-                                                type="submit">Buscar
-                                        </button>
-                                    </div>
-                            </div>
-                        </form>
-                    </li>
-            </ul>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Activo</th>
+                                    <th>Equipo</th>
+                                    <th>Ubicacion</th>
+                                    <th>Sede</th>
+                                    <th>Frecuencia Mant</th>
+                                    <th>Mantenimiento</th>
+                                    <th>Next Mante</th>
+                                    <th>Calibracion</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @foreach($technologies as $technology)
+                                <tr>
+                                    <td>{{ $technology->active}}</td>
+                                    <td>{{ $technology->equipment->name}}</td>
+                                    <td>{{ $technology->location}}</td>
+                                    <td><a href="{{route('campus.store',$technology->campus)}}">{{ $technology->campus->name}}</td>
+                                    <td>
+                                        @if($technology->risk=='Bajo')
+                                            Correctivos
+                                        @elseif($technology->risk=='Moderado')
+                                            Anual
+                                        @elseif($technology->risk=='Alto')
+                                            Semestral
+                                        @else
+                                            Cuatrimestral
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @empty($technology->date_mant)
+                                            Correctivo
+                                        @endempty
+                                        {{ $technology->date_mant}}
+                                    </td>
+                                    <td>
+                                        {{ $technology->next_mant}}
+                                    </td>
+                                    <td>
+                                        @empty($technology->date_cal)
+                                            No aplica
+                                        @endempty
+                                        {{ $technology->date_cal}}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
-    <hr>
-    @empty($technologies))
-            <div class="alert alert-warning">
-                La lista de equipos esta vacia
-            </div>
-        @else
-            <div class="table-responsive">
-                <table class= "table table-striped">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Activo</th>
-                            <th>Serie</th>
-                            <th>Equipo</th>
-                            <th>Marca</th>
-                            <th>Modelo</th>
-                            <th>Ubicacion</th>
-                            <th>Sede</th>
-                            <th>Riesgo</th>
-                            <th>Accion</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($technologies as $technology)
-                        <tr>
-                            <td>{{ $technology->active}}</td>
-                            <td>{{ $technology->serie}}</td>
-                            <td>{{ $technology->name}}</td>
-                            <td>{{ $technology->location}}</td>
-                            <td>{{ $technology->campus}}</td>
-                            <td>{{ $technology->category}}</td>
-                            <td>{{ $technology->mant}}</td>
-                            <td>{{ $technology->cal}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-    @endempty
-    {{ $technologies->links()}}
+    </div>
+</div>
+{{ $technologies->links()}}
 @endsection
-

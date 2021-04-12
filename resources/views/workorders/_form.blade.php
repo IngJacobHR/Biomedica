@@ -9,7 +9,7 @@
        <option value="">Seleccione</option>
        @foreach($campus_id as $id => $name)
           <option value="{{ $id }}"
-          @if($id== old('campus',$workorders->campus_id)) selected @endif
+          @if($id== old('campus_id',$workorders->campus_id)) selected @endif
           >{{ $name }}</option>
        @endforeach
     </select>

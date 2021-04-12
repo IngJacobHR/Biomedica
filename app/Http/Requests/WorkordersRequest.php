@@ -32,6 +32,7 @@ class WorkordersRequest extends FormRequest
             'failures_id'=>['required'],
             'order'=>['required'],
 
+
          ];
     }
 }

@@ -10,8 +10,12 @@
                      <form method="POST" action="{{ route('documents.store', $technology->id) }}" enctype="multipart/form-data">
                         @csrf
                         <input type="file" class= "form-control" name="files[]" multiple required>
-                        <button type="submit" class="mt-4 btn btn-primary float-right">Subir</button>
-
+                        <div>
+                        <button type="submit" class="btn-link btn float-right">Subir</button>
+                        <a class="btn-link btn float-right"
+                        href="{{route('technology.index')}}">Cancelar
+                        </a>
+                        </div>
                      </form>
                 </div>
             </div>

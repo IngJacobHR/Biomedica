@@ -34,9 +34,12 @@ class CampusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Campus $campus)
     {
-        //
+        return view('maintenance.index', [
+            'campus'=>$campus,
+            'technologies'=>$campus->technology()->with('campus')->latest()->paginate(15)
+        ]);
     }
 
     /**

@@ -65,13 +65,28 @@
 
             <div class="form-group col-md-2">
                 <label>Riesgo</label>
-                <select class="custom-select" name="category">
-                    <option value="" selected>Seleccione</option>
-                    <option {{ old('category') == 'R.Bajo' ? 'selected' : '' }} value="R.Bajo">R.Bajo</option>
-                    <option {{ old('category') == 'R.Moderado' ? 'selected' : '' }} value="R.Moderado">R.Moderado</option>
-                    <option {{ old('category') == 'R.Alto' ? 'selected' : '' }} value="R.Alto">R.Alto</option>
-                    <option {{ old('category') == 'R.Muy alto' ? 'selected' : '' }} value="R.Muy alto">R.Muy alto</option>
+                <select
+                name="risk"
+                id="risk"
+                class="custom-select mr-sm-2"
+                >
+                    <option value="">Selecionar</option>
+                    @foreach(\App\Constants\TechnologyRisks::toArray() as $risk)
+                        <option value="{{ $risk }}"
+                        @if($risk==old("risk",$technology->risk)) selected @endif
+                        >{{ $risk }}</option>
+                    @endforeach
                 </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label>Fecha de mantenimiento</label>
+                <input class="form-control" type="date" name="date_mant" value="{{ old('date_mant') }}">
+            </div>
+            <div class="form-group col-md-5">
+                <label>Fecha de Calibración</label>
+                <input class="form-control" type="date"  name="date_cal" value="{{ old('date_cal') }}">
             </div>
         </div>
         <div class="form-row mt-3">

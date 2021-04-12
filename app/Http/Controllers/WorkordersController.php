@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\WorkOrders;
 use App\Campus;
 use App\Equipment;
 use App\Failure;
-use App\WorkOrders;
-use App\Http\Requests\WorkordersRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\WorkordersRequest;
+
+use function GuzzleHttp\Promise\all;
 
 class WorkordersController extends Controller
 {
@@ -24,7 +26,7 @@ class WorkordersController extends Controller
 
     public function index()
     {
-        return view('workorders.index',['workorders'=>WorkOrders::latest()->paginate(15)]);
+        return view('workorders.index',['workorders'=>WorkOrders::latest()->paginate(10)]);
     }
 
     /**
@@ -53,8 +55,8 @@ class WorkordersController extends Controller
      */
     public function store(WorkordersRequest $request)
     {
-       $workorders = WorkOrders::create($request->all());
-       return back()->withSuccess("Su solicitud se genero con exito");;
+       $workorders= WorkOrders::create($request->all());
+       return back()->withSuccess("Su orden de trabajo #{$workorders->id} se genero con exito ");;
     }
 
     /**
@@ -65,6 +67,7 @@ class WorkordersController extends Controller
      */
     public function show()
     {
+        return view('workorders.show',['workorders'=>WorkOrders::latest()->paginate(2)]);
 
     }
 
@@ -72,11 +75,15 @@ class WorkordersController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsef
      */
-    public function edit($id)
+
+    public function edit(WorkOrders $workorders)
     {
-        //
+        //dd($workorders);
+        return view('workorders.edit')->with([
+            'workorders'=>$workorders]);
+
     }
 
     /**
@@ -86,10 +93,12 @@ class WorkordersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(WorkOrders $workorders)
     {
-        //
+
+       dd($workorders);
     }
+
 
     /**
      * Remove the specified resource from storage.

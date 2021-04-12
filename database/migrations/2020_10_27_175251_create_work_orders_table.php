@@ -14,14 +14,23 @@ class CreateWorkOrdersTable extends Migration
     public function up()
     {
         Schema::create('work_orders', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('location');
             $table->string('active');
             $table->string('serie');
             $table->string('description')->nullable();
             $table->string('order');
+            $table->string('status')->default('Pendiente');
+            $table->string('assigned')->nullable();
+            $table->date('date_calendar')->nullable();
+            $table->date('date_execute')->nullable();
+            $table->string('observation')->nullable();
+            $table->string('evaluatión')->nullable();
+
             $table->timestamps();
         });
+
+
     }
 
     /**

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Technology;
-use App\Campus;
+use App\Constants\TechnologyRisks;
+use App\Http\Controllers\Strategies\TechnologyRisk\TechnologyRiskManager;
 use App\Equipment;
+use App\Campus;
+use App\Technology;
 use App\Http\Requests\TechnologyRequest;
 use Illuminate\Http\Request;
 use Karriere\PdfMerge\PdfMerge;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class TechnologyController extends Controller
@@ -35,14 +38,27 @@ class TechnologyController extends Controller
             'technology'=> $technology,
             'campus_id'=>Campus::pluck('name', 'id'),
             'equipment_id'=>Equipment::pluck('name', 'id'),
+            'risks' => TechnologyRisks::toArray(),
         ]);
 
     }
 
     public function store(TechnologyRequest $request)
     {
-        $technology = Technology::create($request->all());
-        return redirect()->route('technology.index')->withSuccess("Se creó el nuevo equipo con activo {$technology->active}");
+        //$technology = Technology::create($request->all());
+
+        $Technology = new Technology();
+        $Technology->name = $request->get('name');
+        $Technology->risk = $request->get('risk');
+        $Technology->date_mant = $request->get('date_mant');
+        $Technology->date_cal = $request->get('date_cal');
+        $Technology->next_maint = $request->get('date_mant')
+            ? $this->setNextMaintenance($request->get('risk'), $request->get('date_mant'))
+            : null;
+        $Technology->save();
+
+        return redirect()->route('Technologys.index');
+        //return redirect()->route('technology.index')->withSuccess("Se creó el nuevo equipo con activo {$technology->active}");
     }
 
     public function show(Technology $technology)
@@ -57,7 +73,7 @@ class TechnologyController extends Controller
         return view('technology.edit')->with([
             'technology'=>$technology,
             'campus_id'=>Campus::pluck('name', 'id'),
-            'equipment_id'=>Equipment::pluck('name', 'id'),
+            'Technology_id'=>Technology::pluck('name', 'id'),
             ]);
     }
 
@@ -65,7 +81,6 @@ class TechnologyController extends Controller
     {
 
         $technology->update($request->all());
-
         return redirect()->route('technology.index')->withSuccess("El equipo con activo {$technology->active} fue editado");
     }
 
@@ -93,6 +108,14 @@ class TechnologyController extends Controller
         $nombre_pdf=$technology->id . '.pdf';
         $pdf->merge(public_path().'/documentos/'.$nombre_pdf);
         return $nombre_pdf;
+    }
+
+    private function setNextMaintenance( $risk, $maintenance)
+    {
+        $riskBehavior = config('risks.' . $risk);
+
+        return (new TechnologyRiskManager(new $riskBehavior['behavior']()))
+            ->getNextMaintenance($maintenance);
     }
 
 }

@@ -10,4 +10,5 @@ class Documents extends Model
 
     'id','name','technology_id'
     ];
+
 }

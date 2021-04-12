@@ -24,14 +24,15 @@ class TechnologyRequest extends FormRequest
     public function rules()
     {
         return [
-                'active'=>['required'],
+                'active'=>['required'],//'unique:technologies'
                 'serie'=>['required'],
                 'equipment_id'=>['required'],
                 'mark'=>['required'],
                 'model'=>['required'],
                 'location'=>['required'],
                 'campus_id'=>['required'],
-                'category'=>['required'],
+                'risk'=>['required'],
+
         ];
     }
 }

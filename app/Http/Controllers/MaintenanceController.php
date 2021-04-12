@@ -12,9 +12,21 @@ class MaintenanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Technology $technology)
     {
-        //
+
+        $dia=$request->date_mant;
+        $dia1=strtotime($dia."+ 45 day");
+        $dia1=date("d-m-y",$dia1);
+
+        $technology->update([
+            'next_mant'=>$dia1
+        ]);
+
+        $active=$request->get('active');
+        $serie=$request->get('serie');
+        return view('maintenance.index', ['technologies'=>Technology::active($active)
+        ->serie($serie)->latest()->paginate(15)]);
     }
 
     /**
