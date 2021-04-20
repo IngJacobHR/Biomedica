@@ -21,13 +21,13 @@ class CreateTechnologiesTable extends Migration
             $table->string('mark');
             $table->string('model');
             $table->string('location');
-            $table->enum('risk', TechnologyRisks::toArray());
+            $table->enum('risk', TechnologyRisks::toArray())->nullable();
             $table->string('url_document')->nullable();
             $table->date('date_mant')->nullable();
             $table->date('next_mant')->nullable();
             $table->date('date_cal')->nullable();
             $table->date('next_cal')->nullable();
-            $table->timestamps();
+            $table->timestamps();            
         });
     }
 

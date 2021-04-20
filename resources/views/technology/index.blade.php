@@ -18,7 +18,7 @@
                                 <li class="nav-item active">
                                     <a class="btn btn-secondary btn-sm" href="{{route('maintenance.index')}}">Programaciones</a>
                                 </li>
-                            </ul>
+                             </ul>
                             <form method="GET" action="{{ route('technology.index')}}" class="form-inline my-2 my-lg-0">
                                 <input class="form-control mr-sm-2"
                                     name="active"
@@ -34,7 +34,7 @@
                                 >
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
                             </form>
-                        </div>
+                        </div>                     
                     </nav>
                 </div>
 
@@ -96,13 +96,22 @@
                                     </td>
                                 </tr>
                                 @endforeach
+
                             </tbody>
+
                         </table>
-                    </div>
-                </div>
+
+                    </div>      
+                </div>               
             </div>
         </div>
     </div>
+    <div class="w-100"></div>
+    <div class="d-flex justify-content-center">
+        {{$technologies->links()}}
+    </div>
 </div>
-{{ $technologies->links()}}
+
 @endsection
+
+

@@ -19,16 +19,16 @@ class CreateEquipmentTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('work_orders', function(Blueprint $table){
-            $table->unsignedBigInteger('equipment_id')->nullable()->after('location');
+        Schema::table('technologies', function(Blueprint $table){
+            $table->unsignedBigInteger('equipment_id')->nullable()->after('serie');
 
             $table->foreign('equipment_id')->references('id')->on('equipment')
             ->onUpdate('cascade')
             ->onDelete('set null');
         });
 
-        Schema::table('technologies', function(Blueprint $table){
-            $table->unsignedBigInteger('equipment_id')->nullable()->after('serie');
+        Schema::table('work_orders', function(Blueprint $table){
+            $table->unsignedBigInteger('equipment_id')->nullable()->after('location');
 
             $table->foreign('equipment_id')->references('id')->on('equipment')
             ->onUpdate('cascade')

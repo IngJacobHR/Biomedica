@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\WorkOrders;
+use App\Woc;
+use App\User;
 use App\Campus;
 use App\Equipment;
 use App\Failure;
 use Illuminate\Http\Request;
 use App\Http\Requests\WorkordersRequest;
+use App\Http\Requests\UpdateWorkordersRequest;
+use App\Http\Requests\WocRequest;
 
 use function GuzzleHttp\Promise\all;
 
 class WorkordersController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -21,14 +26,14 @@ class WorkordersController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verified']);
     }
 
     public function index()
     {
-        return view('workorders.index',['workorders'=>WorkOrders::latest()->paginate(10)]);
+        return view('workorders.index',['workorders'=>WorkOrders::where('status','=','Pendiente')->latest()->paginate(10)]);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -67,8 +72,7 @@ class WorkordersController extends Controller
      */
     public function show()
     {
-        return view('workorders.show',['workorders'=>WorkOrders::latest()->paginate(2)]);
-
+        return view('workorders.index1',['workorders'=>WorkOrders::all()]);
     }
 
     /**
@@ -78,12 +82,12 @@ class WorkordersController extends Controller
      * @return \Illuminate\Http\Responsef
      */
 
-    public function edit(WorkOrders $workorders)
-    {
-        //dd($workorders);
-        return view('workorders.edit')->with([
-            'workorders'=>$workorders]);
-
+    public function edit($idworkorders)
+    {   
+    
+        $workorders=WorkOrders::find($idworkorders);
+        $users=User::all()->where('roles','=','Admin');
+        return view('workorders.edit',compact(['users','workorders']));    
     }
 
     /**
@@ -93,10 +97,22 @@ class WorkordersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(WorkOrders $workorders)
-    {
-
-       dd($workorders);
+    public function update(UpdateWorkordersRequest $request, $workorders)
+    {   
+        $workorders=WorkOrders::find($workorders);
+        $check = "Pendiente";
+        if ($request->status="Pendiente")
+        {
+             $check = "Asignada";
+        }
+        $workorders->update([
+            'assigned' =>$request->assigned,
+            'date_calendar'=>$request->date_calendar,
+            'status'=>$check,
+        ]);
+       
+        return redirect()->route('workorders.index')->withSuccess("Se asigno la orden de trabajo numero #{$workorders->id}");
+        
     }
 
 

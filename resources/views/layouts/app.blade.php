@@ -57,8 +57,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class= "nav-link active" href="{{ route('technology.index') }}">
-                              Contactos
+                            <a class= "nav-link active">
+                              Compras
                             </a>
                         </li>
                         <li class="nav-item">
@@ -110,20 +110,20 @@
                 <div class="aler alert-success">
                     {{ session()->get('success') }}
                 </div>
-            @endif
+                @endif
 
-            @if(isset($errors) && $errors->any())
+                @if(isset($errors) && $errors->any())
                 <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->all() as $errors)
-                            <li>{{ $errors }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-                @yield('content')
+                        <ul>
+                            @foreach($errors->all() as $errors)
+                                <li>{{ $errors }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
             </div>
+            @yield('content')
         </main>
     </div>
 </body>

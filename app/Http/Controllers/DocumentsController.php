@@ -16,6 +16,11 @@ use League\CommonMark\Block\Element\Document;
 
 class DocumentsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth','verified']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -51,8 +56,8 @@ class DocumentsController extends Controller
         $technology_id =$technology->id;
 
         foreach ($files as $file){
-            $fileName=Str::slug($file->getClientOriginalName());
-            if(Storage::putFileAs('/public/'.$technology_id.'/',$file, $fileName)){
+            $fileName=Str::slug($file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+            if(Storage::putFileAs('/public/documents/'.$technology_id.'/',$file, $fileName)){
             Documents::create([
                 'name'=>$fileName,
                 'technology_id'=> $technology_id

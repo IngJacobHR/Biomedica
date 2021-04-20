@@ -44,10 +44,11 @@
                                     <th>Equipo</th>
                                     <th>Ubicacion</th>
                                     <th>Sede</th>
-                                    <th>Frecuencia Mant</th>
+                                    <th>Frecuencia/Mant</th>
                                     <th>Mantenimiento</th>
-                                    <th>Next Mante</th>
-                                    <th>Calibracion</th>
+                                    <th>Proximos/Manto</th>
+                                    <th>Calibraciones</th>
+                                    <th>Proximas/Cal</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -58,30 +59,44 @@
                                     <td>{{ $technology->location}}</td>
                                     <td><a href="{{route('campus.store',$technology->campus)}}">{{ $technology->campus->name}}</td>
                                     <td>
-                                        @if($technology->risk=='Bajo')
-                                            Correctivos
-                                        @elseif($technology->risk=='Moderado')
+                                        @if($technology->risk=='Muy bajo')
+                                            Correctivo
+                                        @elseif($technology->risk=='Bajo')
                                             Anual
-                                        @elseif($technology->risk=='Alto')
+                                        @elseif($technology->risk=='Moderado')
                                             Semestral
                                         @else
                                             Cuatrimestral
                                         @endif
                                     </td>
                                     <td>
-                                        @empty($technology->date_mant)
+                                        @if($technology->risk=='Muy bajo')
                                             Correctivo
-                                        @endempty
-                                        {{ $technology->date_mant}}
+                                        @else
+                                            {{ $technology->date_mant}}
+                                        @endif
+
+                                       
                                     </td>
                                     <td>
+                                        @if($technology->risk=='Muy bajo')
+                                            Correctivo
+                                        @else
                                         {{ $technology->next_mant}}
+                                        @endif
+                                       
                                     </td>
                                     <td>
                                         @empty($technology->date_cal)
                                             No aplica
                                         @endempty
                                         {{ $technology->date_cal}}
+                                    </td>
+                                    <td>
+                                        @empty($technology->date_cal)
+                                            No aplica
+                                        @endempty
+                                        {{ $technology->next_cal}}
                                     </td>
                                 </tr>
                                 @endforeach
@@ -92,6 +107,10 @@
             </div>
         </div>
     </div>
+    <div class="w-100"></div>
+    <div class="d-flex justify-content-center">
+                            {{$technologies->links()}}
+    </div>    
 </div>
-{{ $technologies->links()}}
+
 @endsection

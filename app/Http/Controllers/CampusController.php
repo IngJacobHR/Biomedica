@@ -38,7 +38,7 @@ class CampusController extends Controller
     {
         return view('maintenance.index', [
             'campus'=>$campus,
-            'technologies'=>$campus->technology()->with('campus')->latest()->paginate(15)
+            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(8)
         ]);
     }
 
@@ -53,7 +53,7 @@ class CampusController extends Controller
 
         return view('technology.index', [
             'campus'=>$campus,
-            'technologies'=>$campus->technology()->with('campus')->latest()->paginate(15)
+            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(8)
         ]);
     }
 

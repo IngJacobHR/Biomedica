@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\DB;
 
 class TechnologyController extends Controller
 {
+
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','verified']);
     }
     public function index(Request $request, Technology $technology)
     {
@@ -27,7 +29,7 @@ class TechnologyController extends Controller
         return view('technology.index',['technologies'=>Technology::active($active)
         ->serie($serie)
         ->with('campus')
-        ->latest()->paginate(15)]);
+        ->latest()->simplepaginate(8)]);
     }
 
     public function create()
@@ -45,20 +47,28 @@ class TechnologyController extends Controller
 
     public function store(TechnologyRequest $request)
     {
-        //$technology = Technology::create($request->all());
-
         $Technology = new Technology();
-        $Technology->name = $request->get('name');
+        
+        $Technology->equipment_id = $request->get('equipment_id');
+        $Technology->campus_id = $request->get('campus_id');
+        $Technology->location = $request->get('location');
+        $Technology->active = $request->get('active');
+        $Technology->model = $request->get('model');
+        $Technology->mark = $request->get('mark');
+        $Technology->serie= $request->get('serie');
         $Technology->risk = $request->get('risk');
         $Technology->date_mant = $request->get('date_mant');
         $Technology->date_cal = $request->get('date_cal');
-        $Technology->next_maint = $request->get('date_mant')
+        $Technology->next_mant = $request->get('date_mant')
             ? $this->setNextMaintenance($request->get('risk'), $request->get('date_mant'))
+            : null;
+        $Technology->next_cal = $request->get('date_cal')
+            ? $this->setNextCal($request->get('date_cal'))
             : null;
         $Technology->save();
 
-        return redirect()->route('Technologys.index');
-        //return redirect()->route('technology.index')->withSuccess("Se creó el nuevo equipo con activo {$technology->active}");
+        //return redirect()->route('Technologys.index');
+        return redirect()->route('technology.index')->withSuccess("Se creó el nuevo equipo con activo {$Technology->active}");
     }
 
     public function show(Technology $technology)
@@ -73,13 +83,18 @@ class TechnologyController extends Controller
         return view('technology.edit')->with([
             'technology'=>$technology,
             'campus_id'=>Campus::pluck('name', 'id'),
-            'Technology_id'=>Technology::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),
             ]);
     }
 
     public function update(TechnologyRequest $request, Technology $technology)
     {
-
+        $technology->next_mant = $request->get('date_mant')
+            ? $this->setNextMaintenance($request->get('risk'), $request->get('date_mant'))
+            : null;
+        $technology->next_cal = $request->get('date_cal')
+            ? $this->setNextCal($request->get('date_cal'))
+            : null;
         $technology->update($request->all());
         return redirect()->route('technology.index')->withSuccess("El equipo con activo {$technology->active} fue editado");
     }
@@ -90,32 +105,22 @@ class TechnologyController extends Controller
        return redirect()->route('technology.index')->withSuccess("The new equipo with active {$technology->active} was destroy");
     }
 
-    public function adjuntar(Request $request, Technology $technology )
-    {
-        $files= $request->file_pdf;
-        $technology->url_document=$this->cargarDocumento($files, $technology);
-        $technology->save();
-        return redirect()->route('technology.show', $technology );
-    }
-
-    public function cargarDocumento($files, Technology $technology)
-    {
-        $pdf = new PdfMerge;
-        foreach ($files as $key => $files) {
-            $pdf->add($files->getPathName());
-        }
-
-        $nombre_pdf=$technology->id . '.pdf';
-        $pdf->merge(public_path().'/documentos/'.$nombre_pdf);
-        return $nombre_pdf;
-    }
 
     private function setNextMaintenance( $risk, $maintenance)
     {
         $riskBehavior = config('risks.' . $risk);
-
+        
         return (new TechnologyRiskManager(new $riskBehavior['behavior']()))
             ->getNextMaintenance($maintenance);
     }
+
+    public function setNextCal($cal)
+    {  
+        $cal = Carbon::parse($cal);
+        return $cal->addDays(365);
+    }
+
+
+
 
 }

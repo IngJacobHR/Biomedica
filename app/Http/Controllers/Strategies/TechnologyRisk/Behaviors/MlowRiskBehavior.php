@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class MlowRiskBehavior implements TechnologyRiskContract
 {
-    private const NEXT_MAINTENANCE_IN_DAYS = 10;
+    private const NEXT_MAINTENANCE_IN_DAYS = 0;
 
     public function getNextMaintenance(string $maintenance): string
     {

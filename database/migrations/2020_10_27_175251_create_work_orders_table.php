@@ -29,8 +29,6 @@ class CreateWorkOrdersTable extends Migration
 
             $table->timestamps();
         });
-
-
     }
 
     /**

@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Constants\UserRoles;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Requests\UpdateUsersRequest;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','verified','manager']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users=User::all()->where('admin_since','!=','S.Admin');
+        $users=User::all()->where('roles','!=','Manager');
         return view('users.index', compact('users'));
     }
 
@@ -81,11 +85,11 @@ class UserController extends Controller
         }
         $usuario->update([
             'name' =>$request->name,
-            'admin_since'=>$request->admin_since,
+            'roles'=>$request->roles,
             'enabled_user' => $check,
         ]);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->withSuccess("El Usuario numero {$usuario->id} fue editado");;
     }
 
     /**

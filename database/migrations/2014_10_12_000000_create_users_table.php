@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Constants\UserRoles;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +22,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('enabled_user')->default(true);
             $table->string('password');
-            $table->string('admin_since')->default('Usuario');
+            $table->enum('roles', UserRoles::toArray())->default('Usuario');
+            //$table->timestamps('admin_since')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

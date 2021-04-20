@@ -183,7 +183,14 @@ return [
         'year'                  => 'año',
         'image'                 => 'imagen',
         'category_id'           =>'categoria',
-        'cost'                  =>'precio'
+        'cost'                  =>'precio',
+        'location'              =>'ubicación',
+        'active'                =>'activo',
+        'equipment_id'          =>'equipo',
+        'mark'                  =>'marca',
+        'model'                 =>'modelo',
+        'campus_id'                =>'sede',
+        'risk'                  =>'riesgo'
 
     ],
 ];

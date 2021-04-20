@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Technology;
 
 class MaintenanceController extends Controller
-{
+{   
+    public function __construct()
+    {
+        $this->middleware(['auth','verified']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +30,7 @@ class MaintenanceController extends Controller
         $active=$request->get('active');
         $serie=$request->get('serie');
         return view('maintenance.index', ['technologies'=>Technology::active($active)
-        ->serie($serie)->latest()->paginate(15)]);
+        ->serie($serie)->latest()->simplepaginate(8)]);
     }
 
     /**

@@ -26,7 +26,7 @@
                                     <tr>
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->name }}</td>
-                                        <td>{{ $user->admin_since}}</td>
+                                        <td>{{ $user->roles}}</td>
                                         <td>{{ $user->email }}</td>
                                         @if($user->email_verified_at)
                                             <td>Verificado</td>
