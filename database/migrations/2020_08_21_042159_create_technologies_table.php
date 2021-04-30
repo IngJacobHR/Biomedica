@@ -22,11 +22,16 @@ class CreateTechnologiesTable extends Migration
             $table->string('model');
             $table->string('location');
             $table->enum('risk', TechnologyRisks::toArray())->nullable();
-            $table->string('url_document')->nullable();
             $table->date('date_mant')->nullable();
             $table->date('next_mant')->nullable();
             $table->date('date_cal')->nullable();
             $table->date('next_cal')->nullable();
+            $table->integer('md_mant')->nullable();
+            $table->integer('md_cal')->nullable();
+            $table->string('supplier')->nullable();
+            $table->date('date_warranty')->nullable();
+            $table->date('date_in')->nullable();
+            $table->integer('value')->nullable();
             $table->timestamps();            
         });
     }

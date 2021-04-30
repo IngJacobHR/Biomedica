@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class WorkOrders extends Model
 {
     protected $fillable = [
-        'id','campus_id','location','equipment_id','active','serie', 'failures_id','description','order','date_calendar','assigned','status'
+        'id','campus_id','location','equipment_id',
+        'active','serie', 'failures_id','description',
+        'order','date_calendar','assigned','status',
+        'autenti', 'date_execute','observation','evaluatión', 'update_at'
     ];
 
     public function campus()
@@ -24,5 +27,6 @@ class WorkOrders extends Model
     {
        return $this->belongsTo(Equipment::class);
     }
+
 
 }

@@ -34,6 +34,14 @@ class CreateCampusesTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('set null');
         });
+
+        Schema::table('locatives', function(Blueprint $table){
+            $table->unsignedBigInteger('campus_id')->nullable()->after('order');
+
+            $table->foreign('campus_id')->references('id')->on('campuses')
+            ->onUpdate('cascade')
+            ->onDelete('set null');
+        });
     }
 
 

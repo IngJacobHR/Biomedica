@@ -12,6 +12,7 @@ class Failure extends Model
 
         'id','name'
         ];
+        
     public function workorders()
     {
        return $this->hasMany(WorkOrders::class);

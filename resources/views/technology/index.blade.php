@@ -12,9 +12,11 @@
                         <a class="navbar-brand" href="{{ route('technology.index') }}">Inventario</a>
                         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                @can('create',new App\Technology)
                                 <li class="nav-item active">
                                     <a class="btn btn-primary btn-sm mr-sm-2" href="{{route('technology.create')}}">Crear Equipo</a>
                                 </li>
+                                @endcan
                                 <li class="nav-item active">
                                     <a class="btn btn-secondary btn-sm" href="{{route('maintenance.index')}}">Programaciones</a>
                                 </li>
@@ -52,9 +54,13 @@
                                     <th>Sede</th>
                                     <th>Riesgo</th>
                                     <th>ver</th>
+                                    @can('view',new App\Technology)
                                     <th>editar</th>
                                     <th>Subir</th>
+                                    @endcan
+                                    @can('delete',new App\Technology)
                                     <th>Eliminar</th>
+                                    @endcan
                                 </tr>
                               </thead>
                               <tbody>
@@ -68,12 +74,13 @@
                                     <td>{{ $technology->location}}</td>
                                     <td><a href="{{route('campus.show',$technology->campus)}}">{{ $technology->campus->name}}</a></td>
                                     <td>{{ $technology->risk}}</td>
-
+                                   
                                     <td>
                                         <a class="btn btn-sm btn-outline-primary" href="{{ route('documents.index', ['technology'=>$technology->id]) }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                           </svg></a>
                                     </td>
+                                    @can('view', new App\Technology)
                                     <td>
                                         <a  class="btn btn-sm btn-outline-secondary" href="{{ route('technology.edit', ['technology'=>$technology->id]) }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -84,9 +91,11 @@
                                             <path fill-rule="evenodd" d="M8 0a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 4.095 0 5.555 0 7.318 0 9.366 1.708 11 3.781 11H7.5V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11h4.188C14.502 11 16 9.57 16 7.773c0-1.636-1.242-2.969-2.834-3.194C12.923 1.999 10.69 0 8 0zm-.5 14.5V11h1v3.5a.5.5 0 0 1-1 0z"/>
                                           </svg></a>
                                     </td>
+                                    @endcan
+                                    @can('delete',new App\Technology)
                                     <td>
 
-                                        <form method="POST" class="d-inline" action="{{ route('technology.destroy', ['technology'=>$technology->id]) }}">
+                                        <form method="POST" action="{{ route('technology.destroy', ['technology'=>$technology->id]) }}" class="d-inline formulario-eliminar">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submint" class="btn btn-sm btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-x-fill" viewBox="0 0 16 16">
@@ -94,6 +103,8 @@
                                               </svg></button>
                                         </form>
                                     </td>
+                                    @endcan
+                                    
                                 </tr>
                                 @endforeach
 
@@ -111,7 +122,37 @@
         {{$technologies->links()}}
     </div>
 </div>
+@endsection
+@section('js')
 
+    @if (session('eliminar') === 'ok')
+        <script>
+             Swal.fire
+                (
+                    'Eliminado!',
+                    'Su archivo ha sido eliminado.',
+                    'success'
+                )
+        </script>   
+    @endif
+    <script>
+        $('.formulario-eliminar').submit(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminarlo!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                   this.submit();
+                }
+            })
+        });
+    </script>
 @endsection
 
 

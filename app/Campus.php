@@ -22,5 +22,10 @@ class Campus extends Model
        return $this->hasMany(Technology::class);
     }
 
+    public function locative()
+    {
+       return $this->hasMany(Locative::class);
+    }
+
 }
 

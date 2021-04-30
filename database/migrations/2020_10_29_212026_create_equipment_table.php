@@ -16,6 +16,12 @@ class CreateEquipmentTable extends Migration
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('class');
+            $table->string('category');
+            $table->string('powersupply');
+            $table->text('description');
+            $table->text('desinfectant');
+
             $table->timestamps();
         });
 

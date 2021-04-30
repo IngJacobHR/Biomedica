@@ -66,8 +66,6 @@ class TechnologyController extends Controller
             ? $this->setNextCal($request->get('date_cal'))
             : null;
         $Technology->save();
-
-        //return redirect()->route('Technologys.index');
         return redirect()->route('technology.index')->withSuccess("Se creó el nuevo equipo con activo {$Technology->active}");
     }
 
@@ -102,7 +100,8 @@ class TechnologyController extends Controller
     public function destroy(Technology $technology)
     {
        $technology->delete();
-       return redirect()->route('technology.index')->withSuccess("The new equipo with active {$technology->active} was destroy");
+       return redirect()->route('technology.index')->with('eliminar', 'ok');
+       //->withSuccess("The new equipo with active {$technology->active} was destroy");
     }
 
 

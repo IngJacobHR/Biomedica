@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Technology;
+use App\Documents;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TechnologyPolicy
+class DocumentsPolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class TechnologyPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Documents  $documents
      * @return mixed
      */
-    public function view(User $user, Technology $technology)
+    public function view(User $user, Documents $documents)
     {
-        return ($user->roles==='Manager' or $user->roles==='Admin');
+        //
     }
 
     /**
@@ -41,17 +41,17 @@ class TechnologyPolicy
      */
     public function create(User $user)
     {
-        return ($user->roles==='Manager' or $user->roles==='Admin');
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Documents  $documents
      * @return mixed
      */
-    public function update(User $user, Technology $technology)
+    public function update(User $user, Documents $documents)
     {
         //
     }
@@ -60,22 +60,22 @@ class TechnologyPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Documents  $documents
      * @return mixed
      */
-    public function delete(User $user, Technology $technology)
+    public function delete(User $user, Documents $documents)
     {
-        return ($user->roles==='Manager');
+        return ($user->roles==='Manager' or $user->roles==='Admin');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Documents  $documents
      * @return mixed
      */
-    public function restore(User $user, Technology $technology)
+    public function restore(User $user, Documents $documents)
     {
         //
     }
@@ -84,10 +84,10 @@ class TechnologyPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Documents  $documents
      * @return mixed
      */
-    public function forceDelete(User $user, Technology $technology)
+    public function forceDelete(User $user, Documents $documents)
     {
         //
     }

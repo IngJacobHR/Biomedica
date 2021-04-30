@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Technology;
+use App\Locative;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TechnologyPolicy
+class LocativePolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class TechnologyPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Locative  $locative
      * @return mixed
      */
-    public function view(User $user, Technology $technology)
+    public function view(User $user, Locative $locative)
     {
-        return ($user->roles==='Manager' or $user->roles==='Admin');
+        //
     }
 
     /**
@@ -41,41 +41,41 @@ class TechnologyPolicy
      */
     public function create(User $user)
     {
-        return ($user->roles==='Manager' or $user->roles==='Admin');
+        return ($user->roles==='S.Admin' or $user->roles==='Operativo');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Locative  $locative
      * @return mixed
      */
-    public function update(User $user, Technology $technology)
+    public function update(User $user, Locative $locative)
     {
-        //
+        return $user->roles==='S.Admin';
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Locative  $locative
      * @return mixed
      */
-    public function delete(User $user, Technology $technology)
+    public function delete(User $user, Locative $locative)
     {
-        return ($user->roles==='Manager');
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Locative  $locative
      * @return mixed
      */
-    public function restore(User $user, Technology $technology)
+    public function restore(User $user, Locative $locative)
     {
         //
     }
@@ -84,10 +84,10 @@ class TechnologyPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Technology  $technology
+     * @param  \App\Locative  $locative
      * @return mixed
      */
-    public function forceDelete(User $user, Technology $technology)
+    public function forceDelete(User $user, Locative $locative)
     {
         //
     }

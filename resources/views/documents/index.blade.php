@@ -15,7 +15,9 @@
                                 <tr>
                                   <th scope="col">Nombre</th>
                                   <th scope="col">Ver</th>
+                                  @can('delete',new App\documents)
                                   <th scope="col">Elimiar</th>
+                                  @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -29,6 +31,7 @@
                                                     Ver
                                              </a>
                                         </td>
+                                        @can('delete',new App\documents)
                                         <td>
                                              <form action="{{route ('documents.destroy',$file->id)}}" method="POST">
                                                     @method('DELETE')
@@ -36,6 +39,7 @@
                                                     <button type="submit" class="btn btn-sm btn-outline-danger"> Eliminar</button>
                                              </form>
                                         </td>
+                                        @endcan
                                     </tr>
                                @endforeach
                             </tbody>

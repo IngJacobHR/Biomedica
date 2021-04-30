@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWorkOrdersTable extends Migration
+class CreateLocativesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateWorkOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('work_orders', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('locatives', function (Blueprint $table) {
+            $table->id();
             $table->string('location');
             $table->string('active');
-            $table->string('serie');
             $table->string('description')->nullable();
             $table->string('order');
             $table->string('status')->default('Pendiente');
@@ -26,7 +25,7 @@ class CreateWorkOrdersTable extends Migration
             $table->date('date_execute')->nullable();
             $table->string('observation')->nullable();
             $table->string('evaluatión')->nullable();
-
+            $table->integer('autenti')->nullable();
             $table->timestamps();
         });
     }
@@ -38,6 +37,6 @@ class CreateWorkOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('work_orders');
+        Schema::dropIfExists('locatives');
     }
 }

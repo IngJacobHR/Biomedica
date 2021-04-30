@@ -20,11 +20,11 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                @foreach($workorders as $work)
+                                @foreach($locative as $work)
                                     <tr>
                                         <td>{{$work->id}}</td>
                                         <td>{{$work->campus->name}}</td>
-                                        <td>{{$work->equipment->name}}</td>
+                                        <td>{{$work->groups_id}}</td>
                                         <td>
                                             @empty($work->assigned)
                                                 Sin Asignar
@@ -47,13 +47,13 @@
                                         </td>
                                         <td>
                                             @if ($work->status=="Pendiente")
-                                            <a type="button" class="btn btn-warning" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
+                                            <a type="button" class="btn btn-warning" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Asignada")
-                                            <a type="button" class="btn btn-primary" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
+                                            <a type="button" class="btn btn-primary" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Terminada")
-                                            <a type="button" class="btn btn-success" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
+                                            <a type="button" class="btn btn-success" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Novedad")
-                                            <a type="button" class="btn btn-danger" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
+                                            <a type="button" class="btn btn-danger" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @endif 
                                         </td>
                                     </tr>
