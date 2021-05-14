@@ -23,8 +23,8 @@
                                     <tr>
                                         <td>{{$work->id}}</td>
                                         <td>{{$work->campus->name}}</td>
-                                        <td>{{$work->groups_id}}</td>
-                                        <td>{{$work->fails_id}}</td>
+                                        <td>{{$work->locativegroups->name}}</td>
+                                        <td>{{$work->locativefails->name}}</td>
                                         <td>{{$work->date_calendar}}</td>
                                         <td>
                                             @if ($work->order=="Programada")

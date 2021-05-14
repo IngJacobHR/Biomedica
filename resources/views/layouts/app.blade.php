@@ -50,12 +50,17 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link active" href="{{route('maintenance.index')}}">
+                               Cronograma
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link active" href="{{ route('workorders.index') }}">
                                 Reportes O.T.
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active">
+                            <a class="nav-link active" href="{{ route('equipment.create') }}">
                                Tecnologías
                             </a>
                         </li>

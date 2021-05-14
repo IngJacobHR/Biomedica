@@ -24,7 +24,7 @@
                                     <tr>
                                         <td>{{$work->id}}</td>
                                         <td>{{$work->campus->name}}</td>
-                                        <td>{{$work->groups_id}}</td>
+                                        <td>{{$work->locativegroups->name}}</td>
                                         <td>
                                             @empty($work->assigned)
                                                 Sin Asignar

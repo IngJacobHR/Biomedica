@@ -36,9 +36,9 @@ class LocativeController extends Controller
         $locative = new Locative;
         return view('locative.create', [
             'locative'=> $locative,
-            'fails_id'=>Locativefail::pluck('name', 'id'),
+            'locativefails_id'=>Locativefail::pluck('name', 'id'),
             'campus_id'=>Campus::pluck('name', 'id'),
-            'groups_id'=>Locativegroup::pluck('name', 'id'),
+            'locativegroups_id'=>Locativegroup::pluck('name', 'id'),
         ]);
 
     }
@@ -74,7 +74,7 @@ class LocativeController extends Controller
      */
     public function show()
     {
-        if(Auth::user()->roles == "Manager")
+        if(Auth::user()->roles == "S.Admin")
         {
             $locative=Locative::all();
             return view('locative.show', compact('locative'));
@@ -101,7 +101,7 @@ class LocativeController extends Controller
     public function edit($idlocative)
     {
         $locative=Locative::find($idlocative);
-        $users=User::all()->where('roles','=','Admin');
+        $users=User::all()->where('roles','=','S.Admin');
         return view('locative.edit',compact(['users','locative']));    
     }
 

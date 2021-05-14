@@ -15,10 +15,10 @@
     @endcan
     @can('create',new App\workorders)
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('workorders.show') }}">Biomédica</a>
+      <a class="nav-link" href="{{ route('workorders.show') }}">Review Biomédica</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('workorders.create') }}">Generar-Bio</a>
+      <a class="nav-link" href="{{ route('workorders.create') }}">OT.Biomédica</a>
     </li>  
     @endcan   
 
@@ -32,10 +32,10 @@
     @endcan
     @can('create',new App\Locative)
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('locative.show') }}">Infraestructura</a>
+      <a class="nav-link" href="{{ route('locative.show') }}">Review Locativa</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('locative.create') }}">Generar-Inf</a>
+      <a class="nav-link" href="{{ route('locative.create') }}">OT.Locativa</a>
     </li> 
     @endcan  
     

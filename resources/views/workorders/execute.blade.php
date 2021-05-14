@@ -27,7 +27,7 @@
                                   <label>Fecha de Novedad</label>
                                   <input class="form-control" type="date" name="date_execute"   id="id_input" readonly value="{{ old('date_execute')?? $workorders->date_execute}}">
                               </div>
-                              <div>
+                              <div class="form-group col-md-6">
                                   <label for="">Observacion</label>
                                 <textarea class="form-control border-0 bg-light shadow-sm .id_input3"
                                 id="id_input3"
@@ -38,8 +38,8 @@
                                 >{{$workorders->observation}}
                                 </textarea>
                               </div>
-                              <div>
-                                <label for="">Estado</label>
+                              <div class="form-group col-md-6">
+                                <label for="">Informe</label>
                               <textarea class="form-control border-0 bg-light shadow-sm"
                               id="id_input2"
                               readonly
@@ -52,7 +52,7 @@
                           <div class="form-row mt-3">
                               <div class="row">
                                 <div class="col-md-5">
-                                  <button type="submit" class="btn btn-primary btn-sm-2">Asignar</button>
+                                  <button type="submit" class="btn btn-primary btn-sm-2">Ejecutar</button>
                                 </div>
                                 <div class="col-md-5">   
                                   <a href="{{ route('workorders.support') }}" class="btn btn-danger btn-sm-2" role="button">Cancelar</button> </a>

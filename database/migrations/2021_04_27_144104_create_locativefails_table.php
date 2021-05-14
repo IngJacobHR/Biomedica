@@ -20,9 +20,9 @@ class CreateLocativefailsTable extends Migration
         });
 
         Schema::table('locatives', function(Blueprint $table){
-            $table->unsignedBigInteger('fails_id')->nullable()->after('active');
+            $table->unsignedBigInteger('locativefails_id')->nullable()->after('active');
 
-            $table->foreign('fails_id')->references('id')->on('locativefails')
+            $table->foreign('locativefails_id')->references('id')->on('locativefails')
             ->onUpdate('cascade')
             ->onDelete('set null');
         });
@@ -36,8 +36,8 @@ class CreateLocativefailsTable extends Migration
     public function down()
     {
         chema::table('locatives', function(Blueprint $table){
-            $table->dropForeign('locatives_fails_id_foreign');
-            $table->dropColumn('fails_id');
+            $table->dropForeign('locatives_locativefails_id_foreign');
+            $table->dropColumn('locativefails_id');
         });
 
         Schema::dropIfExists('locativefails');

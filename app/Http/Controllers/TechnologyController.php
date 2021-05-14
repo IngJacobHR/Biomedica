@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\TechnologyRisks;
+use App\Constants\TechnologyService;
 use App\Http\Controllers\Strategies\TechnologyRisk\TechnologyRiskManager;
 use App\Equipment;
 use App\Campus;
@@ -29,7 +30,7 @@ class TechnologyController extends Controller
         return view('technology.index',['technologies'=>Technology::active($active)
         ->serie($serie)
         ->with('campus')
-        ->latest()->simplepaginate(8)]);
+        ->latest()->simplepaginate(15)]);
     }
 
     public function create()
@@ -41,6 +42,7 @@ class TechnologyController extends Controller
             'campus_id'=>Campus::pluck('name', 'id'),
             'equipment_id'=>Equipment::pluck('name', 'id'),
             'risks' => TechnologyRisks::toArray(),
+            'service' => TechnologyService::toArray(),
         ]);
 
     }
@@ -59,6 +61,11 @@ class TechnologyController extends Controller
         $Technology->risk = $request->get('risk');
         $Technology->date_mant = $request->get('date_mant');
         $Technology->date_cal = $request->get('date_cal');
+        $Technology->date_in = $request->get('date_in');
+        $Technology->date_warranty = $request->get('date_warranty');
+        $Technology->supplier = $request->get('supplier');
+        $Technology->value = $request->get('value');
+        $Technology->service = $request->get('service');
         $Technology->next_mant = $request->get('date_mant')
             ? $this->setNextMaintenance($request->get('risk'), $request->get('date_mant'))
             : null;

@@ -25,7 +25,7 @@
                                     <td>{{$locative->id}}</td>
                                     <td>{{$locative->created_at}}</td>
                                     <td>{{$locative->campus->name}}</td>
-                                    <td>{{$locative->groups_id}}</td>
+                                    <td>{{$locative->locativegroups->name}}</td>
                                     <td>{{$locative->description}}</td>
                                     <td>
                                         @if ( $locative->order=='Programada')

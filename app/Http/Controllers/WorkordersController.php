@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Collection;
 use App\WorkOrders;
 use App\User;
 use App\Campus;
@@ -33,7 +34,7 @@ class WorkordersController extends Controller
     public function index(WorkOrders $work)
     { 
         
-        return view('workorders.index',['workorders'=>WorkOrders::where('status','=','Pendiente')->latest()->paginate(10)]);
+        return view('workorders.index');
     
     }
 
@@ -49,6 +50,28 @@ class WorkordersController extends Controller
         
         return view('workorders.OT',['workorders'=>WorkOrders::where('status','=','Pendiente')->latest()->paginate(10)]);
     
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(WorkOrders $work)
+    {   
+        if(Auth::user()->roles == "Manager")
+        {
+            
+            return view('workorders.index1',['workorders'=>WorkOrders::all()
+            ]);
+        }
+
+        //$workorders=WorkOrders::all()->where('autenti','=',Auth::id());
+        return view('workorders.index1',['workorders'=>WorkOrders::all()->where('autenti','=',Auth::id())
+        ]);
+        
+       
     }
     
     public function support ()
@@ -90,26 +113,6 @@ class WorkordersController extends Controller
             'autenti'=>$autenti,
         ]);
        return back()->withSuccess("Su orden de trabajo #{$workorders->id} se genero con exito ");
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {   
-        if(Auth::user()->roles == "Manager")
-        {
-            $workorders=WorkOrders::all();
-            return view('workorders.index1', compact('workorders'));
-        }
-
-        $workorders=WorkOrders::all()->where('autenti','=',Auth::id());
-        return view('workorders.index1', compact('workorders'));
-        
-       
     }
 
     /**
@@ -163,6 +166,7 @@ class WorkordersController extends Controller
     public function updatesupport(UpdatesupportRequest $request,$workorders)
     {   
         $workorders=WorkOrders::find($workorders);
+       
         
             $workorders->update([
                 'date_execute' =>$request->date_execute,
@@ -170,7 +174,11 @@ class WorkordersController extends Controller
                 'observation'=>$request->observation,
                 'evaluatión'=>$request->evaluatión,
             ]);
-        
+            
+        if($workorders->status=='Terminada')
+        {
+            dd('hola');
+        }
 
        
        

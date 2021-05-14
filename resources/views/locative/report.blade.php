@@ -13,7 +13,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                     <label>Requerimiento</label>
-                                    <p>Sede {{$locative->campus->name}} {{ $locative->location}} {{ $locative->groups_id}} activo#{{ $locative->active}} tipo de falla {{ $locative->fails_id}} {{ $locative->description}} </p>
+                                    <p>Sede {{$locative->campus->name}} {{ $locative->location}} {{ $locative->locativegroups->name}} activo#{{ $locative->active}} tipo de falla {{ $locative->locativefails->name}} {{ $locative->description}} </p>
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Observaciones</label>

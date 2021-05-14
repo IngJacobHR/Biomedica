@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Technology;
-use App\Campus;
 use Illuminate\Http\Request;
+use App\Equipment;
 
-class CampusController extends Controller
+class EquipmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','verified','manager']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +28,8 @@ class CampusController extends Controller
      */
     public function create()
     {
-        //
+        $equipment= new Equipment;
+        return view('equipment.create');
     }
 
     /**
@@ -34,12 +38,10 @@ class CampusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Campus $campus)
+    public function store(Request $request)
     {
-        return view('maintenance.index', [
-            'campus'=>$campus,
-            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(8)
-        ]);
+        $equipment= Equipment::create($request->all());
+       return back()->withSuccess("Se creo la tecnología #{$equipment->name} con exito ");
     }
 
     /**
@@ -48,13 +50,9 @@ class CampusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Campus $campus)
+    public function show($id)
     {
-
-        return view('technology.index', [
-            'campus'=>$campus,
-            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(8)
-        ]);
+        //
     }
 
     /**
@@ -63,15 +61,9 @@ class CampusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($campus)
+    public function edit($id)
     {
-        
-        return view('technology.index', [
-            
-            'technologies'=>Technology::where('service','=',$campus)->latest()->simplepaginate(10)
-    
-        ]);
-        //dd($campus);
+        //
     }
 
     /**

@@ -20,9 +20,9 @@ class CreateLocativegroupsTable extends Migration
         });
 
         Schema::table('locatives', function(Blueprint $table){
-            $table->unsignedBigInteger('groups_id')->nullable()->after('location');
+            $table->unsignedBigInteger('locativegroups_id')->nullable()->after('location');
 
-            $table->foreign('groups_id')->references('id')->on('locativegroups')
+            $table->foreign('locativegroups_id')->references('id')->on('locativegroups')
             ->onUpdate('cascade')
             ->onDelete('set null');
         });
@@ -36,8 +36,8 @@ class CreateLocativegroupsTable extends Migration
     public function down()
     {
         Schema::table('locatives', function(Blueprint $table){
-            $table->dropForeign('locatives_groups_id_foreign');
-            $table->dropColumn('groups_id');
+            $table->dropForeign('locatives_locativegroups_id_foreign');
+            $table->dropColumn('locativegroups_id');
         });
         Schema::dropIfExists('locativegroups');
     }

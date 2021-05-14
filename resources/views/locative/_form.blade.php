@@ -27,16 +27,16 @@
 
 
 <div class="form-group">
-    <label for="groups_id">Tipo de Servicio</label>
+    <label for="locativegroups_id">Tipo de Servicio</label>
     <select
-      name="groups_id"
-      id="groups_id"
+      name="locativegroups_id"
+      id="locativegroups_id"
       class="form-control border-0 bg-light shadow-sm"
     >
        <option value="">Seleccione</option>
-       @foreach($groups_id as $id => $name)
+       @foreach($locativegroups_id as $id => $name)
           <option value="{{ $id }}"
-          @if($id== old('groups_id',$locative->groups_id)) selected @endif
+          @if($id== old('locativegroups_id',$locative->locativegroups_id)) selected @endif
           >{{ $name }}</option>
        @endforeach
     </select>
@@ -54,16 +54,16 @@
 </div>
 
 <div class="form-group">
-    <label for="fails_id">Falla o daño</label>
+    <label for="locativefails_id">Falla o daño</label>
     <select
-      name="fails_id"
-      id="fails_id"
+      name="locativefails_id"
+      id="locativefails_id"
       class="form-control border-0 bg-light shadow-sm"
     >
        <option value="">Seleccione</option>
-       @foreach($fails_id as $id => $name)
+       @foreach($locativefails_id as $id => $name)
           <option value="{{ $id }}"
-          @if($id== old('fails_id',$locative->fails_id)) selected @endif
+          @if($id== old('locativefails_id',$locative->locativefails_id)) selected @endif
           >{{ $name }}</option>
        @endforeach
     </select>

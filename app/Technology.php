@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Technology extends Model
 {
     protected $fillable = [
-        'id','active', 'serie', 'equipment_id','mark','model','location','campus_id','risk','url_document', 'date_mant','date_cal', 'next_mant','next_cal'
+        'id','active', 'serie', 
+        'equipment_id','mark','model',
+        'location','campus_id','risk',
+        'url_document', 'date_mant','date_cal',
+         'next_mant','next_cal', 'supplier',
+         'date_warranty','date_in','value','service'
     ];
 
 
