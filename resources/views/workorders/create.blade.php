@@ -10,7 +10,7 @@
             action="{{route('workorders.store')}}">
             @csrf
             <h1 class="display-8">Nuevo
-            Reporte</h1>
+            Reporte Biomédico</h1>
             <hr>
 
             @include('workorders._form', ['btnText'=>'Enviar'])

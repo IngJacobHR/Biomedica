@@ -27,10 +27,15 @@ class TechnologyController extends Controller
 
         $active=$request->get('active');
         $serie=$request->get('serie');
+        $equipment_id=$request->get('equipment_id');
+        $campus_id=$request->get('campus_id');
         return view('technology.index',['technologies'=>Technology::active($active)
         ->serie($serie)
-        ->with('campus')
-        ->latest()->simplepaginate(15)]);
+        ->equipment_id($equipment_id)
+        ->campus_id($campus_id)
+        ->latest()->simplepaginate(150),
+        'campus_id'=>Campus::pluck('name', 'id'),
+        'equipment_id'=>Equipment::pluck('name', 'id')]);
     }
 
     public function create()
@@ -79,7 +84,7 @@ class TechnologyController extends Controller
     public function show(Technology $technology)
     {
         return view('technology.show')->with([
-            'technology'=>$technology
+            'technology'=>$technology,
             ]);
     }
 

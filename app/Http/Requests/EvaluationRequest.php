@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LocativeRequest extends FormRequest
+class EvaluationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,8 @@ class LocativeRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'campus_id'=>['required'],
-            'location'=>['required'],
-            'locativegroups_id'=>['required'],
-            'active'=>['required'],
-            'locativefails_id'=>['required'],
-            'order'=>['required'],
+            'evaluation'=>'required',
+            'commentary'=>'required',
         ];
     }
 }

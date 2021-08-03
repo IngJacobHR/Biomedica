@@ -27,8 +27,8 @@ class CreateTechnologiesTable extends Migration
             $table->date('next_mant')->nullable();
             $table->date('date_cal')->nullable();
             $table->date('next_cal')->nullable();
-            $table->integer('md_mant')->nullable();
-            $table->integer('md_cal')->nullable();
+            $table->integer('day_mant')->nullable();
+            $table->integer('day_cal')->nullable();
             $table->string('supplier')->nullable();
             $table->date('date_warranty')->nullable();
             $table->date('date_in')->nullable();

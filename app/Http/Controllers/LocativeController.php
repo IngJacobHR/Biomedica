@@ -9,9 +9,12 @@ use App\Locativegroup;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\LocativeRequest;
+use App\Http\Requests\UpdatelocativeRequest;
 use App\Http\Requests\UpdateWorkordersRequest;
 use App\Http\Requests\UpdatesupportRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\EvaluationRequest;
 
 
 class LocativeController extends Controller
@@ -51,19 +54,19 @@ class LocativeController extends Controller
      */
     public function store(LocativeRequest $request)
     {
-        $autenti=Auth::id();
+        $username=Auth::id();
         $locative= Locative::create($request->all());
         $locative->update([
-            'autenti'=>$autenti,
+            'username'=>$username,
         ]);
        return back()->withSuccess("Su orden de trabajo #{$locative->id} se genero con exito ");
     }
 
     public function OT(Locative $locative)
-    { 
-        
-        return view('locative.OT',['locative'=>Locative::where('status','=','Pendiente')->latest()->paginate(10)]);
-    
+    {
+
+        return view('locative.OT',['locative'=>Locative::where('status','=','Pendiente')->latest()->paginate(100)]);
+
     }
 
     /**
@@ -80,16 +83,16 @@ class LocativeController extends Controller
             return view('locative.show', compact('locative'));
         }
 
-        $locative=locative::all()->where('autenti','=',Auth::id());
+        $locative=locative::all()->where('username','=',Auth::id());
         return view('locative.show', compact('locative'));
-        
+
     }
 
     public function report($idlocative)
-    {   
+    {
         $locative=locative::find($idlocative);
-        return view('locative.report',compact('locative')); 
-    
+        return view('locative.report',compact('locative'));
+
     }
 
     /**
@@ -102,7 +105,7 @@ class LocativeController extends Controller
     {
         $locative=Locative::find($idlocative);
         $users=User::all()->where('roles','=','S.Admin');
-        return view('locative.edit',compact(['users','locative']));    
+        return view('locative.edit',compact(['users','locative']));
     }
 
     /**
@@ -125,35 +128,75 @@ class LocativeController extends Controller
             'date_calendar'=>$request->date_calendar,
             'status'=>$check,
         ]);
-       
+
         return redirect()->route('locative.OT')->withSuccess("Se asigno la orden de trabajo numero #{$locative->id}");
     }
 
     public function support ()
-    {   
-        return view('locative.support',['locative'=>Locative::where('assigned','=',Auth::user()->name)
+    {
+        return view('locative.support',['locative'=>Locative::all()
         ->where('status', '!=' , 'Terminada')
-        ->latest()->paginate(10)]);
+        ->where('status', '!=' , 'Pendiente')
+
+    ]);
     }
+    //where('status', '!=' , 'Terminada')
 
     public function execute($idlocative)
-    {   
+    {
         $locative=Locative::find($idlocative);
-        return view('locative.execute',compact('locative'));    
+        return view('locative.execute',compact('locative'));
     }
 
     public function updatesupport(UpdatesupportRequest $request,$locative)
-    {   
+    {
         $locative=Locative::find($locative);
         $locative->update([
-            'date_execute' =>$request->date_execute,
+            'date_novelty' =>$request->date_novelty,
             'status'=>$request->status,
             'observation'=>$request->observation,
-            'evaluatión'=>$request->evaluatión,
+            'report'=>$request->report,
         ]);
-       
+
+        if($locative->status=='Terminada' and $locative->evaluation==NULL)
+        {
+           $date = Carbon::now();
+           $date->toDateTimeString();
+           $locative->update([
+               'date_execute' =>$date
+           ]);
+        }
+
+        if($locative->status=='Correccion' and $locative->evaluation=='Mala')
+        {
+
+           $check = "Terminada";
+           $locative->update([
+               'correction'=>$request->correction,
+               'status'=>$check,
+           ]);
+        }
+
         return redirect()->route('locative.support')->withSuccess("Se Ejecuto la O.T. #{$locative->id}");
-        
+
+    }
+
+    public function evaluation(EvaluationRequest $request,$id)
+    {
+        $workorders=Locative::find($id);
+        $check = "Terminada";
+        $date = Carbon::now();
+        if($request->evaluation=="Mala")
+        {
+            $check = "Rechazada";
+        }
+        $workorders->update([
+            'evaluation' =>$request->evaluation,
+            'commentary'=>$request->commentary,
+            'date_evaluation'=>$date,
+            'status'=>$check,
+        ]);
+        return back()->withSuccess("Gracias por evaluar el servicio");
     }
 
     /**

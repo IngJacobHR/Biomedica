@@ -9,13 +9,46 @@
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
+                                <tr> 
+                                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                                            <form method="GET" action="{{ route('workorders.show')}}" class="form-inline align-left my-2 my-lg-0">
+                                                <select
+                                                name="status"
+                                                type="search"
+                                                aria-label="Search"
+                                                class="custom-select form-control mr-2"
+                                                >
+                                                <option value="">Estado</option>
+                                                <option value="Terminada">Terminada</option>
+                                                <option value="Novedad">Novedad</option>
+                                                <option value="Asignada">Asignada</option>
+                                                <option value="Rechazada">Rechazada</option>
+                                                </select>
+                                                <input class="form-control mr-2"
+                                                name="active"
+                                                type="search"
+                                                placeholder="Activo"
+                                                aria-label="Search"
+                                                >
+                                                <input class="form-control mr-2"
+                                                name="active"
+                                                type="date"
+                                                placeholder="fecha"
+                                                aria-label="Search"
+                                                >
+                                                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
+                                              </form>
+                                        </div>
+                                    </nav>
+                                </tr>
                                 <tr>
                                     <th>#O.T. </th>
                                     <th>Sede</th>
                                     <th>Equipo</th>
                                     <th>Responsable</th>
-                                    <th>Fecha de Programaciòn</th>
-                                    <th>Fecha de Ejecución</th>
+                                    <th>Programaciòn</th>
+                                    <th>Ejecución</th>
                                     <th>Estado</th>
                                 </tr>
                               </thead>
@@ -39,7 +72,7 @@
                                         </td>
                                         <td>
                                             @if ($work->status=="Terminada")
-                                                {{$work->updated_at}}
+                                                {{$work->date_execute}}
                                             @else
                                                 Pendiente
                                             @endif 
@@ -54,6 +87,8 @@
                                             <a type="button" class="btn btn-success" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Novedad")
                                             <a type="button" class="btn btn-danger" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
+                                            @elseif($work->status=="Rechazada")
+                                            <a type="button" class="btn btn-secondary" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
                                             @endif 
                                         </td>
                                     </tr>
@@ -64,6 +99,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        {{$workorders->links()}}
     </div>
 </div>
 @endsection

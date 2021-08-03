@@ -46,6 +46,7 @@ Route::group(['middleware'=>['adminmanager']], function() {
 Route::get('sedes/{campus}', 'CampusController@show')->name('campus.show');
 Route::get('servicios/{campus}', 'CampusController@store')->name('campus.store');
 Route::get('estado/{campus}', 'CampusController@edit')->name('campus.edit');
+Route::get('shear', 'CampusController@update')->name('campus.update');
 
 
 
@@ -57,6 +58,7 @@ Route::get('workorders/create', 'WorkordersController@create')->name('workorders
 Route::post('workorders/create/send', 'WorkordersController@store')->name('workorders.store');
 Route::get('workorders/tracing', 'WorkordersController@show')->name('workorders.show');
 Route::get('workorders/{workorders}/modal', 'WorkordersController@modal')->name('workorders.modal');
+Route::post('workorders/{workorders}/evaluation', 'WorkordersController@evaluation')->name('workorders.evaluation');
 Route::group(['middleware'=>['adminmanager']], function() {
     Route::get('workorders/support', 'WorkordersController@support')->name('workorders.support');
     Route::get('workorders/{workorders}/edit', 'WorkordersController@edit')->name('workorders.edit');
@@ -81,6 +83,7 @@ Route::group(['middleware'=>['operative']], function() {
     Route::get('locative/tracing', 'LocativeController@show')->name('locative.show');  
     Route::post('locative/create/send', 'locativeController@store')->name('locative.store');
     Route::get('locative/{locative}/report', 'LocativeController@report')->name('locative.report');
+    Route::post('locative/{locative}/evaluation', 'LocativeController@evaluation')->name('locative.evaluation');
 });
 
 

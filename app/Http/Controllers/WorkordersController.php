@@ -10,9 +10,11 @@ use App\Equipment;
 use App\Failure;
 use Illuminate\Http\Request;
 use App\Http\Requests\WorkordersRequest;
+use App\Http\Requests\EvaluationRequest;
 use App\Http\Requests\UpdateWorkordersRequest;
 use App\Http\Requests\UpdatesupportRequest;
 use App\Http\Requests\WocRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 use function GuzzleHttp\Promise\all;
@@ -58,17 +60,20 @@ class WorkordersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(WorkOrders $work)
+    public function show(Request $request,WorkOrders $work)
     {   
+        
         if(Auth::user()->roles == "Manager")
         {
-            
-            return view('workorders.index1',['workorders'=>WorkOrders::all()
+            $status=$request->get('status');
+            return view('workorders.index1',['workorders'=>WorkOrders::status($status)
+            ->latest()->simplepaginate(150),
             ]);
         }
 
         //$workorders=WorkOrders::all()->where('autenti','=',Auth::id());
-        return view('workorders.index1',['workorders'=>WorkOrders::all()->where('autenti','=',Auth::id())
+        return view('workorders.index1',['workorders'=>WorkOrders::where('username','=',Auth::id())
+        ->latest()->simplepaginate(150),
         ]);
         
        
@@ -107,10 +112,10 @@ class WorkordersController extends Controller
      */
     public function store(WorkordersRequest $request)
     {   
-        $autenti=Auth::id();
+        $username=Auth::id();
         $workorders= WorkOrders::create($request->all());
         $workorders->update([
-            'autenti'=>$autenti,
+            'username'=>$username,
         ]);
        return back()->withSuccess("Su orden de trabajo #{$workorders->id} se genero con exito ");
     }
@@ -125,7 +130,7 @@ class WorkordersController extends Controller
     public function edit($idworkorders)
     {   
         $workorders=WorkOrders::find($idworkorders);
-        $users=User::all()->where('roles','=','Admin');
+        $users=User::select("*")->where('roles','=','Admin')->orWhere('roles','=','Manager')->get();
         return view('workorders.edit',compact(['users','workorders']));    
     }
 
@@ -167,23 +172,52 @@ class WorkordersController extends Controller
     {   
         $workorders=WorkOrders::find($workorders);
        
-        
-            $workorders->update([
-                'date_execute' =>$request->date_execute,
-                'status'=>$request->status,
-                'observation'=>$request->observation,
-                'evaluatión'=>$request->evaluatión,
+        $workorders->update([
+            'date_novelty' =>$request->date_novelty,
+            'status'=>$request->status,
+            'observation'=>$request->observation,
+            'report'=>$request->report,
             ]);
             
-        if($workorders->status=='Terminada')
-        {
-            dd('hola');
-        }
+         if($workorders->status=='Terminada' and $workorders->evaluation==NULL)
+         {
+            $date = Carbon::now();
+            $date->toDateTimeString(); 
+            $workorders->update([
+                'date_execute' =>$date
+            ]);
+         }
 
-       
+         if($workorders->status=='Correccion' and $workorders->evaluation=='Mala')
+         {
+             
+            $check = "Terminada";
+            $workorders->update([
+                'correction'=>$request->correction,
+                'status'=>$check,
+            ]);
+         }
        
         return redirect()->route('workorders.support')->withSuccess("Se Ejecuto la O.T. #{$workorders->id}");
         
+    }
+
+    public function evaluation(EvaluationRequest $request,$id)
+    {   
+        $workorders=WorkOrders::find($id);
+        $check = "Terminada";
+        $date = Carbon::now();
+        if($request->evaluation=="Mala")
+        {
+            $check = "Rechazada";
+        }
+        $workorders->update([
+            'evaluation' =>$request->evaluation,
+            'commentary'=>$request->commentary,
+            'date_evaluation'=>$date,
+            'status'=>$check,
+        ]);
+        return back()->withSuccess("Gracias por evaluar el servicio");
     }
 
 

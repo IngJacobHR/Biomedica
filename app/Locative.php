@@ -11,7 +11,9 @@ class Locative extends Model
         'id','campus_id','location','locativegroups_id',
         'active','serie', 'locativefails_id','description',
         'order','date_calendar','assigned','status',
-        'autenti', 'date_execute','observation','evaluatión'
+        'username', 'date_execute','date_novelty',
+        'observation','evaluation','report','commentary',
+        'date_evaluation','correction'
     ];
 
     public function campus()

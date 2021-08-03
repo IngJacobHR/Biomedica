@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\guide;
 use Illuminate\Http\Request;
-use App\Equipment;
 
-class EquipmentController extends Controller
+class GuideController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth','verified','manager']);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +14,7 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        return view('equipment.index',['equipment'=>Equipment::all()]);
+        //
     }
 
     /**
@@ -28,8 +24,7 @@ class EquipmentController extends Controller
      */
     public function create()
     {
-        $equipment= new Equipment;
-        return view('equipment.create');
+        //
     }
 
     /**
@@ -40,17 +35,16 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        $equipment= Equipment::create($request->all());
-       return back()->withSuccess("Se creo la tecnología #{$equipment->name} con exito ");
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\guide  $guide
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(guide $guide)
     {
         //
     }
@@ -58,10 +52,10 @@ class EquipmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\guide  $guide
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(guide $guide)
     {
         //
     }
@@ -70,10 +64,10 @@ class EquipmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\guide  $guide
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, guide $guide)
     {
         //
     }
@@ -81,10 +75,10 @@ class EquipmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\guide  $guide
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(guide $guide)
     {
         //
     }
