@@ -8,7 +8,9 @@ class Equipment extends Model
 {
     protected $fillable = [
 
-        'id','name'
+        'id','name','class',
+        'category','powersupply',
+        'description', 'desinfectant',
         ];
     public function workorders()
     {
@@ -20,3 +22,4 @@ class Equipment extends Model
        return $this->hasMany(Technology::class);
     }
 }
+

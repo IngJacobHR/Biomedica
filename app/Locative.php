@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Locative extends Model
 {
     protected $fillable = [
-        'id','campus_id','location','groups_id',
-        'active','serie', 'fails_id','description',
+        'id','campus_id','location','locativegroups_id',
+        'active','serie', 'locativefails_id','description',
         'order','date_calendar','assigned','status',
-        'autenti', 'date_execute','observation','evaluatión'
+        'username', 'date_execute','date_novelty',
+        'observation','evaluation','report','commentary',
+        'date_evaluation','correction'
     ];
 
     public function campus()
@@ -24,7 +26,7 @@ class Locative extends Model
        return $this->belongsTo(Locativefail::class);
     }
 
-    public function locativegroup()
+    public function locativegroups()
     {
        return $this->belongsTo(Locativegroup::class);
     }

@@ -16,11 +16,14 @@ class CreateEquipmentTable extends Migration
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('class');
-            $table->string('category');
-            $table->string('powersupply');
-            $table->text('description');
-            $table->text('desinfectant');
+            $table->string('class')->nullable();
+            $table->string('category')->nullable();
+            $table->string('url_video')->nullable();
+            $table->string('url_image')->nullable();
+            $table->string('powersupply')->nullable();
+            $table->text('description')->nullable();
+            $table->text('risk')->nullable();
+            $table->text('desinfectant')->nullable();
 
             $table->timestamps();
         });

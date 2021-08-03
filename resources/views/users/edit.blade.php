@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
-                            <form "bg-white shadow rounded py-3 px-4" method="POST" action="{{route('users.update',$usuario)}}">
+                            <form class="bg-white shadow rounded py-3 px-4" method="POST" action="{{route('users.update',$usuario)}}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">

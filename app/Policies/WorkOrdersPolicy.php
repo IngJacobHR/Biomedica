@@ -56,6 +56,11 @@ class WorkOrdersPolicy
         return $user->roles==='Manager';
     }
 
+    public function evaluation(User $user, WorkOrders $workOrders)
+    {
+        return $user->roles==='Operativo';
+    }
+
     /**
      * Determine whether the user can delete the model.
      *

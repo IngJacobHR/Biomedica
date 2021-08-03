@@ -13,7 +13,9 @@
                                     <th>#O.T. </th>
                                     <th>Fecha de creacion</th>
                                     <th>Sede</th>
-                                    <th>Equipo</th>
+                                    <th>Ubicacón</th>
+                                    <th>Servicio</th>
+                                    <th>Falla</th>
                                     <th>Descripcion</th>
                                     <th>Prioridad</th>
                                 </tr>
@@ -25,7 +27,9 @@
                                     <td>{{$locative->id}}</td>
                                     <td>{{$locative->created_at}}</td>
                                     <td>{{$locative->campus->name}}</td>
-                                    <td>{{$locative->groups_id}}</td>
+                                    <td>{{$locative->location}}</td>
+                                    <td>{{$locative->locativefails->name}}</td>
+                                    <td>{{$locative->locativegroups->name}}</td>
                                     <td>{{$locative->description}}</td>
                                     <td>
                                         @if ( $locative->order=='Programada')

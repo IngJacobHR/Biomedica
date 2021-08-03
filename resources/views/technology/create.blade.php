@@ -47,26 +47,52 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-5">
-                                    <label>Ubicación</label>
-                                    <input class="form-control" type="text" name="location" value="{{ old('location') }}">
+                                        <label>Ubicación</label>
+                                        <input class="form-control" type="text" name="location" value="{{ old('location') }}">
                                     </div>
 
                                     <div class="form-group col-md-5">
                                         <label for="campus_id">Sede</label>
-                                    <select
-                                    name="campus_id"
-                                    id="campus_id"
-                                    class="custom-select"
-                                    >
-                                    <option value="">Seleccione</option>
-                                    @foreach($campus_id as $id => $name)
-                                        <option value="{{ $id }}"
-                                        @if($id== old('campus_id',$technology->campus_id)) selected @endif
-                                        >{{ $name }}</option>
-                                    @endforeach
-                                    </select>
+                                        <select
+                                        name="campus_id"
+                                        id="campus_id"
+                                        class="custom-select"
+                                        >
+                                        <option value="">Seleccione</option>
+                                        @foreach($campus_id as $id => $name)
+                                            <option value="{{ $id }}"
+                                            @if($id== old('campus_id',$technology->campus_id)) selected @endif
+                                            >{{ $name }}</option>
+                                        @endforeach
+                                        </select>
                                     </div>
 
+                                    <div class="form-group col-md-2">
+                                        <label>Servicio</label>
+                                        <select
+                                        name="service"
+                                        id="service"
+                                        class="custom-select mr-sm-2"
+                                        >
+                                            <option value="">Selecionar</option>
+                                            @foreach(\App\Constants\TechnologyService::toArray() as $service)
+                                                <option value="{{ $service }}"
+                                                @if($service==old("service",$technology->service)) selected @endif
+                                                >{{ $service }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    
+                                    <div class="form-group col-md-5">
+                                        <label>Fecha de mantenimiento</label>
+                                        <input class="form-control" type="date" name="date_mant" value="{{ old('date_mant') }}">
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label>Fecha de Calibración</label>
+                                        <input class="form-control" type="date"  name="date_cal" value="{{ old('date_cal') }}">
+                                    </div>
                                     <div class="form-group col-md-2">
                                         <label>Riesgo</label>
                                         <select
@@ -83,19 +109,30 @@
                                         </select>
                                     </div>
                                 </div>
+                                <hr>
                                 <div class="form-row">
-                                    <div class="form-group col-md-5">
-                                        <label>Fecha de mantenimiento</label>
-                                        <input class="form-control" type="date" name="date_mant" value="{{ old('date_mant') }}">
+                                    <div class="form-group col-md-6">
+                                    <label>Proveedor</label>
+                                    <input class="form-control" type="text" name="supplier" value="{{ old('supplier') }}">
                                     </div>
-                                    <div class="form-group col-md-5">
-                                        <label>Fecha de Calibración</label>
-                                        <input class="form-control" type="date"  name="date_cal" value="{{ old('date_cal') }}">
+                                    <div class="form-group col-md-6">
+                                    <label>Fecha de Garantia</label>
+                                    <input class="form-control" type="date" name="date_warranty" value="{{ old('date_warranty') }}">
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                    <label>Costo del equipo</label>
+                                    <input class="form-control" type="number" name="value" value="{{ old('value') }}">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                    <label>Fecha de Ingreso</label>
+                                    <input class="form-control" type="date" name="date_in" value="{{ old('date_in') }}">
+                                    </div>
+                                </div>
+
                                 <button type="submit" class="btn btn-primary btn-lg">Crear Equipo</button>
                                 <a class="btn btn-danger btn-lg" href="{{route('technology.index') }}">Cancelar</a>
-
                     </form>
                 </div>
             </div>

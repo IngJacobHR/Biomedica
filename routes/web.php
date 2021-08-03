@@ -17,7 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'MainController@index')->name('menu');
 
+Route::get('equipment', 'EquipmentController@index')->name('equipment.index');
+Route::get('equipment/create', 'EquipmentController@create')->name('equipment.create');
+Route::post('equipment', 'EquipmentController@store')->name('equipment.store');
+
 Route::get('technology', 'TechnologyController@index')->name('technology.index');
+Route::delete('technology/{technology}', 'TechnologyController@destroy')->name('technology.destroy')->middleware('manager');
 Route::group(['middleware'=>['adminmanager']], function() {
     Route::get('technology/create', 'TechnologyController@create')->name('technology.create');
     Route::post('technology', 'TechnologyController@store')->name('technology.store');
@@ -40,6 +45,10 @@ Route::group(['middleware'=>['adminmanager']], function() {
 
 Route::get('sedes/{campus}', 'CampusController@show')->name('campus.show');
 Route::get('servicios/{campus}', 'CampusController@store')->name('campus.store');
+Route::get('estado/{campus}', 'CampusController@edit')->name('campus.edit');
+Route::get('shear', 'CampusController@update')->name('campus.update');
+
+
 
 
 
@@ -49,6 +58,7 @@ Route::get('workorders/create', 'WorkordersController@create')->name('workorders
 Route::post('workorders/create/send', 'WorkordersController@store')->name('workorders.store');
 Route::get('workorders/tracing', 'WorkordersController@show')->name('workorders.show');
 Route::get('workorders/{workorders}/modal', 'WorkordersController@modal')->name('workorders.modal');
+Route::post('workorders/{workorders}/evaluation', 'WorkordersController@evaluation')->name('workorders.evaluation');
 Route::group(['middleware'=>['adminmanager']], function() {
     Route::get('workorders/support', 'WorkordersController@support')->name('workorders.support');
     Route::get('workorders/{workorders}/edit', 'WorkordersController@edit')->name('workorders.edit');
@@ -59,7 +69,6 @@ Route::group(['middleware'=>['adminmanager']], function() {
 
 
 Route::group(['middleware'=>['sadmin']], function() {
-    Route::get('locative/create', 'locativeController@create')->name('locative.create');
     Route::post('locative/create/send', 'locativeController@store')->name('locative.store');
     Route::get('locative/OT', 'LocativeController@OT')->name('locative.OT');
     Route::get('locative/{locative}/edit', 'LocativeController@edit')->name('locative.edit');
@@ -67,9 +76,16 @@ Route::group(['middleware'=>['sadmin']], function() {
     Route::get('locative/support', 'LocativeController@support')->name('locative.support');
     Route::get('locative/{locative}/execute', 'LocativeController@execute')->name('locative.execute');
     Route::post('locative_execute/{locative}','locativeController@updatesupport')->name('locative.updatesupport');
-    Route::get('locative/tracing', 'LocativeController@show')->name('locative.show');
-    Route::get('locative/{locative}/report', 'LocativeController@report')->name('locative.report');
 });
+
+Route::group(['middleware'=>['operative']], function() {
+    Route::get('locative/create', 'locativeController@create')->name('locative.create');
+    Route::get('locative/tracing', 'LocativeController@show')->name('locative.show');  
+    Route::post('locative/create/send', 'locativeController@store')->name('locative.store');
+    Route::get('locative/{locative}/report', 'LocativeController@report')->name('locative.report');
+    Route::post('locative/{locative}/evaluation', 'LocativeController@evaluation')->name('locative.evaluation');
+});
+
 
 
 
@@ -80,3 +96,4 @@ Route::patch('/edit/{usuario}', 'UserController@update')->name('users.update');
 Auth::routes(['verify'=>true]);
 
 //Route::get('/home', 'HomeController@index')->name('home');
+//brdjcyhybhdyuiam

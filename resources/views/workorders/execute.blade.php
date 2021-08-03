@@ -21,13 +21,14 @@
                                       <option value="">Seleccione</option>
                                       <option value="Terminada">Terminada</option>
                                       <option value="Novedad">Novedad</option>
+                                      <option value="Correccion">Correccion</option>
                                   </select>
                              </div>
                               <div class="form-group col-md-6">
                                   <label>Fecha de Novedad</label>
-                                  <input class="form-control" type="date" name="date_execute"   id="id_input" readonly value="{{ old('date_execute')?? $workorders->date_execute}}">
+                                  <input class="form-control" type="date" name="date_novelty"   id="id_input" readonly value="{{ old('date_novelty')?? $workorders->date_novelty}}">
                               </div>
-                              <div>
+                              <div class="form-group col-md-6">
                                   <label for="">Observacion</label>
                                 <textarea class="form-control border-0 bg-light shadow-sm .id_input3"
                                 id="id_input3"
@@ -38,21 +39,37 @@
                                 >{{$workorders->observation}}
                                 </textarea>
                               </div>
-                              <div>
-                                <label for="">Estado</label>
+                              <div class="form-group col-md-6">
+                                <label for="">Informe</label>
                               <textarea class="form-control border-0 bg-light shadow-sm"
                               id="id_input2"
                               readonly
-                              name="evaluatión"
-                              value="{{ old('evaluatión')?? $workorders->evaluatión}}"
-                              >{{$workorders->evaluatión}}
+                              name="report"
+                              value="{{ old('report')?? $workorders->report}}"
+                              >{{$workorders->report}}
                               </textarea>
                             </div>
+                            @if ($workorders->status=='Rechazada')
+                            <div class="form-group col-md-6">
+                              <label>Comentario</label>
+                              <p value="{{ old('location')?? $workorders->commentary}}">{{ $workorders->date_evaluation}}: {{ $workorders->commentary}} </p>
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="">Corrección</label>
+                              <textarea class="form-control border-0 bg-light shadow-sm"
+                              id="id_input1"
+                                readonly
+                              name="correction"
+                              value="{{ old('correction')?? $workorders->correction}}"
+                              >{{$workorders->correction}}
+                              </textarea>
+                            </div>
+                            @endif
                           </div>
                           <div class="form-row mt-3">
                               <div class="row">
                                 <div class="col-md-5">
-                                  <button type="submit" class="btn btn-primary btn-sm-2">Asignar</button>
+                                  <button type="submit" class="btn btn-primary btn-sm-2">Ejecutar</button>
                                 </div>
                                 <div class="col-md-5">   
                                   <a href="{{ route('workorders.support') }}" class="btn btn-danger btn-sm-2" role="button">Cancelar</button> </a>
@@ -89,6 +106,16 @@
               } else {
            
                   $("#id_input2").prop("readonly", true);
+                  
+              }
+          });
+          $("#status").change( function() {
+              if ($(this).val() === "Correccion") {
+                  $("#id_input1").prop("readonly", false);
+                  
+              } else {
+           
+                  $("#id_input1").prop("readonly", true);
                   
               }
           });

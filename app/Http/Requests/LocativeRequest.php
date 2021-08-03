@@ -24,7 +24,13 @@ class LocativeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+
+            'campus_id'=>['required'],
+            'location'=>['required'],
+            'locativegroups_id'=>['required'],
+            'active'=>['required'],
+            'locativefails_id'=>['required'],
+            'order'=>['required'],
         ];
     }
 }

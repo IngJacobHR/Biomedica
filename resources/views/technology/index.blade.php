@@ -9,34 +9,56 @@
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                           <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand" href="{{ route('technology.index') }}">Inventario</a>
+                        <a class="navbar-brand" href="{{ route('technology.index') }}"></a>
                         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                                @can('create',new App\Technology)
-                                <li class="nav-item active">
-                                    <a class="btn btn-primary btn-sm mr-sm-2" href="{{route('technology.create')}}">Crear Equipo</a>
+                                <li>
+                                    <form method="GET" action="{{ route('technology.index')}}" class="form-inline my-2 my-lg-0">
+                                        <input class="form-control mr-2"
+                                        name="active"
+                                        type="search"
+                                        placeholder="Activo"
+                                        aria-label="Search"
+                                        >
+
+                                        <input class="form-control mr-2"
+                                        name="serie"
+                                        type="search"
+                                        placeholder="Serie"
+                                        aria-label="Search"
+                                        >
+                                        <select
+                                        name="campus_id"
+                                        type="search"
+                                        id="campus_id"
+                                        class="custom-select form-control mr-2"
+                                        >
+                                        <option value="">Sede</option>
+                                        @foreach($campus_id as $id => $name)
+                                            <option value="{{ $id }}"
+                                            @if($id== old('campus_id')) selected @endif
+                                            >{{ $name }}</option>
+                                        @endforeach
+                                         </select>
+                                        <select
+                                        name="equipment_id"
+                                        type="search"
+                                        id="equipment_id"
+                                        class="custom-select form-control mr-2"
+                                        >
+                                        <option value="">Equipo</option>
+                                        @foreach($equipment_id as $id => $name)
+                                        <option value="{{$id}}"
+                                        >{{ $name }}</option>
+                                        @endforeach
+                                        </select>
+                                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
+                                    </form>
                                 </li>
-                                @endcan
-                                <li class="nav-item active">
-                                    <a class="btn btn-secondary btn-sm" href="{{route('maintenance.index')}}">Programaciones</a>
-                                </li>
-                             </ul>
-                            <form method="GET" action="{{ route('technology.index')}}" class="form-inline my-2 my-lg-0">
-                                <input class="form-control mr-sm-2"
-                                    name="active"
-                                    type="search"
-                                    placeholder="Activo"
-                                    aria-label="Search"
-                                >
-                                <input class="form-control mr-sm-2"
-                                    name="serie"
-                                    type="search"
-                                    placeholder="Serie"
-                                    aria-label="Search"
-                                >
-                                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
-                            </form>
-                        </div>                     
+
+                            </ul>
+
+                        </div>
                     </nav>
                 </div>
 
@@ -45,6 +67,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>Estado</th>
                                     <th>Activo</th>
                                     <th>Serie</th>
                                     <th>Equipo</th>
@@ -53,9 +76,9 @@
                                     <th>Ubicacion</th>
                                     <th>Sede</th>
                                     <th>Riesgo</th>
-                                    <th>ver</th>
+                                    <th>Ver</th>
                                     @can('view',new App\Technology)
-                                    <th>editar</th>
+                                    <th>Editar</th>
                                     <th>Subir</th>
                                     @endcan
                                     @can('delete',new App\Technology)
@@ -66,6 +89,21 @@
                               <tbody>
                                 @foreach($technologies as $technology)
                                 <tr>
+                                    <td>
+                                        @if ($technology->service=="En servicio")
+                                            <a type="button" class="btn btn-sm btn-outline-success" href="{{route('campus.edit',$technology->service)}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
+                                            <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
+                                            </svg></a>
+                                        @elseif($technology->service=="No encontrado")
+                                            <a type="button" class="btn btn-sm btn-outline-warning" href="{{route('campus.edit',$technology->service)}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-off-fill" viewBox="0 0 16 16">
+                                                <path d="M2 6c0-.572.08-1.125.23-1.65l8.558 8.559A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm10.303 4.181L3.818 1.697a6 6 0 0 1 8.484 8.484zM5 14.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5zM2.354 1.646a.5.5 0 1 0-.708.708l12 12a.5.5 0 0 0 .708-.708l-12-12z"/>
+                                              </svg></a>
+                                        @elseif($technology->service=="Fuera de servicio")
+                                            <a type="button" class="btn btn-sm btn-outline-danger" href="{{route('campus.edit',$technology->service)}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-off" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M2.23 4.35A6.004 6.004 0 0 0 2 6c0 1.691.7 3.22 1.826 4.31.203.196.359.4.453.619l.762 1.769A.5.5 0 0 0 5.5 13a.5.5 0 0 0 0 1 .5.5 0 0 0 0 1l.224.447a1 1 0 0 0 .894.553h2.764a1 1 0 0 0 .894-.553L10.5 15a.5.5 0 0 0 0-1 .5.5 0 0 0 0-1 .5.5 0 0 0 .288-.091L9.878 12H5.83l-.632-1.467a2.954 2.954 0 0 0-.676-.941 4.984 4.984 0 0 1-1.455-4.405l-.837-.836zm1.588-2.653.708.707a5 5 0 0 1 7.07 7.07l.707.707a6 6 0 0 0-8.484-8.484zm-2.172-.051a.5.5 0 0 1 .708 0l12 12a.5.5 0 0 1-.708.708l-12-12a.5.5 0 0 1 0-.708z"/>
+                                            </svg></a>
+                                        @endif
+                                    </td>
                                     <td>{{ $technology->active}}</td>
                                     <td>{{ $technology->serie}}</td>
                                     <td>{{ $technology->equipment->name}}</td>
@@ -74,7 +112,7 @@
                                     <td>{{ $technology->location}}</td>
                                     <td><a href="{{route('campus.show',$technology->campus)}}">{{ $technology->campus->name}}</a></td>
                                     <td>{{ $technology->risk}}</td>
-                                   
+
                                     <td>
                                         <a class="btn btn-sm btn-outline-primary" href="{{ route('documents.index', ['technology'=>$technology->id]) }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -104,7 +142,7 @@
                                         </form>
                                     </td>
                                     @endcan
-                                    
+
                                 </tr>
                                 @endforeach
 
@@ -112,12 +150,11 @@
 
                         </table>
 
-                    </div>      
-                </div>               
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="w-100"></div>
     <div class="d-flex justify-content-center">
         {{$technologies->links()}}
     </div>
@@ -133,7 +170,7 @@
                     'Su archivo ha sido eliminado.',
                     'success'
                 )
-        </script>   
+        </script>
     @endif
     <script>
         $('.formulario-eliminar').submit(function(e){

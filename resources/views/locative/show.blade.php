@@ -12,10 +12,10 @@
                                 <tr>
                                     <th>#O.T. </th>
                                     <th>Sede</th>
-                                    <th>Equipo</th>
+                                    <th>Descripción</th>
                                     <th>Responsable</th>
-                                    <th>Fecha de Programaciòn</th>
-                                    <th>Fecha de Ejecución</th>
+                                    <th>Programaciòn</th>
+                                    <th>Ejecución</th>
                                     <th>Estado</th>
                                 </tr>
                               </thead>
@@ -24,7 +24,7 @@
                                     <tr>
                                         <td>{{$work->id}}</td>
                                         <td>{{$work->campus->name}}</td>
-                                        <td>{{$work->groups_id}}</td>
+                                        <td>{{$work->description}}</td>
                                         <td>
                                             @empty($work->assigned)
                                                 Sin Asignar
@@ -39,7 +39,7 @@
                                         </td>
                                         <td>
                                             @if ($work->status=="Terminada")
-                                                {{$work->updated_at}}
+                                                {{$work->date_execute}}
                                             @else
                                                 Pendiente
                                             @endif 
@@ -54,6 +54,8 @@
                                             <a type="button" class="btn btn-success" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Novedad")
                                             <a type="button" class="btn btn-danger" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
+                                            @elseif($work->status=="Rechazada")
+                                            <a type="button" class="btn btn-secondary" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @endif 
                                         </td>
                                     </tr>

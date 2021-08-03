@@ -10,7 +10,7 @@
             action="{{route('locative.store')}}">
             @csrf
             <h1 class="display-8">Nuevo
-            Reporte</h1>
+            Reporte Locativo</h1>
             <hr>
 
             @include('locative._form', ['btnText'=>'Enviar'])

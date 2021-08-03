@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\TechnologyRisks;
+use App\Constants\TechnologyService;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,12 +27,13 @@ class CreateTechnologiesTable extends Migration
             $table->date('next_mant')->nullable();
             $table->date('date_cal')->nullable();
             $table->date('next_cal')->nullable();
-            $table->integer('md_mant')->nullable();
-            $table->integer('md_cal')->nullable();
+            $table->integer('day_mant')->nullable();
+            $table->integer('day_cal')->nullable();
             $table->string('supplier')->nullable();
             $table->date('date_warranty')->nullable();
             $table->date('date_in')->nullable();
             $table->integer('value')->nullable();
+            $table->enum('service',TechnologyService::toArray());
             $table->timestamps();            
         });
     }

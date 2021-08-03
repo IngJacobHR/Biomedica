@@ -22,10 +22,15 @@ class CreateLocativesTable extends Migration
             $table->string('status')->default('Pendiente');
             $table->string('assigned')->nullable();
             $table->date('date_calendar')->nullable();
+            $table->date('date_novelty')->nullable();
             $table->date('date_execute')->nullable();
+            $table->date('date_evaluation')->nullable();
             $table->string('observation')->nullable();
-            $table->string('evaluatión')->nullable();
-            $table->integer('autenti')->nullable();
+            $table->string('report')->nullable();
+            $table->string('evaluation')->nullable();
+            $table->string('commentary')->nullable();
+            $table->string('correction')->nullable();
+            $table->integer('username')->nullable();
             $table->timestamps();
         });
     }

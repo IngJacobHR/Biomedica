@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Technology;
 use App\Campus;
+use App\Equipment;
 use Illuminate\Http\Request;
 
 class CampusController extends Controller
@@ -37,8 +38,10 @@ class CampusController extends Controller
     public function store(Campus $campus)
     {
         return view('maintenance.index', [
+            'campus_id'=>Campus::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),
             'campus'=>$campus,
-            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(8)
+            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(20)
         ]);
     }
 
@@ -52,8 +55,10 @@ class CampusController extends Controller
     {
 
         return view('technology.index', [
+            'campus_id'=>Campus::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),
             'campus'=>$campus,
-            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(8)
+            'technologies'=>$campus->technology()->with('campus')->latest()->simplepaginate(20)
         ]);
     }
 
@@ -63,9 +68,16 @@ class CampusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($campus)
     {
-        //
+        
+        return view('technology.index', [
+            'campus_id'=>Campus::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),
+            'technologies'=>Technology::where('service','=',$campus)->latest()->simplepaginate(20)
+    
+        ]);
+        //dd($campus);
     }
 
     /**
@@ -75,9 +87,12 @@ class CampusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $equipment_id= $request->equipment_id;
+        
+        //$equipment=Equipment::find($equipment_id);
+        //dd($equipment);
     }
 
     /**

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -12,12 +13,14 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script>"/sweetalert/sweetalert.min.js"</script>
+    <script src="{{ mix('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -26,7 +29,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="/sweetalert/sweetalert.css">
-    
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -35,7 +38,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img class="img-fluid mb-0" src="/biomedica/storage/app/public/img/BIOMEDICALMANAGER.PNG" alt="">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -43,29 +46,41 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav mr-auto nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('technology.index') }}">
+                            <a class="nav-link {{setActive('technology.index')}}" href="{{ route('technology.index') }}">
                                Inventario
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('workorders.index') }}">
-                                Reportes O.T.
+                            <a class="nav-link {{setActive('maintenance.*')}}" href="{{route('maintenance.index')}}">
+                               Cronograma
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active">
+                            <a class="nav-link {{setActive('workorders.*')}}" href="{{ route('workorders.index') }}">
+                                Reportes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{setActive('equipment.*')}}" href="{{ route('equipment.index') }}">
                                Tecnologías
                             </a>
                         </li>
+                        @can('create',new App\Technology)
                         <li class="nav-item">
-                            <a class= "nav-link active">
-                              Compras
+                            <a class= "nav-link {{setActive('technology.create')}} " href="{{route('technology.create')}}">
+                              Crear Equipo
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('users.index') }}">
+                            <a class= "nav-link " href="http://190.7.153.162:84/Proyect/public/">
+                              Telemetría
+                            </a>
+                        </li>
+                        @endcan
+                        <li class="nav-item">
+                            <a class="nav-link {{setActive('users.*')}}" href="{{ route('users.index') }}">
                               Usuarios
                             </a>
                         </li>

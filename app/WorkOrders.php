@@ -10,7 +10,9 @@ class WorkOrders extends Model
         'id','campus_id','location','equipment_id',
         'active','serie', 'failures_id','description',
         'order','date_calendar','assigned','status',
-        'autenti', 'date_execute','observation','evaluatión', 'update_at'
+        'username', 'date_execute','date_novelty',
+        'observation','evaluation','report','commentary',
+        'date_evaluation','correction',
     ];
 
     public function campus()
@@ -26,6 +28,12 @@ class WorkOrders extends Model
     public function equipment()
     {
        return $this->belongsTo(Equipment::class);
+    }
+
+    public function scopeStatus($query,$status)
+    {
+        if($status)
+            return $query->where('status', 'LIKE', "$status");
     }
 
 

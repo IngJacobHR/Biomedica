@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\TechnologyRisks;
+use App\Constants\TechnologyService;
 use App\Http\Controllers\Strategies\TechnologyRisk\TechnologyRiskManager;
 use App\Equipment;
 use App\Campus;
@@ -26,10 +27,15 @@ class TechnologyController extends Controller
 
         $active=$request->get('active');
         $serie=$request->get('serie');
+        $equipment_id=$request->get('equipment_id');
+        $campus_id=$request->get('campus_id');
         return view('technology.index',['technologies'=>Technology::active($active)
         ->serie($serie)
-        ->with('campus')
-        ->latest()->simplepaginate(8)]);
+        ->equipment_id($equipment_id)
+        ->campus_id($campus_id)
+        ->latest()->simplepaginate(150),
+        'campus_id'=>Campus::pluck('name', 'id'),
+        'equipment_id'=>Equipment::pluck('name', 'id')]);
     }
 
     public function create()
@@ -41,6 +47,7 @@ class TechnologyController extends Controller
             'campus_id'=>Campus::pluck('name', 'id'),
             'equipment_id'=>Equipment::pluck('name', 'id'),
             'risks' => TechnologyRisks::toArray(),
+            'service' => TechnologyService::toArray(),
         ]);
 
     }
@@ -59,6 +66,11 @@ class TechnologyController extends Controller
         $Technology->risk = $request->get('risk');
         $Technology->date_mant = $request->get('date_mant');
         $Technology->date_cal = $request->get('date_cal');
+        $Technology->date_in = $request->get('date_in');
+        $Technology->date_warranty = $request->get('date_warranty');
+        $Technology->supplier = $request->get('supplier');
+        $Technology->value = $request->get('value');
+        $Technology->service = $request->get('service');
         $Technology->next_mant = $request->get('date_mant')
             ? $this->setNextMaintenance($request->get('risk'), $request->get('date_mant'))
             : null;
@@ -72,7 +84,7 @@ class TechnologyController extends Controller
     public function show(Technology $technology)
     {
         return view('technology.show')->with([
-            'technology'=>$technology
+            'technology'=>$technology,
             ]);
     }
 
