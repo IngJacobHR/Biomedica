@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Collection;
 use App\Campus;
 use App\Locative;
 use App\Locativefail;
@@ -75,17 +76,24 @@ class LocativeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Request $request)
     {
         if(Auth::user()->roles == "S.Admin")
         {
-            $locative=Locative::all();
-            return view('locative.show', compact('locative'));
+            $status=$request->get('status');
+            $description=$request->get('description');
+            return view('locative.show',['locative'=>locative::status($status)
+            ->description($description)
+            ->latest()->simplepaginate(150),
+            ]);
         }
-
-        $locative=locative::all()->where('username','=',Auth::id());
-        return view('locative.show', compact('locative'));
-
+        $status=$request->get('status');
+        $description=$request->get('description');
+        return view('locative.show',['locative'=>locative::where('username','=',Auth::id())
+        ->status($status)
+        ->description($description)
+        ->latest()->simplepaginate(150),
+        ]);
     }
 
     public function report($idlocative)

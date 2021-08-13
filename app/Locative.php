@@ -30,4 +30,17 @@ class Locative extends Model
     {
        return $this->belongsTo(Locativegroup::class);
     }
+
+    public function scopeStatus($query,$status)
+    {
+        if($status)
+            return $query->where('status', 'LIKE', "$status");
+    }
+
+    public function scopeDescription($query,$description)
+    {
+        if($description)
+            return $query->where('description', 'LIKE', "%$description%");
+    }
+
 }

@@ -7,9 +7,8 @@ class Locativeperson
     public const Person1= 'Elkin Garcia';
     public const Person2 = 'Fabio Imba';
     public const Person3 = 'Yuliana Carmona';
-    public const Person4 = 'Elkin Garcia-Fabio Imba';
-    public const Person5 = 'Ricardo Rubio';
-
+    public const Person4 = 'Ricardo Rubio';
+    public const Person5 = 'Eric Quejada';
 
 
     public static function toArray(): array

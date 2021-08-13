@@ -55,7 +55,7 @@ class TechnologyController extends Controller
     public function store(TechnologyRequest $request)
     {
         $Technology = new Technology();
-        
+
         $Technology->equipment_id = $request->get('equipment_id');
         $Technology->campus_id = $request->get('campus_id');
         $Technology->location = $request->get('location');
@@ -120,13 +120,13 @@ class TechnologyController extends Controller
     private function setNextMaintenance( $risk, $maintenance)
     {
         $riskBehavior = config('risks.' . $risk);
-        
+
         return (new TechnologyRiskManager(new $riskBehavior['behavior']()))
             ->getNextMaintenance($maintenance);
     }
 
     public function setNextCal($cal)
-    {  
+    {
         $cal = Carbon::parse($cal);
         return $cal->addDays(365);
     }

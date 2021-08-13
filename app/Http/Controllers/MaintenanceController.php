@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Equipment;
+use App\Campus;
 use App\Technology;
 
 class MaintenanceController extends Controller
-{   
+{
     public function __construct()
     {
         $this->middleware(['auth','verified']);
@@ -29,8 +31,15 @@ class MaintenanceController extends Controller
 
         $active=$request->get('active');
         $serie=$request->get('serie');
+        $equipment_id=$request->get('equipment_id');
+        $campus_id=$request->get('campus_id');
         return view('maintenance.index', ['technologies'=>Technology::active($active)
-        ->serie($serie)->latest()->simplepaginate(8)]);
+        ->serie($serie)
+        ->equipment_id($equipment_id)
+        ->campus_id($campus_id)
+        ->latest()->simplepaginate(150),
+        'campus_id'=>Campus::pluck('name', 'id'),
+        'equipment_id'=>Equipment::pluck('name', 'id')]);
     }
 
     /**

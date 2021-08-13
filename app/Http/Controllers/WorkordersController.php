@@ -34,24 +34,24 @@ class WorkordersController extends Controller
     }
 
     public function index(WorkOrders $work)
-    { 
-        
+    {
+
         return view('workorders.index');
-    
+
     }
 
     public function modal($idworkorders)
-    {   
+    {
         $workorders=WorkOrders::find($idworkorders);
-        return view('workorders.modal',compact('workorders')); 
-    
+        return view('workorders.modal',compact('workorders'));
+
     }
 
     public function OT(WorkOrders $work)
-    { 
-        
+    {
+
         return view('workorders.OT',['workorders'=>WorkOrders::where('status','=','Pendiente')->latest()->paginate(10)]);
-    
+
     }
 
     /**
@@ -61,31 +61,34 @@ class WorkordersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request,WorkOrders $work)
-    {   
-        
+    {
+
         if(Auth::user()->roles == "Manager")
         {
             $status=$request->get('status');
+            $description=$request->get('description');
             return view('workorders.index1',['workorders'=>WorkOrders::status($status)
+            ->description($description)
             ->latest()->simplepaginate(150),
             ]);
         }
 
-        //$workorders=WorkOrders::all()->where('autenti','=',Auth::id());
+        $status=$request->get('status');
+        $description=$request->get('description');
         return view('workorders.index1',['workorders'=>WorkOrders::where('username','=',Auth::id())
+        ->status($status)
+        ->description($description)
         ->latest()->simplepaginate(150),
         ]);
-        
-       
     }
-    
+
     public function support ()
-    {   
+    {
         return view('workorders.index2',['workorders'=>WorkOrders::where('assigned','=',Auth::user()->name)
         ->where('status', '!=' , 'Terminada')
         ->latest()->paginate(10)]);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -111,7 +114,7 @@ class WorkordersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(WorkordersRequest $request)
-    {   
+    {
         $username=Auth::id();
         $workorders= WorkOrders::create($request->all());
         $workorders->update([
@@ -128,19 +131,19 @@ class WorkordersController extends Controller
      */
 
     public function edit($idworkorders)
-    {   
+    {
         $workorders=WorkOrders::find($idworkorders);
         $users=User::select("*")->where('roles','=','Admin')->orWhere('roles','=','Manager')->get();
-        return view('workorders.edit',compact(['users','workorders']));    
+        return view('workorders.edit',compact(['users','workorders']));
     }
 
     public function execute($idworkorders)
-    {   
+    {
         $workorders=WorkOrders::find($idworkorders);
-        return view('workorders.execute',compact('workorders'));    
+        return view('workorders.execute',compact('workorders'));
     }
 
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -150,7 +153,7 @@ class WorkordersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateWorkordersRequest $request, $workorders)
-    {   
+    {
         $workorders=WorkOrders::find($workorders);
         $check = "Pendiente";
         if ($request->status="Pendiente")
@@ -162,27 +165,27 @@ class WorkordersController extends Controller
             'date_calendar'=>$request->date_calendar,
             'status'=>$check,
         ]);
-       
+
         return redirect()->route('workorders.index')->withSuccess("Se asigno la orden de trabajo numero #{$workorders->id}");
-        
+
     }
 
 
     public function updatesupport(UpdatesupportRequest $request,$workorders)
-    {   
+    {
         $workorders=WorkOrders::find($workorders);
-       
+
         $workorders->update([
             'date_novelty' =>$request->date_novelty,
             'status'=>$request->status,
             'observation'=>$request->observation,
             'report'=>$request->report,
             ]);
-            
+
          if($workorders->status=='Terminada' and $workorders->evaluation==NULL)
          {
             $date = Carbon::now();
-            $date->toDateTimeString(); 
+            $date->toDateTimeString();
             $workorders->update([
                 'date_execute' =>$date
             ]);
@@ -190,20 +193,20 @@ class WorkordersController extends Controller
 
          if($workorders->status=='Correccion' and $workorders->evaluation=='Mala')
          {
-             
+
             $check = "Terminada";
             $workorders->update([
                 'correction'=>$request->correction,
                 'status'=>$check,
             ]);
          }
-       
+
         return redirect()->route('workorders.support')->withSuccess("Se Ejecuto la O.T. #{$workorders->id}");
-        
+
     }
 
     public function evaluation(EvaluationRequest $request,$id)
-    {   
+    {
         $workorders=WorkOrders::find($id);
         $check = "Terminada";
         $date = Carbon::now();

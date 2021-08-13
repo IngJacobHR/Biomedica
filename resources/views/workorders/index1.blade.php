@@ -4,12 +4,12 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                @include('workorders._nav')         
+                @include('workorders._nav')
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr> 
+                                <tr>
                                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                                         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                                             <form method="GET" action="{{ route('workorders.show')}}" class="form-inline align-left my-2 my-lg-0">
@@ -26,15 +26,10 @@
                                                 <option value="Rechazada">Rechazada</option>
                                                 </select>
                                                 <input class="form-control mr-2"
-                                                name="active"
+                                                name="description"
                                                 type="search"
-                                                placeholder="Activo"
                                                 aria-label="Search"
-                                                >
-                                                <input class="form-control mr-2"
-                                                name="active"
-                                                type="date"
-                                                placeholder="fecha"
+                                                placeholder="palabra clave"
                                                 aria-label="Search"
                                                 >
                                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
@@ -75,8 +70,8 @@
                                                 {{$work->date_execute}}
                                             @else
                                                 Pendiente
-                                            @endif 
-                                            
+                                            @endif
+
                                         </td>
                                         <td>
                                             @if ($work->status=="Pendiente")
@@ -89,7 +84,7 @@
                                             <a type="button" class="btn btn-danger" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Rechazada")
                                             <a type="button" class="btn btn-secondary" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
-                                            @endif 
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
