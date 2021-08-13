@@ -28,8 +28,12 @@ class DocumentsController extends Controller
      */
     public function index(Request $request,Technology $technology)
     {
-        $files=Documents::where('technology_id', $technology->id)->latest()->get();
-        return view('documents.index', compact('files'));
+        //$info=$technology;
+        //$files=Documents::where('technology_id', $technology->id)->latest()->get();
+        return view('documents.index', ['files'=>Documents::where('technology_id', $technology->id)->latest()->get(),
+        'info'=>$technology]);
+
+        //compact('files','info'));
 
     }
 

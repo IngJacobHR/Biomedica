@@ -9,28 +9,53 @@
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                           <span class="navbar-toggler-icon"></span>
                         </button>
-                        <a class="navbar-brand" href="{{route('maintenance.index')}}">Cronograma de servicios</a>
+                        <a class="navbar-brand" href="{{route('maintenance.index')}}"></a>
                         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                                <li class="nav-item active">
-                                    <a class="btn btn-primary btn-sm mr-sm-2" href="{{route('technology.index')}}">Inventario</a>
+                                <li>
+                                    <form method="GET" action="{{ route('maintenance.index')}}" class="form-inline my-2 my-lg-0">
+                                        <input class="form-control mr-2"
+                                        name="active"
+                                        type="search"
+                                        placeholder="Activo"
+                                        aria-label="Search"
+                                        >
+
+                                        <input class="form-control mr-2"
+                                        name="serie"
+                                        type="search"
+                                        placeholder="Serie"
+                                        aria-label="Search"
+                                        >
+                                        <select
+                                        name="campus_id"
+                                        type="search"
+                                        id="campus_id"
+                                        class="custom-select form-control mr-2"
+                                        >
+                                        <option value="">Sede</option>
+                                        @foreach($campus_id as $id => $name)
+                                            <option value="{{ $id }}"
+                                            @if($id== old('campus_id')) selected @endif
+                                            >{{ $name }}</option>
+                                        @endforeach
+                                         </select>
+                                        <select
+                                        name="equipment_id"
+                                        type="search"
+                                        id="equipment_id"
+                                        class="custom-select form-control mr-2"
+                                        >
+                                        <option value="">Equipo</option>
+                                        @foreach($equipment_id as $id => $name)
+                                        <option value="{{$id}}"
+                                        >{{ $name }}</option>
+                                        @endforeach
+                                        </select>
+                                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
+                                    </form>
                                 </li>
                             </ul>
-                            <form method="GET" action="{{ route('maintenance.index')}}" class="form-inline my-2 my-lg-0">
-                                <input class="form-control mr-sm-2"
-                                    name="active"
-                                    type="search"
-                                    placeholder="Activo"
-                                    aria-label="Search"
-                                >
-                                <input class="form-control mr-sm-2"
-                                    name="serie"
-                                    type="search"
-                                    placeholder="Serie"
-                                    aria-label="Search"
-                                >
-                                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
-                            </form>
                         </div>
                     </nav>
                 </div>
@@ -76,7 +101,7 @@
                                             {{ $technology->date_mant}}
                                         @endif
 
-                                       
+
                                     </td>
                                     <td>
                                         @if($technology->risk=='Muy bajo')
@@ -84,7 +109,7 @@
                                         @else
                                         {{ $technology->next_mant}}
                                         @endif
-                                       
+
                                     </td>
                                     <td>
                                         @empty($technology->date_cal)
@@ -110,7 +135,7 @@
     <div class="w-100"></div>
     <div class="d-flex justify-content-center">
                             {{$technologies->links()}}
-    </div>    
+    </div>
 </div>
 
 @endsection

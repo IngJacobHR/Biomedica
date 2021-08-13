@@ -5,8 +5,8 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <a>Documentos de soporte</a>
-                    <a class="btn btn-primary btn-sm mr-sm-4" href="{{route('technology.index')}}">Regresar</a>       
+                    <a>DOCUMENTOS DE SOPORTE:  {{ $info->equipment->name}} {{ $info->active }}</a>
+                    <a class="btn btn-primary btn-sm mr-sm-4" href="{{route('technology.index')}}">Regresar</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -24,7 +24,7 @@
                                 @foreach($files as $file)
                                     <tr>
                                         <td>
-                                            {{ $file->name }}   
+                                            {{ $file->name }}
                                          </td>
                                         <td>
                                             <a target="_blank" href="/biomedica/storage/app/public/documents/{{$file->technology_id}}/{{$file->name}}" class="btn btn-sm btn-outline-secondary">

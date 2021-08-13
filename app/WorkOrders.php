@@ -36,5 +36,11 @@ class WorkOrders extends Model
             return $query->where('status', 'LIKE', "$status");
     }
 
+    public function scopeDescription($query,$description)
+    {
+        if($description)
+            return $query->where('description', 'LIKE', "%$description%");
+    }
+
 
 }
