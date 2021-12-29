@@ -7,7 +7,8 @@
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         @can('update',new App\workorders)
         <li class="nav-item">
-          <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">Indicadores</a>
+          <a class="nav-link " href="{{ route('indicators') }}">Indicadores</a>
+        <!-- <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">Indicadores</a> -->
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('workorders.OT') }}">Reportes</a>
@@ -24,13 +25,13 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('workorders.create') }}">OT.Biomédica</a>
-        </li>  
-        @endcan   
-  
+        </li>
+        @endcan
+
         @can('update',new App\Locative)
         <li class="nav-item">
           <a class="nav-link" href="{{ route('locative.OT') }}">Reportes</a>
-        </li> 
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('locative.support') }}">Asignadas</a>
         </li>
@@ -41,9 +42,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('locative.create') }}">OT.Locativa</a>
-        </li> 
+        </li>
         @endcan
       </ul>
     </div>
   </nav>
-</div> 
+</div>

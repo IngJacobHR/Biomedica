@@ -33,7 +33,7 @@ class TechnologyController extends Controller
         ->serie($serie)
         ->equipment_id($equipment_id)
         ->campus_id($campus_id)
-        ->latest()->simplepaginate(150),
+        ->latest()->simplepaginate(400),
         'campus_id'=>Campus::pluck('name', 'id'),
         'equipment_id'=>Equipment::pluck('name', 'id')]);
     }
@@ -106,6 +106,7 @@ class TechnologyController extends Controller
             ? $this->setNextCal($request->get('date_cal'))
             : null;
         $technology->update($request->all());
+
         return redirect()->route('technology.index')->withSuccess("El equipo con activo {$technology->active} fue editado");
     }
 
@@ -117,17 +118,18 @@ class TechnologyController extends Controller
     }
 
 
-    private function setNextMaintenance( $risk, $maintenance)
+    public function setNextMaintenance( $risk, $maintenance)
     {
         $riskBehavior = config('risks.' . $risk);
 
         return (new TechnologyRiskManager(new $riskBehavior['behavior']()))
-            ->getNextMaintenance($maintenance);
+                ->getNextMaintenance($maintenance);
     }
 
     public function setNextCal($cal)
     {
         $cal = Carbon::parse($cal);
+
         return $cal->addDays(365);
     }
 

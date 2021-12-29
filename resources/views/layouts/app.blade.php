@@ -74,7 +74,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class= "nav-link " href="http://190.7.153.162:84/Proyect/public/">
+                            <a class= "nav-link " href="http://190.7.153.162:84/Sensores/public/sense">
                               Telemetría
                             </a>
                         </li>

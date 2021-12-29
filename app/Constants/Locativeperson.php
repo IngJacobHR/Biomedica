@@ -9,6 +9,7 @@ class Locativeperson
     public const Person3 = 'Yuliana Carmona';
     public const Person4 = 'Ricardo Rubio';
     public const Person5 = 'Eric Quejada';
+    public const Person6 = 'Brayan Escobar';
 
 
     public static function toArray(): array
@@ -20,6 +21,7 @@ class Locativeperson
             self::Person3,
             self::Person4,
             self::Person5,
+            self::Person6,
 
         ];
     }

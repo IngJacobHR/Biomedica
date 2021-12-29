@@ -14,8 +14,10 @@ use App\Http\Requests\EvaluationRequest;
 use App\Http\Requests\UpdateWorkordersRequest;
 use App\Http\Requests\UpdatesupportRequest;
 use App\Http\Requests\WocRequest;
+use Illuminate\Queue\Worker;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use function GuzzleHttp\Promise\all;
 
@@ -66,19 +68,77 @@ class WorkordersController extends Controller
         if(Auth::user()->roles == "Manager")
         {
             $status=$request->get('status');
+            $campus_id=$request->get('campus_id');
             $description=$request->get('description');
-            return view('workorders.index1',['workorders'=>WorkOrders::status($status)
+            if ($status == 'Evaluar') {
+                return view('workorders.index1',['workorders'=>WorkOrders::description($description)
+                ->campus_id($campus_id)
+                ->where(function ($q) {
+                    $q->where('status','=','Evaluar')->orWhere('status','=','Terminada');})
+                ->whereNull('evaluation')
+                ->latest()->get(),
+                //->simplepaginate(400),
+                'campus'=>Campus::pluck('name', 'id'),
+                ]);
+            }
+            elseif ($status == 'Terminada') {
+                return view('workorders.index1',['workorders'=>WorkOrders::description($description)
+                ->status($status)
+                ->campus_id($campus_id)
+                ->whereNotNull('evaluation')
+                ->latest()->get(),
+                //->simplepaginate(400),
+                'campus'=>Campus::pluck('name', 'id'),
+                ]);
+
+            }
+             return view('workorders.index1',['workorders'=>WorkOrders::status($status)
             ->description($description)
-            ->latest()->simplepaginate(150),
+            ->status($status)
+            ->campus_id($campus_id)
+            ->latest()->get(),
+            //->simplepaginate(400),
+            'campus'=>Campus::pluck('name', 'id'),
             ]);
         }
 
         $status=$request->get('status');
+        $campus_id=$request->get('campus_id');
         $description=$request->get('description');
+
+        if ($status == 'Evaluar') {
+
+            return view('workorders.index1',['workorders'=>WorkOrders::description($description)
+            ->campus_id($campus_id)
+            ->where(function ($q) {
+                $q->where('status','=','Evaluar')->orWhere('status','=','Terminada');})
+            ->whereNull('evaluation')
+            ->where('username','=',Auth::id())
+            ->latest()->get(),
+            //->simplepaginate(400),
+            'campus'=>Campus::pluck('name', 'id'),
+            ]);
+        }
+        elseif ($status == 'Terminada') {
+            return view('workorders.index1',['workorders'=>WorkOrders::where('username','=',Auth::id())
+            ->status($status)
+            ->campus_id($campus_id)
+            ->description($description)
+            ->whereNotNull('evaluation')
+            ->latest()->get(),
+            //->simplepaginate(400),
+            'campus'=>Campus::pluck('name', 'id'),
+            ]);
+
+        }
+
         return view('workorders.index1',['workorders'=>WorkOrders::where('username','=',Auth::id())
         ->status($status)
+        ->campus_id($campus_id)
         ->description($description)
-        ->latest()->simplepaginate(150),
+        ->latest()->get(),
+        //->simplepaginate(400),
+        'campus'=>Campus::pluck('name', 'id'),
         ]);
     }
 
@@ -86,7 +146,8 @@ class WorkordersController extends Controller
     {
         return view('workorders.index2',['workorders'=>WorkOrders::where('assigned','=',Auth::user()->name)
         ->where('status', '!=' , 'Terminada')
-        ->latest()->paginate(10)]);
+        ->where('status', '!=' , 'Evaluar')
+        ->latest()->paginate(20)]);
     }
 
     /**
@@ -182,7 +243,7 @@ class WorkordersController extends Controller
             'report'=>$request->report,
             ]);
 
-         if($workorders->status=='Terminada' and $workorders->evaluation==NULL)
+         if($workorders->status=='Evaluar' and $workorders->evaluation==NULL)
          {
             $date = Carbon::now();
             $date->toDateTimeString();
@@ -223,6 +284,76 @@ class WorkordersController extends Controller
         return back()->withSuccess("Gracias por evaluar el servicio");
     }
 
+    public function indicators()
+    {
+        $work = WorkOrders::select('order',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->groupBy('order')
+        ->get();
+
+        $solution = WorkOrders::select('assigned',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('assigned','<>','null')
+        ->groupBy('assigned')
+        ->get();
+
+
+        $bryan = WorkOrders::select('status',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('assigned','=','brayan gutierrez')
+        ->groupBy('status')
+        ->get();
+
+        $juan = WorkOrders::select('status',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('assigned','=','JUAN ESTEBAN JARAMILLO CASTAÑO')
+        ->groupBy('status')
+        ->get();
+
+        $sedes = DB::table('campuses')
+        ->join('work_orders', 'campuses.id', '=', 'work_orders.campus_id')
+        ->select('campuses.name', 'work_orders.created_at')
+        ->where('work_orders.created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('campuses.name','<>','Odontología Centro')
+        ->where('campuses.name','<>','Odontología Norte')
+        ->where('campuses.name','<>','Odontología Calasanz')
+        ->where('campuses.name','<>','Odontología PAC')
+        ->where('campuses.name','<>','Odontología Av.oriental')
+        ->select('campuses.name',DB::raw("COUNT('campuses.name') as count"))
+        ->groupBy('name')
+        ->get();
+
+
+        $odon = DB::table('campuses')
+        ->join('work_orders', 'campuses.id', '=', 'work_orders.campus_id')
+        ->select('campuses.name', 'work_orders.created_at')
+        ->where('work_orders.created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('campuses.name','<>','Argentina')
+        ->where('campuses.name','<>','Av.oriental')
+        ->where('campuses.name','<>','Calasanz')
+        ->where('campuses.name','<>','Calasanz alterna')
+        ->where('campuses.name','<>','Centro')
+        ->where('campuses.name','<>','Centro alterna')
+        ->where('campuses.name','<>','Especialistas')
+        ->where('campuses.name','<>','Estadio')
+        ->where('campuses.name','<>','IPS Virtual')
+        ->where('campuses.name','<>','Laboratorio')
+        ->where('campuses.name','<>','Norte')
+        ->where('campuses.name','<>','Norte alterna')
+        ->where('campuses.name','<>','PAC')
+        ->where('campuses.name','<>','Prosalco')
+        ->where('campuses.name','<>','Sofasa')
+        ->select('campuses.name',DB::raw("COUNT('campuses.name') as count"))
+        ->groupBy('name')
+        ->get();
+
+        $finish = WorkOrders::select('status',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->groupBy('status')
+        ->get();
+
+        return view(('workorders.indicators'),compact('work','solution','bryan','juan','sedes', 'odon', 'finish'));
+    }
 
 
     /**

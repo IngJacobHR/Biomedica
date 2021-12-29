@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class ModerateRiskBehavior implements TechnologyRiskContract
 {
-    private const NEXT_MAINTENANCE_IN_DAYS = 180;
+    private const NEXT_MAINTENANCE_IN_DAYS = 182;
 
     public function getNextMaintenance(string $maintenance): string
     {

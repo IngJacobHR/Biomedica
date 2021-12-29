@@ -42,5 +42,10 @@ class WorkOrders extends Model
             return $query->where('description', 'LIKE', "%$description%");
     }
 
+    public function scopeCampus_id($query,$campus_id)
+    {
+        if($campus_id)
+            return $query->where('campus_id', 'LIKE', "$campus_id");
+    }
 
 }

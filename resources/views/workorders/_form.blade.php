@@ -92,7 +92,7 @@
 </div>
 
 <div class="form-group">
-    <label>Tipo de Servicio</label>
+    <label>Prioridad de la OT</label>
     <select class="form-control border-0 bg-light shadow-sm" name="order">
         <option value="" selected>Seleccione</option>
         <option {{ old('order') == 'Urgente' ? 'selected' : '' }} value="Urgente">Urgente</option>

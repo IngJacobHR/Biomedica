@@ -36,6 +36,7 @@ Route::group(['middleware'=>['adminmanager']], function() {
 Route::get('maintenance', 'MaintenanceController@index')->name('maintenance.index');
 
 Route::get('documnetos/{technology}', 'DocumentsController@index')->name('documents.index');
+Route::get('file/{technology}', 'DocumentsController@file')->name('documents.file');
 Route::group(['middleware'=>['adminmanager']], function() {
     Route::get('documnets/{technology}', 'DocumentsController@show')->name('documents.show');
     Route::post('cargar/{technology}', 'DocumentsController@store')->name('documents.store');
@@ -80,7 +81,7 @@ Route::group(['middleware'=>['sadmin']], function() {
 
 Route::group(['middleware'=>['operative']], function() {
     Route::get('locative/create', 'locativeController@create')->name('locative.create');
-    Route::get('locative/tracing', 'LocativeController@show')->name('locative.show');  
+    Route::get('locative/tracing', 'LocativeController@show')->name('locative.show');
     Route::post('locative/create/send', 'locativeController@store')->name('locative.store');
     Route::get('locative/{locative}/report', 'LocativeController@report')->name('locative.report');
     Route::post('locative/{locative}/evaluation', 'LocativeController@evaluation')->name('locative.evaluation');
@@ -92,6 +93,10 @@ Route::group(['middleware'=>['operative']], function() {
 Route::get('/admin', 'UserController@index')->name('users.index');
 Route::get('/edit/{usuario}', 'UserController@edit')->name('users.edit');
 Route::patch('/edit/{usuario}', 'UserController@update')->name('users.update');
+
+Route::get('/indicadores', 'WorkordersController@indicators')->name('indicators');
+
+Route::get('/actualizar', 'MaintenanceController@store')->name('actualizar');
 
 Auth::routes(['verify'=>true]);
 

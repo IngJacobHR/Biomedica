@@ -5,7 +5,11 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <p>O.T # {{$locative->id}} {{ $locative->status}}</p> 
+                    <p>O.T # {{$locative->id}} {{ $locative->status}}
+                        @isset($locative->evaluation)
+                            el servicio prestado fue {{ $locative->evaluation}}
+                        @endisset
+                    </p>
                 </div>
                 <div class="card-body">
                     <form method="POST"  action= "{{route('locative.evaluation',$locative->id)}}">
@@ -13,7 +17,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                     <label>Requerimiento</label>
-                                    <p>Sede {{$locative->campus->name}} {{ $locative->location}} {{ $locative->locativegroups->name}} activo#{{ $locative->active}} tipo de falla {{ $locative->locativefails->name}} {{ $locative->description}} </p>
+                                    <p>Sede {{$locative->campus->name}} {{ $locative->location}} {{ $locative->locativegroups->name}} Tipo de orden: {{ $locative->active}} tipo de falla {{ $locative->locativefails->name}} {{ $locative->description}} </p>
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Novedad</label>
@@ -58,20 +62,20 @@
                                 <label>Correción</label>
                                 <p>{{$locative->updated_at}}: {{$locative->correction}}</p>
                             </div>
-                            @endif    
-                            
+                            @endif
+
                             <div class="form-row mt-3">
                                 <div class="row">
-                                    <div class="col-md-5">   
+                                    <div class="col-md-5">
                                     <a href="{{ route('locative.show') }}" class="btn btn-danger btn-sm-2" role="button">Cancelar</button> </a>
                                     </div>
                                     @can('evaluation',new App\workorders)
                                     @if ($locative->status=='Terminada'and $locative->evaluation==Null)
                                     <div class="col-md-5">
                                         <button type="submit" class="btn btn-primary btn-sm-2">Evaluar</button>
-                                    </div>   
-                                    @endif 
-                                    @endcan  
+                                    </div>
+                                    @endif
+                                    @endcan
                                 </div>
                             </div>
                         </div>

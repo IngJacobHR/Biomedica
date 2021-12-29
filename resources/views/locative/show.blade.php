@@ -21,10 +21,24 @@
                                                 >
                                                 <option value="">Estado</option>
                                                 <option value="Terminada">Terminada</option>
+                                                <option value="Evaluar">Evaluar</option>
                                                 <option value="Novedad">Novedad</option>
                                                 <option value="Asignada">Asignada</option>
                                                 <option value="Pendiente">Pendiente</option>
                                                 <option value="Rechazada">Rechazada</option>
+                                                </select>
+                                                <select
+                                                name="campus_id"
+                                                type="search"
+                                                id="campus_id"
+                                                class="custom-select form-control mr-2"
+                                                >
+                                                <option value="">Sede</option>
+                                                    @foreach($campus as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                        @if($id== old('campus_id')) selected @endif
+                                                        >{{ $name }}</option>
+                                                    @endforeach
                                                 </select>
                                                 <input class="form-control mr-2"
                                                 name="description"
@@ -82,7 +96,11 @@
                                             @elseif($work->status=="Asignada")
                                             <a type="button" class="btn btn-primary" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Terminada")
-                                            <a type="button" class="btn btn-success" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
+                                                @if (empty($work->evaluation))
+                                                    <a type="button" class="btn btn-outline-primary" href="{{ route('locative.report',$work) }}">Evaluar</a>
+                                                @else
+                                                    <a type="button" class="btn btn-success" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
+                                                @endif
                                             @elseif($work->status=="Novedad")
                                             <a type="button" class="btn btn-danger" href="{{ route('locative.report',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Rechazada")
@@ -98,8 +116,8 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
+ {{-- <div class="d-flex justify-content-center">
         {{$locative->links()}}
-    </div>
+    </div>--}}
 </div>
 @endsection

@@ -5,7 +5,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <a>DOCUMENTOS DE SOPORTE:  {{ $info->equipment->name}} {{ $info->active }}</a>
+                    <a href="{{route('documents.file',[$info])}}">DOCUMENTOS DE SOPORTE:  {{ $info->equipment->name}} {{ $info->active }}</a>
                     <a class="btn btn-primary btn-sm mr-sm-4" href="{{route('technology.index')}}">Regresar</a>
                 </div>
                 <div class="card-body">

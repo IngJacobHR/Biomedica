@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                @include('workorders._nav') 
+                @include('workorders._nav')
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
@@ -22,7 +22,7 @@
                               </thead>
                               @foreach($locative as $locative)
                               <tbody>
-                               
+
                                 <tr>
                                     <td>{{$locative->id}}</td>
                                     <td>{{$locative->created_at}}</td>
@@ -48,7 +48,7 @@
 
                                     </td>
                                 </tr>
-                           
+
                               </tbody>
                             @endforeach
                         </table>

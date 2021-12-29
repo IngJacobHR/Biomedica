@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class HighRiskBehavior implements TechnologyRiskContract
 {
-    private const NEXT_MAINTENANCE_IN_DAYS = 120;
+    private const NEXT_MAINTENANCE_IN_DAYS = 92;
 
     public function getNextMaintenance(string $maintenance): string
     {

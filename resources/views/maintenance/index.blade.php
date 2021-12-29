@@ -52,14 +52,25 @@
                                         >{{ $name }}</option>
                                         @endforeach
                                         </select>
+                                        <select name="metrologic" class="custom-select form-control mr-2 my-2">
+                                            <option value="">Busqueda</option>
+                                            <option value="Calibración">Calibración</option>
+                                            <option value="Mantenimiento">Mantenimiento</option>
+                                        </select>
+                                        <select name="programation" class="custom-select form-control mr-2 my-2">
+                                            <option value="">Programación</option>
+                                            <option value="Vencidos">Vencidos</option>
+                                            <option value="Por vencer">Por vencer</option>
+                                        </select>
                                         <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
+
                                     </form>
+
                                 </li>
                             </ul>
                         </div>
                     </nav>
                 </div>
-
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
@@ -95,10 +106,20 @@
                                         @endif
                                     </td>
                                     <td>
+                                        @php
+                                            $now1 = (strtotime($technology->next_mant) - strtotime($now))/86400;
+                                            $now2 = (strtotime($technology->next_cal) - strtotime($now))/86400;
+                                        @endphp
                                         @if($technology->risk=='Muy bajo')
                                             Correctivo
                                         @else
-                                            {{ $technology->date_mant}}
+                                            @if($now1 < 1 )
+                                                <p class="text-danger">{{ $technology->date_mant}}</p>
+                                            @elseif($now1 >= 1 && $now1 <= 30 )
+                                                <p class="text-warning">{{ $technology->date_mant}}</p>
+                                            @else
+                                                <p class="text-black">{{ $technology->date_mant}}</p>
+                                            @endif
                                         @endif
 
 
@@ -107,7 +128,13 @@
                                         @if($technology->risk=='Muy bajo')
                                             Correctivo
                                         @else
-                                        {{ $technology->next_mant}}
+                                            @if($now1 < 1)
+                                                <p class="text-danger">{{ $technology->next_mant}}</p>
+                                            @elseif($now1 >= 1 && $now1 <= 30 )
+                                                <p class="text-warning">{{ $technology->next_mant}}</p>
+                                            @else
+                                                <p class="text-black">{{ $technology->next_mant}}</p>
+                                            @endif
                                         @endif
 
                                     </td>
@@ -115,13 +142,25 @@
                                         @empty($technology->date_cal)
                                             No aplica
                                         @endempty
-                                        {{ $technology->date_cal}}
+                                        @if($now2 < 1)
+                                            <p class="text-danger">{{ $technology->date_cal}}</p>
+                                        @elseif($now2 >= 1 && $now2 <= 30 )
+                                            <p class="text-warning">{{ $technology->date_cal}}</p>
+                                        @else
+                                            <p class="text-black">{{ $technology->date_cal}}</p>
+                                        @endif
                                     </td>
                                     <td>
                                         @empty($technology->date_cal)
                                             No aplica
                                         @endempty
-                                        {{ $technology->next_cal}}
+                                        @if($now2 < 1)
+                                            <p class="text-danger">{{ $technology->next_cal}}</p>
+                                        @elseif($now2 >= 1 && $now2 <= 30 )
+                                            <p class="text-warning">{{ $technology->next_cal}}</p>
+                                        @else
+                                            <p class="text-black">{{ $technology->next_cal}}</p>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -131,11 +170,78 @@
                 </div>
             </div>
         </div>
+
     </div>
     <div class="w-100"></div>
     <div class="d-flex justify-content-center">
                             {{$technologies->links()}}
     </div>
 </div>
+@endsection
+@section('js')
+    @if (Auth::user()->roles == "Manager")
+        @if (($metrologic == "Calibración") && ($programation == "Por vencer"))
+            <script>
+                Swal.fire({
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        text: 'Calibraciones por vencer: ' + "<?php echo $calibration; ?>",
+                        confirmButtonText: "Aceptar"})
+            </script>
+        @elseif(($metrologic == "Calibración") && ($programation == "Vencidos"))
+            <script>
+                Swal.fire({
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        text: 'Calibraciones vencidas: ' + "<?php echo $calibration; ?>",
+                        confirmButtonText: "Aceptar"})
+            </script>
+        @elseif(($metrologic == "Mantenimiento") && ($programation == "Por vencer"))
+            <script>
+                Swal.fire({
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        text: 'Mantenimientos por vencer: ' + "<?php echo $maintenance; ?>",
+                        confirmButtonText: "Aceptar"})
+            </script>
+        @elseif(($metrologic == "Mantenimiento") && ($programation == "Vencidos"))
+            <script>
+                Swal.fire({
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        text: 'Mantenimientos vencidos: ' + "<?php echo $maintenance; ?>",
+                        confirmButtonText: "Aceptar"})
+            </script>
+        @else
+            <script>
+                Swal.fire({
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        text: 'Mantenimientos vencidos: ' + "<?php echo $maintenance; ?>" + 'Calibraciones vencidas: ' + "<?php echo $calibration; ?>",
+                        confirmButtonText: "Aceptar"})
+            </script>
+        @endif
+    @endif
+
 
 @endsection

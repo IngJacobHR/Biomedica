@@ -186,10 +186,16 @@ return [
         'cost'                  =>'precio',
         'location'              =>'ubicación',
         'active'                =>'activo',
+        'report_type'           =>'tipo de reporte',
         'equipment_id'          =>'equipo',
         'mark'                  =>'marca',
         'model'                 =>'modelo',
-        'campus_id'                =>'sede',
+        'campus_id'             =>'sede',
+        'campus_id'             =>'sede',
+        'failures_id'           =>'falla o daño',
+        'order'                 =>'prioridad de la OT',
+        'locativefails_id'         =>'falla o daño',
+        'locativegroups_id'        =>'tipo de servicio',
         'risk'                  =>'riesgo'
 
     ],
