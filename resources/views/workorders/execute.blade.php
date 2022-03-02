@@ -5,7 +5,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <p>Sede {{$workorders->campus->name}} {{ $workorders->location}} {{ $workorders->equipment->name}} activo#{{ $workorders->active}} tipo de falla {{ $workorders->failures->name}} {{ $workorders->description}} </p> 
+                        <p>Sede {{$workorders->campus->name}} {{ $workorders->location}} {{ $workorders->equipment->name}} activo#{{ $workorders->active}} tipo de falla {{ $workorders->failures->name}} {{ $workorders->description}} </p>
                     </div>
                     <div class="card-body">
                     <form method="POST" action= "{{route('workorders.updatesupport',$workorders->id)}}">
@@ -33,7 +33,7 @@
                                 <textarea class="form-control border-0 bg-light shadow-sm .id_input3"
                                 id="id_input3"
                                 readonly
-                                
+
                                 name="observation"
                                 value="{{ old('observation')?? $workorders->observation}}"
                                 >{{$workorders->observation}}
@@ -71,7 +71,7 @@
                                 <div class="col-md-5">
                                   <button type="submit" class="btn btn-primary btn-sm-2">Ejecutar</button>
                                 </div>
-                                <div class="col-md-5">   
+                                <div class="col-md-5">
                                   <a href="{{ route('workorders.support') }}" class="btn btn-danger btn-sm-2" role="button">Cancelar</button> </a>
                                 </div>
                               </div>
@@ -89,39 +89,39 @@
           $("#status").change( function() {
               if ($(this).val() === "Novedad") {
                   $("#id_input").prop("readonly", false);
-                 
-                 
+
+
                   $("#id_input3").prop("readonly", false);
               } else {
                   $("#id_input").prop("readonly", true);
-                  
-                  
+
+
                   $("#id_input3").prop("readonly", true);
               }
           });
           $("#status").change( function() {
               if ($(this).val() === "Terminada") {
                   $("#id_input2").prop("readonly", false);
-                  
+
               } else {
-           
+
                   $("#id_input2").prop("readonly", true);
-                  
+
               }
           });
           $("#status").change( function() {
               if ($(this).val() === "Correccion") {
                   $("#id_input1").prop("readonly", false);
-                  
+
               } else {
-           
+
                   $("#id_input1").prop("readonly", true);
-                  
+
               }
           });
       });
-         
-    </script>         
+
+    </script>
   @endsection
 
 

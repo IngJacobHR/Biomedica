@@ -10,6 +10,31 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                                            <form method="GET" action="{{ route('locative.support')}}" class="form-inline align-left my-2 my-lg-0">
+                                                <select
+                                                name="campus_id"
+                                                type="search"
+                                                id="campus_id"
+                                                class="custom-select form-control mr-2"
+                                                >
+                                                <option value="">Sede</option>
+                                                    @foreach($campus as $id => $name)
+                                                        <option value="{{ $id }}"
+                                                        @if($id== old('campus_id')) selected @endif
+                                                        >{{ $name }}</option>
+                                                    @endforeach
+                                                </select>
+
+
+                                                <input type="text" name="initialDate" placeholder="Fecha inicial"  onfocus="(this.type='date')" onblur="(this.type='text')" class="custom-select form-control mr-2">
+                                                <input type="text" name="finalDate" placeholder="Fecha Final"  onfocus="(this.type='date')" onblur="(this.type='text')" class="custom-select form-control mr-2">
+
+                                                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Buscar</button>
+                                              </form>
+                                        </div>
+                                    </nav>
                                     <th>#O.T. </th>
                                     <th>Fecha de creación</th>
                                     <th>Sede</th>

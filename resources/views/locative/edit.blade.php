@@ -5,7 +5,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <a>Asignaciòn de O.T Nª{{ $locative->id}} {{ $locative->order}} creada el dìa {{ $locative->created_at}}</a> 
+                    <a>Asignaciòn de O.T Nª{{ $locative->id}} {{ $locative->order}} creada el día {{ $locative->created_at}}</a>
                 </div>
                 <div class="card-body">
                 <form method="POST" action= "{{route('locative.update',$locative->id)}}">
@@ -34,7 +34,7 @@
                             <div class="col-md-5">
                               <button type="submit" class="btn btn-primary btn-sm-2">Asignar</button>
                             </div>
-                            <div class="col-md-5">   
+                            <div class="col-md-5">
                               <a href="{{ route('locative.OT') }}" class="btn btn-danger btn-sm-2" role="button">Cancelar</button> </a>
                             </div>
                           </div>

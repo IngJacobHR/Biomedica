@@ -47,14 +47,41 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto nav-pills">
-                        <li class="nav-item">
-                            <a class="nav-link {{setActive('technology.index')}}" href="{{ route('technology.index') }}">
-                               Inventario
-                            </a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Biomédica</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{setActive('technology.index')}}" href="{{ route('technology.index') }}">
+                                       Inventario
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{setActive('maintenance.*')}}" href="{{route('maintenance.index')}}">
+                                       Cronograma
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{setActive('equipment.*')}}" href="{{ route('equipment.index') }}">
+                                       Tecnologías
+                                    </a>
+                                </li>
+                                @can('create',new App\Technology)
+                                <li class="nav-item">
+                                    <a class= "nav-link {{setActive('technology.create')}} " href="{{route('technology.create')}}">
+                                      Crear Equipo
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class= "nav-link " href="http://190.71.26.186:84/Sensores/public/sense">
+                                        Telemetria
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{setActive('maintenance.*')}}" href="{{route('maintenance.index')}}">
-                               Cronograma
+                            <a class="nav-link {{setActive('support.*')}}" href="{{route('support.index')}}">
+                               Infraestructura
                             </a>
                         </li>
                         <li class="nav-item">
@@ -62,23 +89,6 @@
                                 Reportes
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{setActive('equipment.*')}}" href="{{ route('equipment.index') }}">
-                               Tecnologías
-                            </a>
-                        </li>
-                        @can('create',new App\Technology)
-                        <li class="nav-item">
-                            <a class= "nav-link {{setActive('technology.create')}} " href="{{route('technology.create')}}">
-                              Crear Equipo
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class= "nav-link " href="http://190.7.153.162:84/Proyect/public/">
-                              Telemetría
-                            </a>
-                        </li>
-                        @endcan
                         <li class="nav-item">
                             <a class="nav-link {{setActive('users.*')}}" href="{{ route('users.index') }}">
                               Usuarios

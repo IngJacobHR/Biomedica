@@ -5,11 +5,11 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <p>O.T # {{$workorders->id}} {{ $workorders->status}}  
+                    <p>O.T # {{$workorders->id}} {{ $workorders->status}}
                         @isset($workorders->evaluation)
-                         el servicio prestado fue {{ $workorders->evaluation}} 
+                         el servicio prestado fue {{ $workorders->evaluation}}
                         @endisset
-                    </p> 
+                    </p>
                 </div>
                 <div class="card-body">
                     <form method="POST" action= "{{route('workorders.evaluation',$workorders->id)}}">
@@ -28,7 +28,7 @@
                                 <p value="{{ old('location')?? $workorders->report}}">{{ $workorders->date_execute}}: {{ $workorders->report}} </p>
                             </div>
                             @can('evaluation',new App\workorders)
-                            @if ($workorders->status=='Terminada'and $workorders->evaluation==Null)
+                            @if (($workorders->status=='Evaluar'and $workorders->evaluation==Null) or($workorders->status=='Terminada'and $workorders->evaluation==Null))
                             <div class="form-group col-md-6">
                                 <label for="">Calificación</label>
                                 <select
@@ -65,16 +65,16 @@
                             @endif
                             <div class="form-row mt-3">
                                 <div class="row">
-                                    <div class="col-md-5">   
+                                    <div class="col-md-5">
                                     <a href="{{ route('workorders.show') }}" class="btn btn-danger btn-sm-2" role="button">Cancelar</a>
                                     </div>
                                     @can('evaluation',new App\workorders)
-                                    @if ($workorders->status=='Terminada'and $workorders->evaluation==Null)
+                                    @if (($workorders->status=='Evaluar'and $workorders->evaluation==Null) or($workorders->status=='Terminada'and $workorders->evaluation==Null))
                                     <div class="col-md-5">
                                         <button type="submit" class="btn btn-primary btn-sm-2">Evaluar</button>
-                                    </div>   
-                                    @endif 
-                                    @endcan      
+                                    </div>
+                                    @endif
+                                    @endcan
                                 </div>
                             </div>
                         </div>

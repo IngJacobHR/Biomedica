@@ -155,9 +155,9 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
+    {{--  <div class="d-flex justify-content-center">
         {{$technologies->links()}}
-    </div>
+    </div>--}}
 </div>
 @endsection
 @section('js')

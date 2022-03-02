@@ -42,6 +42,8 @@ class CreateCampusesTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('set null');
         });
+
+
     }
 
 

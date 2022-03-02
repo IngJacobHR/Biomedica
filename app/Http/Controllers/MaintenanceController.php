@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Equipment;
 use App\Campus;
 use App\Technology;
-
+use Carbon\Carbon;
 class MaintenanceController extends Controller
 {
     public function __construct()
@@ -21,25 +21,131 @@ class MaintenanceController extends Controller
     public function index(Request $request, Technology $technology)
     {
 
-        $dia=$request->date_mant;
-        $dia1=strtotime($dia."+ 45 day");
-        $dia1=date("d-m-y",$dia1);
-
-        $technology->update([
-            'next_mant'=>$dia1
-        ]);
-
+        $now = Carbon::now()->format('Y-m-d');
+        $technolo = Technology::select('id')
+        ->where('service','<>','No encontrado')
+        ->where('risk','=','Muy bajo')
+        ->count();
+        $programation = $request->get('programation');
+        $metrologic = $request->get('metrologic');
         $active=$request->get('active');
         $serie=$request->get('serie');
         $equipment_id=$request->get('equipment_id');
         $campus_id=$request->get('campus_id');
-        return view('maintenance.index', ['technologies'=>Technology::active($active)
-        ->serie($serie)
-        ->equipment_id($equipment_id)
-        ->campus_id($campus_id)
-        ->latest()->simplepaginate(150),
-        'campus_id'=>Campus::pluck('name', 'id'),
-        'equipment_id'=>Equipment::pluck('name', 'id')]);
+
+        if (empty($metrologic) or empty($programation) ){
+
+            return view('maintenance.index', ['technologies'=>Technology::active($active)
+            ->serie($serie)
+            ->equipment_id($equipment_id)
+            ->campus_id($campus_id)
+            ->where('service','<>','Fuera de servicio')
+            ->latest()->simplepaginate(150),
+            'campus_id'=>Campus::pluck('name', 'id'),
+            'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
+            ->serie($serie)
+            ->equipment_id($equipment_id)
+            ->campus_id($campus_id)
+            ->where('service','<>','Fuera de servicio')
+            ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
+            ->count(),'calibration'=>Technology::active($active)
+            ->serie($serie)
+            ->equipment_id($equipment_id)
+            ->campus_id($campus_id)
+            ->where('service','<>','Fuera de servicio')
+            ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
+            ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+
+        }
+        else{
+            if ($metrologic == "Calibración"){
+                if ($programation == 'Vencidos'){
+
+                    return view('maintenance.index', ['technologies'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
+                    ->latest()->simplepaginate(150),
+                    'campus_id'=>Campus::pluck('name', 'id'),
+                    'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'calibration'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+                }
+                elseif($programation == 'Por vencer'){
+
+                    return view('maintenance.index', ['technologies'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('next_cal','>',Carbon::now()->format('Y-m-d'))
+                    ->where('next_cal','<',Carbon::now()->addDays(30)->format('Y-m-d'))
+                    ->latest()->simplepaginate(150),
+                    'campus_id'=>Campus::pluck('name', 'id'),
+                    'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'calibration'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('next_cal','>',Carbon::now()->format('Y-m-d'))
+                    ->where('next_cal','<',Carbon::now()->addDays(30)->format('Y-m-d'))
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+
+                }
+            }
+            else if ($metrologic == "Mantenimiento"){
+                if ($programation == 'Vencidos'){
+
+                    return view('maintenance.index', ['technologies'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('risk','<>','Muy bajo')
+                    ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
+                    ->latest()->simplepaginate(150),
+                    'campus_id'=>Campus::pluck('name', 'id'),
+                    'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+
+                }
+                elseif($programation == 'Por vencer'){
+
+                    return view('maintenance.index', ['technologies'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('risk','<>','Muy bajo')
+                    ->where('next_mant','>',Carbon::now()->format('Y-m-d'))
+                    ->where('next_mant','<',Carbon::now()->addDays(30)->format('Y-m-d'))
+                    ->latest()->simplepaginate(150),
+                    'campus_id'=>Campus::pluck('name', 'id'),
+                    'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
+                    ->serie($serie)
+                    ->equipment_id($equipment_id)
+                    ->campus_id($campus_id)
+                    ->where('service','<>','Fuera de servicio')
+                    ->where('next_mant','>',Carbon::now()->format('Y-m-d'))
+                    ->where('next_mant','<',Carbon::now()->addDays(30)->format('Y-m-d'))
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+
+                }
+            }
+
+        }
+
     }
 
     /**
@@ -49,6 +155,7 @@ class MaintenanceController extends Controller
      */
     public function create()
     {
+
 
     }
 
@@ -60,7 +167,42 @@ class MaintenanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $now = strtotime(Carbon::now()->format('Y-m-d'));
+        $now1 = Carbon::now()->format('Y-m-d');
+        $now1 = Carbon::parse($now1);
+
+        $technology = Technology::select('id','next_mant','next_cal')->get();
+
+        for ($i=0;$i < count($technology);$i++){{
+            Technology::where('id','=',$technology[$i]['id'])->update([
+                'day_mant'=> $now1 -> diffInDays($technology[$i]['next_mant'],false),
+                'day_cal'=> $now1 -> diffInDays($technology[$i]['next_cal'],false)
+            ]);
+        }}
+        $active=$request->get('active');
+        $serie=$request->get('serie');
+        $equipment_id=$request->get('equipment_id');
+        $campus_id=$request->get('campus_id');
+        return view('maintenance.index', ['technologies'=>Technology::active($active)
+        ->serie($serie)
+        ->equipment_id($equipment_id)
+        ->campus_id($campus_id)
+        ->where('service','<>','Fuera de servicio')
+        ->latest()->simplepaginate(150),
+        'campus_id'=>Campus::pluck('name', 'id'),
+        'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
+        ->serie($serie)
+        ->equipment_id($equipment_id)
+        ->campus_id($campus_id)
+        ->where('service','<>','Fuera de servicio')
+        ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
+        ->count(),'calibration'=>Technology::active($active)
+        ->serie($serie)
+        ->equipment_id($equipment_id)
+        ->campus_id($campus_id)
+        ->where('service','<>','Fuera de servicio')
+        ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
+        ->count()]);
     }
 
     /**

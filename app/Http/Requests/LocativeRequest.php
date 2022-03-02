@@ -28,7 +28,7 @@ class LocativeRequest extends FormRequest
             'campus_id'=>['required'],
             'location'=>['required'],
             'locativegroups_id'=>['required'],
-            'active'=>['required'],
+            'report_type'=>['required'],
             'locativefails_id'=>['required'],
             'order'=>['required'],
         ];
