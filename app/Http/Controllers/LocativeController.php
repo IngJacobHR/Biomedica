@@ -17,6 +17,7 @@ use App\Http\Requests\Maxmin;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EvaluationRequest;
+use Illuminate\Support\Facades\DB;
 
 
 class LocativeController extends Controller
@@ -75,12 +76,18 @@ class LocativeController extends Controller
        return back()->withSuccess("Su orden de trabajo #{$locative->id} se genero con exito ");
     }
 
-    public function OT(Locative $locative)
+    public function OT(Locative $locative, Request $request)
     {
-
-        return view('locative.OT',['locative'=>Locative::where('status','=','Pendiente')
-        ->latest()->paginate(100)]);
-
+        $order_id=$request->get('order');
+        $campus_id=$request->get('campus_id');
+        $fails_id=$request->get('fails_id');
+        return view('locative.OT',['locative'=>Locative::campus_id($campus_id)
+        ->locativefails_id($fails_id)
+        ->order($order_id)
+        ->where('status','=','Pendiente')
+        ->latest()->get(),
+        'campus'=>Campus::pluck('name', 'id'),
+        'fails'=>Locativefail::pluck('name', 'id')]);
     }
 
     /**
@@ -285,6 +292,116 @@ class LocativeController extends Controller
         return back()->withSuccess("Gracias por evaluar el servicio");
     }
 
+    public function indicators()
+    {
+        $work = Locative::select('order',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->groupBy('order')
+        ->get();
+
+        $solution = Locative::select('assigned',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('assigned','<>','null')
+        ->groupBy('assigned')
+        ->get();
+
+        $sedes = DB::table('campuses')
+        ->join('locatives', 'campuses.id', '=', 'locatives.campus_id')
+        ->select('campuses.name', 'locatives.created_at')
+        ->where('locatives.created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('campuses.name','<>','Odontología Centro')
+        ->where('campuses.name','<>','Odontología Norte')
+        ->where('campuses.name','<>','Odontología Calasanz')
+        ->where('campuses.name','<>','Odontología PAC')
+        ->where('campuses.name','<>','Odontología Av.oriental')
+        ->select('campuses.name',DB::raw("COUNT('campuses.name') as count"))
+        ->groupBy('name')
+        ->get();
+
+
+        $odon = DB::table('campuses')
+        ->join('locatives', 'campuses.id', '=', 'locatives.campus_id')
+        ->select('campuses.name', 'locatives.created_at')
+        ->where('locatives.created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('campuses.name','<>','Argentina')
+        ->where('campuses.name','<>','Av.oriental')
+        ->where('campuses.name','<>','Calasanz')
+        ->where('campuses.name','<>','Calasanz alterna')
+        ->where('campuses.name','<>','Centro')
+        ->where('campuses.name','<>','Centro alterna')
+        ->where('campuses.name','<>','Especialistas')
+        ->where('campuses.name','<>','Estadio')
+        ->where('campuses.name','<>','IPS Virtual')
+        ->where('campuses.name','<>','Laboratorio')
+        ->where('campuses.name','<>','Norte')
+        ->where('campuses.name','<>','Norte alterna')
+        ->where('campuses.name','<>','PAC')
+        ->where('campuses.name','<>','Prosalco')
+        ->where('campuses.name','<>','Sofasa')
+        ->select('campuses.name',DB::raw("COUNT('campuses.name') as count"))
+        ->groupBy('name')
+        ->get();
+
+        $finish = Locative::select('status',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->groupBy('status')
+        ->get();
+
+        $evaluation = Locative::select('evaluation',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('status','=','Terminada')
+        ->groupBy('evaluation')
+        ->get();
+
+        $evaluation[0]['evaluation'] = 'Sin evaluar';
+
+        $times_prog = Locative::select('created_at', 'date_execute','order')
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('status','=','Terminada')
+        ->where('order','=','Programada')
+        ->where('date_novelty','=', NULL)
+        ->get();
+
+        $times_urg = Locative::select('created_at', 'date_execute','order')
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('status','=','Terminada')
+        ->where('order','=','Urgente')
+        ->where('date_novelty','=', NULL)
+        ->get();
+
+        $cont = 0;
+        foreach ($times_prog as $time  ) {
+            $date_calendar = Carbon::parse($time->created_at);
+            $date_execute = Carbon::parse($time->date_execute);
+            if ($date_calendar->diffInDays($date_execute, false) > 8){
+                $prog [] = 24 * $date_calendar->diffInDays($date_execute, false);
+            }else {
+                $prog [] = 24;
+                $cont +=1;
+            }
+        }
+
+        foreach ($times_urg as $time  ) {
+            $date_calendar = Carbon::parse($time->created_at);
+            $date_execute = Carbon::parse($time->date_execute);
+            if ($date_calendar->diffInDays($date_execute, false) > 1){
+                $urg [] = 24 * $date_calendar->diffInDays($date_execute, false);
+            }else {
+                $urg [] = 24;
+                $cont +=1;
+            }
+
+        }
+
+        $total = count($prog) + count($urg);
+
+        $total = number_format((($cont/$total)*100),2);
+        $prog =number_format((array_sum($prog))/count($prog),2);
+        $urg = number_format((array_sum($urg))/count($urg),2);
+
+
+        return view(('workorders.indicators'),compact('work','solution','sedes', 'odon', 'finish', 'evaluation','prog','urg','total'));
+    }
     /**
      * Remove the specified resource from storage.
      *

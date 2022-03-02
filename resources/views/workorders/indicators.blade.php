@@ -8,8 +8,18 @@
                 <div class="card-body">
                     <div class="card-body">
                         <figure class="highcharts-figure">
-                            <div id="container1" class="chart-container"></div>
+                            <div id="container5" class="chart-container"></div>
                         </figure>
+                        <div>
+                            <figure class="highcharts-figure">
+                                <div id="container6" class="chart-container"></div>
+                            </figure>
+                        </div>
+                        <div>
+                            <figure class="highcharts-figure">
+                                <div id="container1" class="chart-container"></div>
+                            </figure>
+                        </div>
                         <div>
                             <figure class="highcharts-figure">
                                 <div id="container3" class="chart-container"></div>
@@ -25,15 +35,20 @@
                                 <div id="container2" class="chart-container"></div>
                             </figure>
                         </div>
-                        <div class="table-responsive col-4">
+                        <div class=" table-responsive">
                             <table class="table table-hover table-bordered mt-4  text-white text-center">
                                 <tbody class='table text-black text-center'>
-                                    @foreach ($finish as $finish)
                                         <tr>
-
+                                            <th>Horas OT.Programadas</th>
+                                            <th>Horas OT.Urgentes</th>
+                                            <th>Disponibilidad</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
+                                    <tr>
+                                        <td>{{$prog}}</td>
+                                        <td>{{$urg}}</td>
+                                        <td>{{$total}} %</td>
+                                    </tr>
+                                 </tbody>
                             </table>
                         </div>
                     </div>
@@ -65,8 +80,6 @@
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
                     plotShadow: false,
-
-
                 },
                 credits: {
                     enabled: false
@@ -74,8 +87,8 @@
                 title: {
                     text: '<b>Tipos de ordenes de trabajo mensuales</b>'
                 },
-                 tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>',
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>',
                     percentageDecimals: 1
                 },
                 plotOptions: {
@@ -88,15 +101,16 @@
                             color: '#000000',
                             connectorColor: '#000000',
                             formatter: function() {
-                                return '<b>'+ this.point.name +'</b></br>'+
-                                'Total: ' + Highcharts.numberFormat(this.y, 2);
+                                return '<b>'+ this.point.name +'</b><br/>'+
+                                'Total: ' + this.percentage.toFixed(2) + ' %';
                             }
+
                         }
                     }
                 },
                 series: [{
                     type:'pie',
-                    name:'Porcentaje'
+                    name:'Total'
                 }]
             }
             myarray = [];
@@ -126,8 +140,8 @@
     <script>
             $(document).ready(function() {
             var solution =  <?php echo json_encode($solution); ?>;
-            Highcharts.setOptions({
-                    colors: ['green', 'red', 'purple', 'orange']
+              Highcharts.setOptions({
+                    colors: ['green', 'red', 'purple', 'orange','blue']
                 });
             var options = {
                 chart: {
@@ -326,4 +340,146 @@
             chart = new Highcharts.Chart(options);
         });
     </script>
+
+    <script>
+            $(document).ready(function() {
+            var solution =  <?php echo json_encode($finish); ?>;
+            Highcharts.setOptions({
+                    colors: ['blue','red', 'grey', 'green','yellow']
+                });
+            var options = {
+                chart: {
+                    renderTo: 'container5',
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text:
+                        @if (Auth::user()->roles == 'Manager' || Auth::user()->roles == 'Admin' )
+                                '<b>Estado de las OT.Biomédicas<b>'
+                        @elseif (Auth::user()->roles == 'S.Admin')
+                                '<b>Estado de las OT.Locativas<b>'
+                        @endif
+                },
+                 tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>',
+                    percentageDecimals: 1
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        showInLegend: true,
+                        cursor: 'pointer',
+                            dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            formatter: function() {
+                                return '<b>'+ this.point.name +'</b><br/>'+
+                                'Total: ' + this.percentage.toFixed(2) + ' %';
+                            }
+
+                        }
+                    }
+                },
+                series: [{
+                    type:'pie',
+                    name: 'Total'
+                }],
+                responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+            }
+            myarray = [];
+            $.each(solution, function(index, val) {
+                myarray[index] = [val.status, val.count];
+            });
+            options.series[0].data = myarray;
+            chart = new Highcharts.Chart(options);
+        });
+    </script>
+
+    <script>
+            $(document).ready(function() {
+            var solution =  <?php echo json_encode($evaluation); ?>;
+            {{--  Highcharts.setOptions({
+                    colors: ['gray', 'green', 'red']
+                });--}}
+            var options = {
+                chart: {
+                    renderTo: 'container6',
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: '<b>Evaluación de las OT<b>'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>',
+                    percentageDecimals: 1
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        showInLegend: true,
+                        cursor: 'pointer',
+                            dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            formatter: function() {
+                                return '<b>'+ this.point.name +'</b><br/>'+
+                                'Total: ' + this.percentage.toFixed(2) + ' %';
+                            }
+
+                        }
+                    }
+                },
+                series: [{
+                    type:'pie',
+                    name: 'Porcentaje'
+                }],
+                responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+            }
+            myarray = [];
+            $.each(solution, function(index, val) {
+                myarray[index] = [val.evaluation, val.count];
+            });
+            options.series[0].data = myarray;
+            chart = new Highcharts.Chart(options);
+        });
+    </script>
+
   @endsection

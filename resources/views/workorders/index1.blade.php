@@ -96,8 +96,6 @@
                                                 <a type="button" class="btn btn-outline-primary" href="{{ route('workorders.modal',$work) }}">Evaluar</a>
                                             @elseif($work->status=="Terminada" and isset($work->evaluation))
                                                 <a type="button" class="btn btn-success" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
-                                            @elseif($work->status=="Evaluar" )
-                                                <a type="button" class="btn btn-outline-primary" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Novedad")
                                                 <a type="button" class="btn btn-danger" href="{{ route('workorders.modal',$work) }}">{{$work->status}}</a>
                                             @elseif($work->status=="Rechazada")

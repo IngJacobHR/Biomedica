@@ -48,4 +48,16 @@ class Locative extends Model
         if($campus_id)
             return $query->where('campus_id', 'LIKE', "$campus_id");
     }
+
+    public function scopeOrder($query,$order)
+    {
+        if($order)
+            return $query->where('order', 'LIKE', "$order");
+    }
+
+    public function scopeLocativefails_id($query,$locativefails_id)
+    {
+        if($locativefails_id)
+            return $query->where('locativefails_id', 'LIKE', "$locativefails_id");
+    }
 }

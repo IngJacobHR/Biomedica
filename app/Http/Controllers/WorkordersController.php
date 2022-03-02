@@ -18,6 +18,7 @@ use Illuminate\Queue\Worker;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 
 use function GuzzleHttp\Promise\all;
 
@@ -147,7 +148,7 @@ class WorkordersController extends Controller
         return view('workorders.index2',['workorders'=>WorkOrders::where('assigned','=',Auth::user()->name)
         ->where('status', '!=' , 'Terminada')
         ->where('status', '!=' , 'Evaluar')
-        ->latest()->paginate(20)]);
+        ->latest()->get()]);
     }
 
     /**
@@ -243,7 +244,7 @@ class WorkordersController extends Controller
             'report'=>$request->report,
             ]);
 
-         if($workorders->status=='Evaluar' and $workorders->evaluation==NULL)
+         if($workorders->status=='Terminada' and $workorders->evaluation==NULL)
          {
             $date = Carbon::now();
             $date->toDateTimeString();
@@ -347,12 +348,66 @@ class WorkordersController extends Controller
         ->groupBy('name')
         ->get();
 
+
         $finish = WorkOrders::select('status',DB::raw("COUNT('id') as count"))
         ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
         ->groupBy('status')
         ->get();
 
-        return view(('workorders.indicators'),compact('work','solution','bryan','juan','sedes', 'odon', 'finish'));
+        $evaluation = WorkOrders::select('evaluation',DB::raw("COUNT('id') as count"))
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('status','=','Terminada')
+        ->groupBy('evaluation')
+        ->get();
+        $evaluation[0]['evaluation'] = 'Sin evaluar';
+
+        $times_prog = WorkOrders::select('date_calendar', 'date_execute','order')
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('status','=','Terminada')
+        ->where('order','=','Programada')
+        ->where('date_novelty','=', NULL)
+        ->get();
+
+        $times_urg = WorkOrders::select('id','date_calendar', 'date_execute','order')
+        ->where('created_at','>',Carbon::now()->subDays(30)->format('Y-m-d'))
+        ->where('status','=','Terminada')
+        ->where('order','=','Urgente')
+        ->where('date_novelty','=', NULL)
+        ->get();
+
+        $cont = 0;
+        foreach ($times_prog as $time  ) {
+            $date_calendar = Carbon::parse($time->date_calendar);
+            $date_execute = Carbon::parse($time->date_execute);
+            if ($date_calendar->diffInDays($date_execute, false) > 2){
+                $prog [] = 24 * $date_calendar->diffInDays($date_execute, false);
+            }else {
+                $prog [] = 24;
+                $cont +=1;
+            }
+        }
+
+
+        foreach ($times_urg as $time  ) {
+            $date_calendar = Carbon::parse($time->date_calendar);
+            $date_execute = Carbon::parse($time->date_execute);
+            if ($date_calendar->diffInDays($date_execute, false) > 1){
+                $urg [] = 24 * $date_calendar->diffInDays($date_execute, false);
+            }else {
+                $urg [] = 24;
+                $cont +=1;
+            }
+        }
+
+
+
+        $total = count($prog) + count($urg);
+
+        $total = number_format((($cont/$total)*100),2);
+        $prog =number_format((array_sum($prog))/count($prog),2);
+        $urg = number_format((array_sum($urg))/count($urg),2);
+
+        return view(('workorders.indicators'),compact('work','solution','sedes', 'odon', 'finish', 'evaluation','prog','urg','total'));
     }
 
 

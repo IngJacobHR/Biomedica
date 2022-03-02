@@ -19,7 +19,7 @@
                                       class="form-control border-0 bg-light shadow-sm status"
                                   >
                                       <option value="">Seleccione</option>
-                                      <option value="Evaluar">Terminada</option>
+                                      <option value="Terminada">Terminada</option>
                                       <option value="Novedad">Novedad</option>
                                       <option value="Correccion">Correccion</option>
                                   </select>
@@ -100,7 +100,7 @@
               }
           });
           $("#status").change( function() {
-              if ($(this).val() === "Evaluar") {
+              if ($(this).val() === "Terminada") {
                   $("#id_input2").prop("readonly", false);
 
               } else {

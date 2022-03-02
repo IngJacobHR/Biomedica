@@ -31,6 +31,10 @@ Route::group(['middleware'=>['adminmanager']], function() {
     Route::match(['put', 'patch'], 'technology_edit/{technology}','TechnologyController@update')->name('technology.update');
     Route::delete('technology/{technology}', 'TechnologyController@destroy')->name('technology.destroy');
     Route::match(['put', 'patch'], 'technology/{technology}','TechnologyController@adjuntar')->name('technology.adjuntar');
+    Route::delete('support/{id}', 'SupportController@destroy')->name('support.destroy');
+    Route::get('support/{support}/edit', 'SupportController@edit')->name('support.edit');
+    Route::match(['put', 'patch'], 'support_edit/{support}','SupportController@update')->name('support.update');
+    Route::match(['put', 'patch'], 'support/{support}','SupportController@execute')->name('support.execute');
 });
 
 Route::get('maintenance', 'MaintenanceController@index')->name('maintenance.index');
@@ -52,7 +56,6 @@ Route::get('shear', 'CampusController@update')->name('campus.update');
 
 
 
-
 Route::get('workorders', 'WorkordersController@index')->name('workorders.index');
 Route::get('workorders/OT', 'WorkordersController@OT')->name('workorders.OT')->middleware('manager');
 Route::get('workorders/create', 'WorkordersController@create')->name('workorders.create');
@@ -66,6 +69,7 @@ Route::group(['middleware'=>['adminmanager']], function() {
     Route::get('workorders/{workorders}/execute', 'WorkordersController@execute')->name('workorders.execute');
     Route::post('workorders_edit/{workorders}','WorkordersController@update')->name('workorders.update');
     Route::post('workorders_execute/{workorders}','WorkordersController@updatesupport')->name('workorders.updatesupport');
+    Route::get('/indicadores.biomédicos', 'WorkordersController@indicators')->name('indicators');
 });
 
 
@@ -77,6 +81,7 @@ Route::group(['middleware'=>['sadmin']], function() {
     Route::get('locative/support', 'LocativeController@support')->name('locative.support');
     Route::get('locative/{locative}/execute', 'LocativeController@execute')->name('locative.execute');
     Route::post('locative_execute/{locative}','locativeController@updatesupport')->name('locative.updatesupport');
+    Route::get('/indicadores.locativos', 'LocativeController@indicators')->name('indicators.locative');
 });
 
 Route::group(['middleware'=>['operative']], function() {
@@ -87,14 +92,14 @@ Route::group(['middleware'=>['operative']], function() {
     Route::post('locative/{locative}/evaluation', 'LocativeController@evaluation')->name('locative.evaluation');
 });
 
+Route::get('support', 'SupportController@index')->name('support.index');
+
 
 
 
 Route::get('/admin', 'UserController@index')->name('users.index');
 Route::get('/edit/{usuario}', 'UserController@edit')->name('users.edit');
 Route::patch('/edit/{usuario}', 'UserController@update')->name('users.update');
-
-Route::get('/indicadores', 'WorkordersController@indicators')->name('indicators');
 
 Route::get('/actualizar', 'MaintenanceController@store')->name('actualizar');
 

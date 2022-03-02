@@ -33,7 +33,9 @@ class TechnologyController extends Controller
         ->serie($serie)
         ->equipment_id($equipment_id)
         ->campus_id($campus_id)
-        ->latest()->simplepaginate(400),
+        //->latest()
+        ->orderby('equipment_id')
+        ->orderby('id','desc')->get(),
         'campus_id'=>Campus::pluck('name', 'id'),
         'equipment_id'=>Equipment::pluck('name', 'id')]);
     }
