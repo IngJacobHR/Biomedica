@@ -38,11 +38,13 @@
                 <a class="nav-link " href="{{ route('indicators.locative') }}">Indicadores</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{ route('locative.OT') }}">Reportes</a>
+                <a class="nav-link" href="{{ route('locative.OT') }}">Reportes</a>
             </li>
-            <li class="nav-item">
+        @endcan
+        @can('restore',new App\Locative)
+        <li class="nav-item">
             <a class="nav-link" href="{{ route('locative.support') }}">Asignadas</a>
-            </li>
+        </li>
         @endcan
         @can('create',new App\Locative)
             <li class="nav-item">

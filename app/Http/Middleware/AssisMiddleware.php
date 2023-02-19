@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class OperativeMiddleware
+class AssisMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,11 @@ class OperativeMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->user()->roles=='S.Admin' or $request->user()->roles=='Operativo')
+        if($request->user()->roles=='S.Admin' or $request->user()->roles=='Auxiliar')
         {
             return $next($request);
         }
         return redirect('/')->withSuccess('No tienes permiso para esta acción!!');
         return $next($request);
     }
-
 }

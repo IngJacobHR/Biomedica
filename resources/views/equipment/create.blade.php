@@ -5,7 +5,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <a>Crear Tecnologia</a>       
+                    <a>Crear Tecnologia</a>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{route('equipment.store')}}">
@@ -34,6 +34,7 @@
                                     <option value="">Seleccione</option>
                                         <option >Monitoreo</option>
                                         <option >Diagnostico</option>
+                                        <option >EPP</option>
                                     </select>
                                 </div>
                                 <div class="form-row">

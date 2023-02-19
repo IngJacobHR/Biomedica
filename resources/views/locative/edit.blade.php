@@ -22,9 +22,9 @@
                                     class="form-control border-0 bg-light shadow-sm"
                                 >
                                     <option value="">Seleccione</option>
-                                    @foreach(\App\Constants\Locativeperson::toArray() as $person)
-                                        <option value="{{ $person}}"
-                                        >{{ $person }}</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->name}}"
+                                        >{{ $user->name }}</option>
                                     @endforeach
                                 </select>
                           </div>

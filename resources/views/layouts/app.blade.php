@@ -72,7 +72,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class= "nav-link " href="http://190.71.26.186:84/Sensores/public/sense">
+                                    <a class= "nav-link {{setActive('sense')}} " href="{{route('sense')}}">
                                         Telemetria
                                     </a>
                                 </li>

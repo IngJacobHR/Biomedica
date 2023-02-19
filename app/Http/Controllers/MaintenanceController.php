@@ -22,10 +22,8 @@ class MaintenanceController extends Controller
     {
 
         $now = Carbon::now()->format('Y-m-d');
-        $technolo = Technology::select('id')
-        ->where('service','<>','No encontrado')
-        ->where('risk','=','Muy bajo')
-        ->count();
+
+
         $programation = $request->get('programation');
         $metrologic = $request->get('metrologic');
         $active=$request->get('active');
@@ -33,28 +31,39 @@ class MaintenanceController extends Controller
         $equipment_id=$request->get('equipment_id');
         $campus_id=$request->get('campus_id');
 
+        $indiMant = Technology::select('id')
+        ->active($active)
+        ->serie($serie)
+        ->equipment_id($equipment_id)
+        ->campus_id($campus_id)
+        ->where('service','=','En servicio')
+        ->where('risk','<>','Muy bajo')
+        ->count();
+
+
         if (empty($metrologic) or empty($programation) ){
 
             return view('maintenance.index', ['technologies'=>Technology::active($active)
             ->serie($serie)
             ->equipment_id($equipment_id)
             ->campus_id($campus_id)
-            ->where('service','<>','Fuera de servicio')
-            ->latest()->simplepaginate(150),
+            ->where('service','=','En servicio')
+            ->latest()->simplepaginate(500),
             'campus_id'=>Campus::pluck('name', 'id'),
             'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
             ->serie($serie)
             ->equipment_id($equipment_id)
             ->campus_id($campus_id)
-            ->where('service','<>','Fuera de servicio')
+            ->where('service','=','En servicio')
             ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
             ->count(),'calibration'=>Technology::active($active)
             ->serie($serie)
             ->equipment_id($equipment_id)
             ->campus_id($campus_id)
-            ->where('service','<>','Fuera de servicio')
+            ->where('service','=','En servicio')
             ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
-            ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+            ->count(),'programation'=>$programation,'metrologic'=>$metrologic,
+            'indiMant'=>$indiMant]);
 
         }
         else{
@@ -65,17 +74,18 @@ class MaintenanceController extends Controller
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
-                    ->latest()->simplepaginate(150),
+                    ->latest()->simplepaginate(500),
                     'campus_id'=>Campus::pluck('name', 'id'),
                     'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'calibration'=>Technology::active($active)
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
-                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic,
+                    'indiMant'=>$indiMant]);
                 }
                 elseif($programation == 'Por vencer'){
 
@@ -83,19 +93,20 @@ class MaintenanceController extends Controller
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('next_cal','>',Carbon::now()->format('Y-m-d'))
                     ->where('next_cal','<',Carbon::now()->addDays(30)->format('Y-m-d'))
-                    ->latest()->simplepaginate(150),
+                    ->latest()->simplepaginate(500),
                     'campus_id'=>Campus::pluck('name', 'id'),
                     'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'calibration'=>Technology::active($active)
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('next_cal','>',Carbon::now()->format('Y-m-d'))
                     ->where('next_cal','<',Carbon::now()->addDays(30)->format('Y-m-d'))
-                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic,
+                    'indiMant'=>$indiMant]);
 
                 }
             }
@@ -106,18 +117,19 @@ class MaintenanceController extends Controller
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('risk','<>','Muy bajo')
                     ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
-                    ->latest()->simplepaginate(150),
+                    ->latest()->simplepaginate(500),
                     'campus_id'=>Campus::pluck('name', 'id'),
                     'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
-                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic,
+                    'indiMant'=>$indiMant]);
 
                 }
                 elseif($programation == 'Por vencer'){
@@ -126,20 +138,21 @@ class MaintenanceController extends Controller
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('risk','<>','Muy bajo')
                     ->where('next_mant','>',Carbon::now()->format('Y-m-d'))
                     ->where('next_mant','<',Carbon::now()->addDays(30)->format('Y-m-d'))
-                    ->latest()->simplepaginate(150),
+                    ->latest()->simplepaginate(500),
                     'campus_id'=>Campus::pluck('name', 'id'),
                     'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
                     ->serie($serie)
                     ->equipment_id($equipment_id)
                     ->campus_id($campus_id)
-                    ->where('service','<>','Fuera de servicio')
+                    ->where('service','=','En servicio')
                     ->where('next_mant','>',Carbon::now()->format('Y-m-d'))
                     ->where('next_mant','<',Carbon::now()->addDays(30)->format('Y-m-d'))
-                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic]);
+                    ->count(),'programation'=>$programation,'metrologic'=>$metrologic,
+                    'indiMant'=>$indiMant]);
 
                 }
             }
@@ -187,20 +200,20 @@ class MaintenanceController extends Controller
         ->serie($serie)
         ->equipment_id($equipment_id)
         ->campus_id($campus_id)
-        ->where('service','<>','Fuera de servicio')
-        ->latest()->simplepaginate(150),
+        ->where('service','=','En servicio')
+        ->latest()->simplepaginate(500),
         'campus_id'=>Campus::pluck('name', 'id'),
         'equipment_id'=>Equipment::pluck('name', 'id'),'now'=>$now,'maintenance'=>Technology::active($active)
         ->serie($serie)
         ->equipment_id($equipment_id)
         ->campus_id($campus_id)
-        ->where('service','<>','Fuera de servicio')
+        ->where('service','=','En servicio')
         ->where('next_mant','<',Carbon::now()->format('Y-m-d'))
         ->count(),'calibration'=>Technology::active($active)
         ->serie($serie)
         ->equipment_id($equipment_id)
         ->campus_id($campus_id)
-        ->where('service','<>','Fuera de servicio')
+        ->where('service','=','En servicio')
         ->where('next_cal','<',Carbon::now()->format('Y-m-d'))
         ->count()]);
     }

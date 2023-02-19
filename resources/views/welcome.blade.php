@@ -14,23 +14,23 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="8000">
                         <div class="carousel-caption d-none d-md-block">
-                         <h5 class="display-4 text-primary">Bioingeniería Coopsana IPS</h5>
-                         <p>Some representative placeholder content for the first slide.</p>
+                        <h5 class="display-4 text-primary">Ingeniería y Mantenimiento Coopsana IPS</h5>
+                         <p></p>
                         </div>
                         <img class="img-fluid mb-4" src="/biomedica/storage/app/public/img/inicio.svg" alt="">
                     </div>
                     <div class="carousel-item" data-bs-interval="8000">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5 class="display-4 text-primary">Bioingeniería Coopsana IPS</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
+                            <h5 class="display-4 text-primary">Ingeniería y Mantenimiento Coopsana IPS</h5>
+                            <p></p>
                         </div>
                         <img class="img-fluid mb-4" src="/biomedica/storage/app/public/img/costruccion.svg" alt="">
                     </div>
                     <div class="carousel-item " data-bs-interval="8000">
                         <img class="img-fluid mb-4" src="/biomedica/storage/app/public/img/datos.svg" alt="">
                         <div class="carousel-caption d-none d-md-block">
-                        <h5 class="display-4 text-primary">Bioingeniería Coopsana IPS</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
+                        <h5 class="display-4 text-primary">Ingeniería y Mantenimiento Coopsana IPS</h5>
+                        <p></p>
                         </div>
                     </div>
                 </div>

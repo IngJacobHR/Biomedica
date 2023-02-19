@@ -65,7 +65,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Fecha de mantenimiento</label>
-                                    <input class="form-control" type="date" name="date_mant" value="{{ old('date_mant')?? $support->mant_calendar}}">
+                                    <input class="form-control" type="date" name="mant_calendar" value="{{ old('mant_calendar')?? $support->mant_calendar}}">
                                 </div>
                             </div>
                             <div class="col-sm-6">

@@ -5,7 +5,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <a>Editar Equipo biomédico</a>       
+                    <a>Editar Equipo biomédico</a>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{route('technology.update', ['technology'=> $technology->id])}}">
@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
 
-                
+
                             <button type="submit" class="btn btn-primary btn-lg">Editar Equipo</button>
                             <a class="btn btn-danger btn-lg" href="{{ route('technology.index') }}">Cancelar</a>
                     </form>

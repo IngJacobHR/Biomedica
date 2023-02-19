@@ -10,6 +10,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
+                        <a>mp:Mantenimiento Preventivo  cal:Calibración  val:Validación cc:Control de calidad</a>
                         <table class="table">
                             <thead>
                                 <tr>

@@ -184,8 +184,10 @@ class LocativeController extends Controller
     public function edit($idlocative)
     {
         $locative=Locative::find($idlocative);
-        $users=User::all()->where('roles','=','S.Admin');
+        $users=User::select("*")->where('roles','=','Auxiliar')->orWhere('roles','=','S.Admin')->get();
         return view('locative.edit',compact(['users','locative']));
+
+
     }
 
     /**
@@ -213,27 +215,12 @@ class LocativeController extends Controller
     }
 
     public function support (Request $request)
-    {   $campus_id=$request->get('campus_id');
-        $initialDate=$request->get('initialDate');
-        $finalDate=$request->get('finalDate');
-        if (empty($initialDate) || empty($finalDate)) {
-            return view('locative.support',['locative'=>locative::campus_id($campus_id)
-            ->where('status', '!=' , 'Terminada')
-            ->latest()->get(),
-            'campus'=>Campus::pluck('name', 'id'),
-            ]);
-        }
-        else{
-            return view('locative.support',['locative'=>locative::campus_id($campus_id)
-            ->where('status', '!=' , 'Terminada')
-            ->where('created_at','>=',$initialDate)
-            ->where('created_at','<=',$finalDate)
-            ->latest()->simplepaginate(400),
-            'campus'=>Campus::pluck('name', 'id'),
-            ]);
-        }
+    {
+        return view('locative.support',['locative'=>Locative::where('assigned','=',Auth::user()->name)
+        ->where('status', '!=' , 'Terminada')
+        ->where('status', '!=' , 'Evaluar')
+        ->latest()->get()]);
     }
-    //where('status', '!=' , 'Terminada')
 
     public function execute($idlocative)
     {

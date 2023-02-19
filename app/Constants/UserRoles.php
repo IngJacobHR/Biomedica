@@ -9,6 +9,7 @@ class UserRoles
     public const  Admin= 'Admin';
     public const  Operative= 'Operativo';
     public const User= 'Usuario';
+    public const Assis= 'Auxiliar';
 
 
     public static function toArray(): array
@@ -19,7 +20,8 @@ class UserRoles
             self::SAdmin,
             self::Admin,
             self::Operative,
-            self::User,      
+            self::User,
+            self::Assis,
         ];
     }
 }

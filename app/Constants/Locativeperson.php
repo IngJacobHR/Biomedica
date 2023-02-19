@@ -6,8 +6,8 @@ class Locativeperson
 {
     public const Person1= 'Yeison Betancourt';
     public const Person2 = 'Fabio Imba';
-    public const Person3 = 'Yuliana Carmona';
-    public const Person4 = 'Ricardo Rubio';
+    public const Person3 = 'Jhon Jimenez';
+    public const Person4 = 'Sebastian Florez';
     public const Person5 = 'Eric Quejada';
     public const Person6 = 'Brayan Escobar';
     public const Person7 = 'Clinica del frio';

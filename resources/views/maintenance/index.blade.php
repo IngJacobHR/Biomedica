@@ -166,6 +166,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{-- CumplimientodeMantenimientos:round(100-(($maintenance/$indiMant)*100),2) --}}
                     </div>
                 </div>
             </div>

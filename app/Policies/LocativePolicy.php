@@ -30,7 +30,7 @@ class LocativePolicy
      */
     public function view(User $user, Locative $locative)
     {
-        //
+        return ($user->roles==='S.Admin' or $user->roles==='Auxiliar');
     }
 
     /**
@@ -53,6 +53,7 @@ class LocativePolicy
      */
     public function update(User $user, Locative $locative)
     {
+        //return ($user->roles==='S.Admin' or $user->roles==='Auxiliar');
         return $user->roles==='S.Admin';
     }
 
@@ -77,7 +78,7 @@ class LocativePolicy
      */
     public function restore(User $user, Locative $locative)
     {
-        //
+        return ($user->roles==='S.Admin' or $user->roles==='Auxiliar');
     }
 
     /**

@@ -72,11 +72,10 @@ Route::group(['middleware'=>['adminmanager']], function() {
     Route::get('/indicadores.biomédicos', 'WorkordersController@indicators')->name('indicators');
 });
 
-
-Route::group(['middleware'=>['sadmin']], function() {
+Route::get('locative/OT', 'LocativeController@OT')->name('locative.OT')->middleware('sadmin');
+Route::get('locative/{locative}/edit', 'LocativeController@edit')->name('locative.edit')->middleware('sadmin');
+Route::group(['middleware'=>['assis']], function() {
     Route::post('locative/create/send', 'locativeController@store')->name('locative.store');
-    Route::get('locative/OT', 'LocativeController@OT')->name('locative.OT');
-    Route::get('locative/{locative}/edit', 'LocativeController@edit')->name('locative.edit');
     Route::post('locative_edit/{locative}','LocativeController@update')->name('locative.update');
     Route::get('locative/support', 'LocativeController@support')->name('locative.support');
     Route::get('locative/{locative}/execute', 'LocativeController@execute')->name('locative.execute');
@@ -94,14 +93,32 @@ Route::group(['middleware'=>['operative']], function() {
 
 Route::get('support', 'SupportController@index')->name('support.index');
 
-
-
-
 Route::get('/admin', 'UserController@index')->name('users.index');
 Route::get('/edit/{usuario}', 'UserController@edit')->name('users.edit');
 Route::patch('/edit/{usuario}', 'UserController@update')->name('users.update');
 
 Route::get('/actualizar', 'MaintenanceController@store')->name('actualizar');
+
+Route::get('sense', 'SenseController@index')->name('sense');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('event/{id}', [App\Http\Controllers\SensorController::class, 'event'])->name('event');
+Route::post('event/{id}', [App\Http\Controllers\SensorController::class, 'event'])->name('event');
+
+Route::resource('sensors', 'SenseController');
+
+Route::get('/eventedit/{id}/{name}', 'SensorController@eventEdit')->name('eventedit');
+Route::patch('/eventeditupdate/{id}', [App\Http\Controllers\SensorController::class, 'eventEditUpdate'])->name('eventupdate');
+Route::post('/event/{id}', [App\Http\Controllers\SensorController::class, 'filterEvent'])->name('filterEvent');
+
+Route::get('/dailychart/{id}', [App\Http\Controllers\SensorController::class, 'id'])->name('id');
+Route::post('/historicchart/{id}', [App\Http\Controllers\SensorController::class, 'filter'])->name('filter');
+
+Route::post('/dailychart/{id}', [App\Http\Controllers\SensorController::class, 'filterDaily'])->name('filterDaily');
+
+Route::get('/historic/{id}', [App\Http\Controllers\SensorController::class, 'historic'])->name('historic');
+
 
 Auth::routes(['verify'=>true]);
 

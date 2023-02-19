@@ -94,7 +94,7 @@ class CampusController extends Controller
         return view('technology.index', [
             'campus_id'=>Campus::pluck('name', 'id'),
             'equipment_id'=>Equipment::pluck('name', 'id'),
-            'technologies'=>Technology::where('service','=',$campus)->latest()->simplepaginate(20)
+            'technologies'=>Technology::where('service','=',$campus)->latest()->simplepaginate(200)
 
         ]);
         //dd($campus);

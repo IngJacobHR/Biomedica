@@ -19,7 +19,7 @@ class SadminMiddleware
         if($request->user()->roles=='S.Admin')
         {
             return $next($request);
-        }      
+        }
         return redirect('/')->withSuccess('No tienes permiso para esta acción!!');
         return $next($request);
     }
