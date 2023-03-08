@@ -143,32 +143,14 @@
                 width: 2,
                 label: {
                     text: 'Valor maximo'
-            }
-            }, {
-                value: "<?php echo $valuemin+(0.5*$multi); ?>"
-                color: 'yellow'
-                dashStyle: 'shortdash'
-                width: 2
-                label: {
-                    text: 'Revisar'
-            }
-            }, {
-                value: "<?php echo $valuemax-(0.5*$multi); ?>",
-                color: 'yellow',
-                dashStyle: 'shortdash',
-                width: 2,
-                label: {
-                    text: 'Revisar'
-            }
-            }
-
-        ]
+                }
+            }]
         },
         tooltip: {
             formatter: function() {
                     return '<b>'+ this.series.name +'</b><br/>'+
                     'Fecha: ' + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-                    'Valor: ' + Highcharts.numberFormat(this.y, 2) ;
+                    'Valor: ' + Highcharts.numberFormat(this.y, 2);
             }
         },
         legend: {
@@ -204,24 +186,11 @@
                     color: 'red'
                 }, ]
                     }]
-                });
-                });
-                responsive: {
-                            rules: [{
-                                condition: {
-                                    maxWidth: 500
-                                },
-                                chartOptions: {
-                                    legend: {
-                                        layout: 'horizontal',
-                                        align: 'center',
-                                        verticalAlign: 'bottom'
-                                    }
-                                }
-                            }]
-                        }
+                    });
+                    });
 
     });
 
     </script>
 @endsection
+
